@@ -70,10 +70,10 @@ export const aboutChips: Chip[] = [
 ];
 
 export const aboutStats: StatItem[] = [
-  { value: 8, suffix: "+", label: "Projects Handled", icon: FolderKanban },
-  { value: 25, suffix: "+", label: "Team Collaborations", icon: Users },
-  { value: 120, suffix: "+", label: "Tasks Completed", icon: CheckCircle2 },
-  { value: 60, suffix: "+", label: "Client Meetings", icon: Briefcase },
+  { value: 3, suffix: "+", label: "Projects Handled", icon: FolderKanban },
+  { value: 10, suffix: "+", label: "Team Collaborations", icon: Users },
+  { value: 40, suffix: "+", label: "Tasks Completed", icon: CheckCircle2 },
+  { value: 20, suffix: "+", label: "Client Meetings", icon: Briefcase },
 ];
 
 export const aboutQuote =
@@ -81,31 +81,31 @@ export const aboutQuote =
 
 /** Technical skills with levels — Section 8 list, mockup presentation. */
 export const technicalSkills: TechnicalSkill[] = [
-  { label: "Agile", icon: RefreshCw, level: 90 },
-  { label: "Scrum", icon: Workflow, level: 85 },
-  { label: "Jira", icon: Kanban, level: 88 },
-  { label: "Trello", icon: Columns3, level: 82 },
-  { label: "Notion", icon: NotebookPen, level: 80 },
-  { label: "Excel", icon: Sheet, level: 85 },
-  { label: "Word", icon: FileText, level: 85 },
-  { label: "MS Office", icon: Briefcase, level: 90 },
-  { label: "Google Workspace", icon: Globe, level: 88 },
-  { label: "AI Tools", icon: Sparkles, level: 75 },
+  { label: "Agile", icon: RefreshCw, level: 80 },
+  { label: "Scrum", icon: Workflow, level: 75 },
+  { label: "Jira", icon: Kanban, level: 78 },
+  { label: "Trello", icon: Columns3, level: 72 },
+  { label: "Notion", icon: NotebookPen, level: 70 },
+  { label: "Excel", icon: Sheet, level: 75 },
+  { label: "Word", icon: FileText, level: 75 },
+  { label: "MS Office", icon: Briefcase, level: 80 },
+  { label: "Google Workspace", icon: Globe, level: 78 },
+  { label: "AI Tools", icon: Sparkles, level: 65 },
 ];
 
 /** Professional skills — dot-matrix presentation (spec list + mockup extras). */
 export const professionalSkills: ProfessionalSkill[] = [
-  { label: "Stakeholder Management", level: 90 },
-  { label: "Communication", level: 92 },
-  { label: "Planning & Scheduling", level: 88 },
-  { label: "Risk Management", level: 80 },
-  { label: "Documentation", level: 85 },
-  { label: "Problem Solving", level: 86 },
-  { label: "Leadership", level: 78 },
-  { label: "Time Management", level: 88 },
-  { label: "Decision Making", level: 82 },
-  { label: "Team Collaboration", level: 90 },
-  { label: "Meeting Coordination", level: 84 },
+  { label: "Stakeholder Management", level: 80 },
+  { label: "Communication", level: 82 },
+  { label: "Planning & Scheduling", level: 78 },
+  { label: "Risk Management", level: 70 },
+  { label: "Documentation", level: 75 },
+  { label: "Problem Solving", level: 76 },
+  { label: "Leadership", level: 68 },
+  { label: "Time Management", level: 78 },
+  { label: "Decision Making", level: 72 },
+  { label: "Team Collaboration", level: 80 },
+  { label: "Meeting Coordination", level: 74 },
 ];
 
 /** Tool pills strip. */
