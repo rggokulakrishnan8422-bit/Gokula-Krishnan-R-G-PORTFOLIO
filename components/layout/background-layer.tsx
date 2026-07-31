@@ -35,8 +35,9 @@ export function BackgroundLayer() {
 
   return (
     <div ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      {/* Technology grid + noise */}
+      {/* Technology grid + noise + star field */}
       <div className="absolute inset-0 bg-grid" />
+      <div className="absolute inset-0 bg-stars opacity-80" />
       <div className="absolute inset-0 bg-noise opacity-[0.05]" />
 
       {/* Cool blue light fields */}

@@ -1,113 +1,91 @@
 import Image from "next/image";
-import { CheckCircle2, MapPin } from "lucide-react";
+import { Quote } from "lucide-react";
 import { site } from "@/config/site";
-import { projects, professionalSkills, technicalSkills, toolsWall } from "@/config/content";
+import { aboutChips, aboutParagraph, aboutQuote, aboutStats } from "@/config/content";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Counter } from "@/components/ui/counter";
+import { Badge } from "@/components/ui/badge";
 
-const highlights = [
-  "Agile & Scrum, practiced daily",
-  "Stakeholder-first communication",
-  "Documentation teams actually read",
-];
-
-/** About (Master Prompt Section 7). Stats derive from config — always honest. */
+/** About — mockup layout: two-tone heading, chips, blended portrait, stat cards + quote. */
 export function About() {
-  const stats = [
-    { value: toolsWall.length, suffix: "+", label: "Tools & platforms" },
-    { value: technicalSkills.length + professionalSkills.length, suffix: "", label: "Core PM skills" },
-    { value: projects.length, suffix: "+", label: "Projects delivered" },
-  ];
-
   return (
-    <section id="about" aria-label="About" className="section-pad relative scroll-mt-24">
+    <section id="about" aria-label="About" className="section-line section-pad scroll-mt-24">
       <div className="container-x grid items-center gap-12 lg:grid-cols-12">
-        {/* Glass portrait treatment (Section 5) */}
-        <Reveal className="lg:col-span-5">
-          <div className="relative mx-auto w-full max-w-[400px]">
-            <div
-              aria-hidden
-              className="absolute -inset-6 rounded-full bg-primary/20 blur-3xl"
-            />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl">
-              <Image
-                src="/images/portrait-glass.jpg"
-                alt={`${site.name} — portrait through frosted glass`}
-                fill
-                sizes="(max-width: 1024px) 90vw, 400px"
-                className="object-cover"
-              />
-            </div>
-            <div className="glass-card absolute -bottom-5 left-4 flex items-center gap-3 p-3 shadow-lg">
-              <div className="relative size-10 overflow-hidden rounded-md">
-                <Image
-                  src="/images/portrait-blue.jpg"
-                  alt=""
-                  fill
-                  sizes="40px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col pr-1 leading-tight">
-                <span className="text-sm font-semibold">Enterprise mindset</span>
-                <span className="text-xs text-muted">Calm under deadlines</span>
-              </div>
-            </div>
-            <div
-              aria-hidden
-              className="glass-card absolute -right-2 top-6 hidden items-center gap-2 px-3 py-2 text-xs sm:flex"
-            >
-              <MapPin className="size-3.5 text-primary" />
-              {site.location}
-            </div>
-          </div>
-        </Reveal>
-
-        <div className="flex flex-col gap-8 lg:col-span-7">
+        <div className="flex flex-col gap-7 lg:col-span-5">
           <Reveal>
-            <SectionHeading eyebrow="01 · About" title="Turning plans into reliable delivery." />
+            <SectionHeading
+              eyebrow="About Me"
+              title={
+                <>
+                  <span className="block">Driving Projects.</span>
+                  <span className="text-gradient block">Delivering Results.</span>
+                </>
+              }
+            />
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="flex flex-col gap-4 text-body text-muted">
-              <p>
-                I&apos;m Gokula Krishnan — a Junior Project Manager based in{" "}
-                {site.location}. I work at the intersection of planning and
-                people: building the roadmaps, boards and rituals that keep
-                cross-functional teams moving in the same direction.
-              </p>
-              <p>
-                My approach is simple — make priorities visible, surface risks
-                early, and keep stakeholders informed before they have to ask.
-                Whether it&apos;s a Jira board, a weekly report or a sprint
-                review, I care about clarity that holds up under pressure.
-              </p>
-            </div>
+            <p className="text-body text-muted">{aboutParagraph}</p>
           </Reveal>
 
           <Reveal delay={0.15}>
-            <ul className="flex flex-col gap-3">
-              {highlights.map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <CheckCircle2 className="size-5 shrink-0 text-success" aria-hidden />
-                  <span className="font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-2 gap-3">
+              {aboutChips.map((chip) => {
+                const Icon = chip.icon;
+                return (
+                  <Badge key={chip.label} className="gap-2 px-3.5 py-2">
+                    <Icon className="size-4 text-primary" aria-hidden />
+                    {chip.label}
+                  </Badge>
+                );
+              })}
+            </div>
           </Reveal>
+        </div>
+
+        <Reveal className="lg:col-span-3" delay={0.1}>
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px]">
+            <div
+              aria-hidden
+              className="absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[100px]"
+            />
+            <Image
+              src="/images/portrait-dashboard.jpg"
+              alt={`${site.name} surrounded by project dashboards`}
+              fill
+              sizes="(max-width: 1024px) 70vw, 300px"
+              className="mask-fade-b object-cover object-top"
+            />
+          </div>
+        </Reveal>
+
+        <div className="flex flex-col gap-4 lg:col-span-4">
+          <div className="grid grid-cols-2 gap-4">
+            {aboutStats.map((stat, i) => {
+              const Icon = stat.icon;
+              return (
+                <Reveal key={stat.label} delay={Math.min(i * 0.06, 0.25)} y={20}>
+                  <GlassCard hover className="flex h-full flex-col gap-3 p-5">
+                    <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <p className="font-display text-2xl font-bold">
+                      <Counter to={stat.value} suffix={stat.suffix} pad={2} />
+                    </p>
+                    <p className="text-caption text-muted">{stat.label}</p>
+                  </GlassCard>
+                </Reveal>
+              );
+            })}
+          </div>
 
           <Reveal delay={0.2}>
-            <div className="flex flex-wrap gap-8 border-t pt-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col">
-                  <span className="font-display text-2xl font-bold text-gradient">
-                    <Counter to={stat.value} suffix={stat.suffix} />
-                  </span>
-                  <span className="text-caption text-muted">{stat.label}</span>
-                </div>
-              ))}
-            </div>
+            <GlassCard hover className="flex gap-3 p-5">
+              <Quote className="size-5 shrink-0 text-primary" aria-hidden />
+              <p className="text-body text-muted">{aboutQuote}</p>
+            </GlassCard>
           </Reveal>
         </div>
       </div>

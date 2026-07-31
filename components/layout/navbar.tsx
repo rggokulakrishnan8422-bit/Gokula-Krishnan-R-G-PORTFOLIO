@@ -88,7 +88,7 @@ export function Navbar() {
           }}
           className="group flex items-center gap-2.5"
         >
-          <span className="flex size-9 items-center justify-center rounded-md bg-gradient-to-br from-primary to-secondary font-display text-sm font-bold text-white shadow-md transition-transform duration-small group-hover:scale-105">
+          <span className="text-gradient font-display text-2xl font-bold transition-transform duration-small group-hover:scale-105">
             GK
           </span>
           <span className="hidden flex-col leading-tight sm:flex">

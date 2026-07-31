@@ -27,21 +27,21 @@
 }
 
 .dark {
-  --color-primary: 91 140 255; /* #5B8CFF */
+  --color-primary: 82 126 255; /* #527EFF — electric enterprise blue */
   --color-secondary: 34 211 238; /* #22D3EE */
-  --color-surface: 9 13 28; /* #090D1C */
-  --color-text: 230 237 249;
-  --color-muted: 150 163 188; /* AA contrast on surface */
+  --color-surface: 5 8 22; /* #050816 — deep space navy */
+  --color-text: 231 238 250;
+  --color-muted: 146 160 186; /* AA contrast on surface */
   --color-glass: 148 163 184;
-  --color-border: 148 163 184;
-  --glass-alpha: 0.055;
-  --border-alpha: 0.14;
+  --color-border: 129 140 180;
+  --glass-alpha: 0.06;
+  --border-alpha: 0.16;
   --color-success: 52 211 153;
   --color-warning: 251 191 36;
   --color-error: 248 113 113;
   --grid-line: 148 163 184;
   --shadow-color: 225 60% 2%;
-  --ring: 91 140 255;
+  --ring: 82 126 255;
 }
 
 @layer base {
@@ -147,6 +147,37 @@
 
   .bg-noise {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Star field — tiny drifting particle dots for the space-navy theme */
+  .bg-stars {
+    background-image:
+      radial-gradient(1px 1px at 20px 30px, rgb(255 255 255 / 0.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 130px 80px, rgb(255 255 255 / 0.35) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 70px 150px, rgb(var(--color-primary) / 0.65) 50%, transparent 51%),
+      radial-gradient(1px 1px at 200px 40px, rgb(255 255 255 / 0.3) 50%, transparent 51%),
+      radial-gradient(1px 1px at 280px 180px, rgb(var(--color-secondary) / 0.5) 50%, transparent 51%);
+    background-size: 300px 300px;
+  }
+
+  /* Hairline separator with soft gradient between sections */
+  .section-line {
+    position: relative;
+  }
+  .section-line::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    margin-inline: auto;
+    max-width: 1280px;
+    width: 92%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--color-border) / var(--border-alpha)),
+      transparent
+    );
   }
 
   /* Blends portraits into the environment (Section 5) */

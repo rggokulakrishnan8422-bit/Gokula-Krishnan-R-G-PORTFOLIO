@@ -5,13 +5,35 @@ export type NavLink = {
   href: string;
 };
 
-export type Skill = {
+/** Technical skill with proficiency level (renders as animated bar). */
+export type TechnicalSkill = {
+  label: string;
+  icon: LucideIcon;
+  level: number; // 0–100
+};
+
+/** Professional skill with level (renders as dot matrix). */
+export type ProfessionalSkill = {
+  label: string;
+  level: number; // 0–100
+};
+
+export type Tool = {
+  label: string;
+  icon: LucideIcon;
+  hint: string;
+};
+
+export type StatItem = {
+  value: number;
+  suffix: string;
   label: string;
   icon: LucideIcon;
 };
 
-export type Tool = Skill & {
-  hint: string;
+export type Chip = {
+  label: string;
+  icon: LucideIcon;
 };
 
 export type ExperienceItem = {
@@ -29,7 +51,7 @@ export type Project = {
   title: string;
   description: string;
   tags: string[];
-  outcome: string;
+  image: string;
   icon: LucideIcon;
 };
 

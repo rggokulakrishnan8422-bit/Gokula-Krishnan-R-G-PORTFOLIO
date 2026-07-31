@@ -3,28 +3,67 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { ArrowRight, MapPin, TrendingUp } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { site } from "@/config/site";
-import { projects, technicalSkills, professionalSkills, toolsWall, typingWords } from "@/config/content";
-import { Typing } from "@/components/ui/typing";
+import { heroRoles, heroSummary } from "@/config/content";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ResumeButton } from "@/components/ui/resume-button";
 import { Badge } from "@/components/ui/badge";
-import { Counter } from "@/components/ui/counter";
-import { LinkedInIcon } from "@/components/ui/icons";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 /** Three.js scene is code-split and never rendered on the server (Section 16). */
 const HeroScene = dynamic(() => import("@/components/three/hero-scene"), { ssr: false });
 
+const timelineRows = [
+  { label: "Planning", w: "100%" },
+  { label: "Execution", w: "72%" },
+  { label: "Monitoring", w: "48%" },
+  { label: "Closing", w: "22%" },
+];
+
+/** SVG progress ring for the Sprint Progress widget. */
+function ProgressRing({ value }: { value: number }) {
+  const r = 26;
+  const c = 2 * Math.PI * r;
+  return (
+    <svg viewBox="0 0 64 64" className="size-16 shrink-0" aria-hidden>
+      <defs>
+        <linearGradient id="sprint-ring" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="rgb(82 126 255)" />
+          <stop offset="1" stopColor="rgb(34 211 238)" />
+        </linearGradient>
+      </defs>
+      <circle
+        cx="32"
+        cy="32"
+        r={r}
+        fill="none"
+        stroke="rgb(var(--color-border) / var(--border-alpha))"
+        strokeWidth="6"
+      />
+      <circle
+        cx="32"
+        cy="32"
+        r={r}
+        fill="none"
+        stroke="url(#sprint-ring)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={c * (1 - value / 100)}
+        transform="rotate(-90 32 32)"
+      />
+    </svg>
+  );
+}
+
 /**
- * Hero (Master Prompt Sections 7, 10).
- * 800ms entrance choreography (staggered data-hero blocks), floating
- * portrait composition, typing effect, magnetic CTAs — all with
- * reduced-motion static fallbacks.
+ * Hero — mockup layout: two-tone name, role pill, roles strip, summary,
+ * CTAs, blended globe portrait with floating sprint widgets, side rail.
  */
 export function Hero() {
   const reduced = useReducedMotion();
@@ -49,18 +88,12 @@ export function Hero() {
     return () => ctx.revert();
   }, [reduced]);
 
-  const stats = [
-    { value: toolsWall.length, suffix: "+", label: "PM tools & platforms" },
-    { value: technicalSkills.length + professionalSkills.length, suffix: "", label: "Core skills" },
-    { value: projects.length, suffix: "+", label: "Projects delivered" },
-  ];
-
   return (
     <section
       ref={scope}
       id="top"
       aria-label="Intro"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-16 md:pt-20"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-24 md:pt-28"
     >
       {/* WebGL environment (or its static fallback) */}
       <div aria-hidden className="absolute inset-0">
@@ -71,123 +104,147 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[rgb(var(--color-surface))] to-transparent"
       />
 
-      <div className="container-x relative z-10 grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-8">
-        <div className="flex flex-col gap-6 lg:col-span-7">
+      {/* Left decorative rail */}
+      <div
+        aria-hidden
+        className="absolute bottom-28 left-6 top-32 hidden w-5 flex-col items-center gap-4 lg:flex"
+      >
+        <span className="text-caption font-medium text-muted">01</span>
+        <span className="w-px flex-1 bg-gradient-to-b from-primary/70 via-primary/25 to-transparent" />
+        <span className="flex flex-col gap-2.5">
+          <span className="size-1.5 rounded-full bg-primary" />
+          <span className="size-1.5 rounded-full bg-primary/50" />
+          <span className="size-1.5 rounded-full bg-primary/25" />
+        </span>
+      </div>
+
+      <div className="container-x relative z-10 grid items-center gap-16 lg:grid-cols-12 lg:gap-8">
+        <div className="flex flex-col gap-6 lg:col-span-6">
           <div data-hero>
-            <Badge className="gap-2">
+            <p className="text-body font-medium text-primary">Hi, I&apos;m</p>
+            <h1 className="mt-1 text-balance font-display text-hero font-bold">
+              <span className="block">Gokula</span>
+              <span className="text-gradient block">Krishnan R G</span>
+            </h1>
+          </div>
+
+          <div data-hero>
+            <Badge className="gap-2 px-4 py-1.5">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
                 <span className="relative inline-flex size-2 rounded-full bg-success" />
               </span>
-              Open to opportunities
+              {site.role}
             </Badge>
           </div>
 
-          <h1 data-hero className="text-balance font-display text-hero font-bold">
-            {site.name}
-            <span className="mt-2 block text-gradient">{site.role}</span>
-          </h1>
-
-          <p data-hero className="font-display text-card font-medium">
-            I specialize in <Typing words={typingWords} className="text-primary" />
+          <p data-hero className="text-caption font-medium tracking-wide text-muted">
+            {heroRoles.map((role, i) => (
+              <span key={role}>
+                {role}
+                {i < heroRoles.length - 1 && <span className="mx-2.5 text-primary">•</span>}
+              </span>
+            ))}
           </p>
 
           <p data-hero className="max-w-xl text-body text-muted">
-            I help teams plan clearly, communicate early and ship on time —
-            bringing Agile structure and calm execution to every sprint.
+            {heroSummary}
           </p>
 
-          <div data-hero className="flex flex-wrap items-center gap-3">
+          <div data-hero className="flex flex-wrap items-center gap-4">
             <Magnetic>
-              <a href="#projects" className={buttonVariants({ variant: "primary", size: "lg" })}>
-                View Projects
-                <ArrowRight className="size-4" aria-hidden />
+              <ResumeButton variant="primary" size="lg" />
+            </Magnetic>
+            <Magnetic>
+              <a href="#contact" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+                Let&apos;s Connect
+                <ArrowUpRight className="size-4" aria-hidden />
               </a>
             </Magnetic>
-            <Magnetic>
-              <ResumeButton variant="secondary" size="lg" />
-            </Magnetic>
-            <a
-              href={site.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${site.name} on LinkedIn`}
-              className={buttonVariants({ variant: "ghost", size: "lg" })}
-            >
-              <LinkedInIcon className="size-4" />
-              LinkedIn
-            </a>
-          </div>
-
-          <div data-hero className="mt-4 flex flex-wrap gap-8 border-t pt-6">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col">
-                <span className="font-display text-2xl font-bold">
-                  <Counter to={stat.value} suffix={stat.suffix} />
-                </span>
-                <span className="text-caption text-muted">{stat.label}</span>
-              </div>
-            ))}
           </div>
         </div>
 
-        {/* Portrait composition — blended, never a floating cutout (Section 5) */}
-        <div className="lg:col-span-5" data-hero>
-          <div className="relative mx-auto w-full max-w-[420px]">
+        {/* Blended globe portrait + floating sprint widgets */}
+        <div className="lg:col-span-6" data-hero>
+          <div className="relative mx-auto w-full max-w-[520px]">
             <div
               aria-hidden
-              className="absolute -inset-8 rounded-full bg-gradient-to-br from-primary/30 via-transparent to-secondary/30 blur-3xl"
+              className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[130px]"
             />
-            <div
-              aria-hidden
-              className="absolute inset-0 translate-x-4 translate-y-4 rotate-2 rounded-xl border bg-[rgb(var(--color-glass)/0.04)] backdrop-blur-sm"
-            />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl">
+            <div className="relative aspect-[4/5]">
               <Image
-                src="/images/portrait-hero.jpg"
+                src="/images/hero-globe.jpg"
                 alt={`Portrait of ${site.name}`}
                 fill
                 priority
                 fetchPriority="high"
-                sizes="(max-width: 1024px) 90vw, 420px"
-                className="object-cover"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-surface)/0.35)] via-transparent to-transparent"
+                sizes="(max-width: 1024px) 92vw, 520px"
+                className="mask-fade-b object-cover object-top"
               />
             </div>
 
-            <div className="glass-card absolute -bottom-6 -left-4 flex animate-float items-center gap-3 p-3 shadow-lg [animation-delay:0.8s] sm:-left-8">
-              <div className="relative size-12 overflow-hidden rounded-md">
-                <Image
-                  src="/images/portrait-holo.jpg"
-                  alt=""
-                  fill
-                  sizes="48px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col pr-1 leading-tight">
-                <span className="text-sm font-semibold">{site.firstName}</span>
-                <span className="text-xs text-muted">{site.role}</span>
+            {/* Project Timeline widget */}
+            <div className="absolute -right-2 top-2 hidden w-48 sm:block md:-right-6">
+              <div aria-hidden className="glass-card animate-float flex-col gap-2.5 p-4 shadow-lg [animation-delay:0.3s]">
+                <p className="text-caption font-semibold">Project Timeline</p>
+                {timelineRows.map((row) => (
+                  <div key={row.label} className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 shrink-0 text-success" />
+                    <span className="flex-1 text-xs text-muted">{row.label}</span>
+                    <span className="h-1 w-8 overflow-hidden rounded-full bg-[rgb(var(--color-glass)/0.15)]">
+                      <span
+                        className="block h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+                        style={{ width: row.w }}
+                      />
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div
-              aria-hidden
-              className="glass-card absolute -right-3 top-6 hidden animate-float items-center gap-2 px-3 py-2 text-xs font-medium shadow-md [animation-delay:0.4s] sm:flex sm:-right-6"
-            >
-              <TrendingUp className="size-4 text-success" />
-              Velocity trending up
+            {/* Project Status widget */}
+            <div className="absolute -left-2 top-[32%] hidden w-52 sm:block md:-left-10">
+              <div aria-hidden className="glass-card animate-float flex-col gap-2.5 p-4 shadow-lg [animation-delay:0.9s]">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-caption font-semibold">Project Status</p>
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-success">
+                    <span className="size-1.5 rounded-full bg-success" />
+                    On Track
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-muted">Team Collaboration</span>
+                  <span className="flex items-center -space-x-1.5">
+                    {["from-primary to-secondary", "from-secondary to-primary", "from-success to-secondary", "from-warning to-primary"].map(
+                      (g, i) => (
+                        <span
+                          key={i}
+                          className={cn("size-4 rounded-full border border-[rgb(var(--color-surface))] bg-gradient-to-br", g)}
+                        />
+                      ),
+                    )}
+                    <span className="ml-2 text-xs font-medium text-muted">+4</span>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-muted">Tasks Completed</span>
+                  <span className="text-xs font-bold text-primary">87%</span>
+                </div>
+                <span className="h-1.5 w-full overflow-hidden rounded-full bg-[rgb(var(--color-glass)/0.15)]">
+                  <span className="block h-full w-[87%] rounded-full bg-gradient-to-r from-primary to-secondary" />
+                </span>
+              </div>
             </div>
 
-            <div
-              aria-hidden
-              className="glass-card absolute -right-2 bottom-16 hidden animate-float items-center gap-2 px-3 py-2 text-xs [animation-delay:1.3s] sm:flex"
-            >
-              <MapPin className="size-3.5 text-primary" />
-              {site.location}
+            {/* Sprint Progress widget */}
+            <div className="absolute -right-2 top-[52%] hidden sm:block md:-right-8">
+              <div aria-hidden className="glass-card animate-float items-center gap-3 p-4 shadow-lg [animation-delay:1.4s]">
+                <ProgressRing value={72} />
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted">Sprint Progress</span>
+                  <span className="font-display text-lg font-bold">72%</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -196,13 +253,13 @@ export function Hero() {
       <a
         href="#about"
         data-hero
-        aria-label="Scroll to About section"
+        aria-label="Scroll down to About section"
         className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted transition-colors duration-micro hover:text-primary md:flex"
       >
         <span className="flex h-9 w-6 items-start justify-center rounded-full border-2 border-current p-1.5">
           <span className="size-1 animate-float rounded-full bg-current [animation-duration:1.6s]" />
         </span>
-        <span className="text-xs uppercase tracking-[0.2em]">Scroll</span>
+        <span className="text-xs uppercase tracking-[0.2em]">Scroll Down</span>
       </a>
     </section>
   );

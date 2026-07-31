@@ -13,15 +13,20 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 export function Counter({
   to,
   suffix = "",
+  pad = 0,
   className,
 }: {
   to: number;
   suffix?: string;
+  /** Zero-pad the rendered number (e.g. pad=2 → "08"). */
+  pad?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
   const [started, setStarted] = useState(false);
+
+  const format = (v: number) => `${String(Math.round(v)).padStart(pad, "0")}${suffix}`;
 
   useEffect(() => {
     const el = ref.current!;
@@ -42,7 +47,7 @@ export function Counter({
     if (!started) return;
     const el = ref.current!;
     if (reduced) {
-      el.textContent = `${to}${suffix}`;
+      el.textContent = format(to);
       return;
     }
     const state = { value: 0 };
@@ -51,17 +56,18 @@ export function Counter({
       duration: DURATION.section,
       ease: "power2.out",
       onUpdate: () => {
-        el.textContent = `${Math.round(state.value)}${suffix}`;
+        el.textContent = format(state.value);
       },
     });
     return () => {
       tween.kill();
     };
-  }, [started, reduced, to, suffix]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [started, reduced, to, suffix, pad]);
 
   return (
     <span ref={ref} className={className}>
-      {`0${suffix}`}
+      {format(0)}
     </span>
   );
 }

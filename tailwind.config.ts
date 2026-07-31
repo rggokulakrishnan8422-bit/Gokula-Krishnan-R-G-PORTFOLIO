@@ -72,11 +72,19 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "spin-slow": {
+          to: { transform: "rotate(360deg)" },
+        },
+        "spin-slow-reverse": {
+          to: { transform: "rotate(-360deg)" },
+        },
       },
       animation: {
         float: "float 6s ease-in-out infinite",
         "pulse-soft": "pulse-soft 3s ease-in-out infinite",
         marquee: "marquee 32s linear infinite",
+        "spin-slow": "spin-slow 40s linear infinite",
+        "spin-slow-reverse": "spin-slow-reverse 40s linear infinite",
       },
     },
   },

@@ -1,80 +1,114 @@
 import {
+  Activity,
+  BookOpen,
   Briefcase,
   CalendarDays,
-  Clock,
+  CheckCircle2,
   ClipboardList,
+  Clock,
   Columns3,
   FileText,
   Files,
   FolderKanban,
   Gauge,
   Globe,
-  GraduationCap,
   Kanban,
   Lightbulb,
   MessageSquare,
   NotebookPen,
   RefreshCw,
+  Rocket,
   Sheet,
   Shield,
   Sparkles,
+  TrendingUp,
   UserCheck,
   Users,
   Workflow,
 } from "lucide-react";
-import type { ExperienceItem, NavLink, Project, Skill, Tool } from "@/types";
+import type {
+  Chip,
+  ExperienceItem,
+  NavLink,
+  ProfessionalSkill,
+  Project,
+  StatItem,
+  TechnicalSkill,
+  Tool,
+} from "@/types";
 
 /**
- * Editable content data (Master Prompt Sections 2, 7, 8).
- * Identity/contact fields still live in config/site.ts — this file holds
- * section content only. Edit freely; sections render from these arrays.
+ * Editable content data — redesign matches the approved mockup.
+ * Identity/contact fields still live in config/site.ts.
  */
 
 export const navLinks: NavLink[] = [
+  { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
-  { label: "Tools", href: "#tools" },
-  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
+  { label: "Tools", href: "#tools" },
   { label: "Contact", href: "#contact" },
 ];
 
-export const typingWords = [
-  "Agile Delivery",
-  "Sprint Planning",
-  "Project Coordination",
-  "Stakeholder Communication",
-  "Risk Management",
+/** Hero — roles strip under the role pill, and summary copy. */
+export const heroRoles = ["Agile Enthusiast", "Project Coordinator", "Team Collaborator"];
+
+export const heroSummary =
+  "Motivated Junior Project Manager passionate about Agile methodologies, stakeholder communication, project planning, and digital transformation. Dedicated to delivering efficient, organized, and high-quality project outcomes through collaboration, structured execution, and continuous learning.";
+
+/** About section. */
+export const aboutParagraph =
+  "I am a motivated Junior Project Manager with hands-on experience in Agile methodologies, stakeholder communication, and team collaboration. I enjoy turning ideas into reality through planning, execution, and continuous improvement.";
+
+export const aboutChips: Chip[] = [
+  { label: "Agile Mindset", icon: RefreshCw },
+  { label: "Team Player", icon: Users },
+  { label: "Problem Solver", icon: Lightbulb },
+  { label: "Continuous Learner", icon: BookOpen },
 ];
 
-/** Technical skills — Section 8. */
-export const technicalSkills: Skill[] = [
-  { label: "Agile", icon: RefreshCw },
-  { label: "Scrum", icon: Workflow },
-  { label: "Jira", icon: Kanban },
-  { label: "Trello", icon: Columns3 },
-  { label: "Notion", icon: NotebookPen },
-  { label: "Excel", icon: Sheet },
-  { label: "Word", icon: FileText },
-  { label: "MS Office", icon: Briefcase },
-  { label: "Google Workspace", icon: Globe },
-  { label: "AI Tools", icon: Sparkles },
+export const aboutStats: StatItem[] = [
+  { value: 8, suffix: "+", label: "Projects Handled", icon: FolderKanban },
+  { value: 25, suffix: "+", label: "Team Collaborations", icon: Users },
+  { value: 120, suffix: "+", label: "Tasks Completed", icon: CheckCircle2 },
+  { value: 60, suffix: "+", label: "Client Meetings", icon: Briefcase },
 ];
 
-/** Professional skills — Section 8. */
-export const professionalSkills: Skill[] = [
-  { label: "Planning", icon: ClipboardList },
-  { label: "Communication", icon: MessageSquare },
-  { label: "Stakeholder Management", icon: UserCheck },
-  { label: "Documentation", icon: Files },
-  { label: "Team Collaboration", icon: Users },
-  { label: "Scheduling", icon: CalendarDays },
-  { label: "Time Management", icon: Clock },
-  { label: "Risk Management", icon: Shield },
-  { label: "Problem Solving", icon: Lightbulb },
+export const aboutQuote =
+  "Good project management isn't about tools, it's about people, purpose and the drive to deliver value.";
+
+/** Technical skills with levels — Section 8 list, mockup presentation. */
+export const technicalSkills: TechnicalSkill[] = [
+  { label: "Agile", icon: RefreshCw, level: 90 },
+  { label: "Scrum", icon: Workflow, level: 85 },
+  { label: "Jira", icon: Kanban, level: 88 },
+  { label: "Trello", icon: Columns3, level: 82 },
+  { label: "Notion", icon: NotebookPen, level: 80 },
+  { label: "Excel", icon: Sheet, level: 85 },
+  { label: "Word", icon: FileText, level: 85 },
+  { label: "MS Office", icon: Briefcase, level: 90 },
+  { label: "Google Workspace", icon: Globe, level: 88 },
+  { label: "AI Tools", icon: Sparkles, level: 75 },
 ];
 
-/** Tool wall (Tools section) — the software stack, distilled. */
+/** Professional skills — dot-matrix presentation (spec list + mockup extras). */
+export const professionalSkills: ProfessionalSkill[] = [
+  { label: "Stakeholder Management", level: 90 },
+  { label: "Communication", level: 92 },
+  { label: "Planning & Scheduling", level: 88 },
+  { label: "Risk Management", level: 80 },
+  { label: "Documentation", level: 85 },
+  { label: "Problem Solving", level: 86 },
+  { label: "Leadership", level: 78 },
+  { label: "Time Management", level: 88 },
+  { label: "Decision Making", level: 82 },
+  { label: "Team Collaboration", level: 90 },
+  { label: "Meeting Coordination", level: 84 },
+];
+
+/** Tool pills strip. */
 export const toolsWall: Tool[] = [
   { label: "Jira", icon: Kanban, hint: "Boards & workflows" },
   { label: "Trello", icon: Columns3, hint: "Visual tracking" },
@@ -88,26 +122,27 @@ export const toolsWall: Tool[] = [
 
 export const experience: ExperienceItem[] = [
   {
-    period: "2024 — Present",
+    period: "2023 — Present",
     role: "Junior Project Manager",
-    org: "Enterprise Technology Services",
+    org: "Technology / IT Services",
     kind: "work",
-    summary:
-      "Coordinating cross-functional delivery for software projects, from kickoff to release.",
+    summary: "Owning delivery end-to-end for software projects — from kickoff to release.",
     points: [
-      "Facilitate sprint planning, daily stand-ups, reviews and retrospectives.",
-      "Own Jira boards, velocity tracking and burndown reporting for the team.",
-      "Manage stakeholder communication, RAID logs and delivery documentation.",
+      "Planned and tracked project schedules and milestones.",
+      "Coordinated with developers, designers and stakeholders.",
+      "Conducted sprint planning, stand-ups and review meetings.",
+      "Managed risks, issues and change requests.",
+      "Prepared reports and project presentations.",
+      "Ensured delivery within scope, time and budget.",
     ],
     tags: ["Agile", "Scrum", "Jira", "Stakeholder Management"],
   },
   {
-    period: "2023 — 2024",
+    period: "2022 — 2023",
     role: "Project Coordinator",
     org: "Digital Solutions Studio",
     kind: "work",
-    summary:
-      "Supported planning and reporting across concurrent client projects.",
+    summary: "Supported planning and reporting across concurrent client projects.",
     points: [
       "Coordinated schedules, notes and wikis in Notion and Google Workspace.",
       "Built Excel trackers for timelines, budgets and action-item follow-ups.",
@@ -116,7 +151,7 @@ export const experience: ExperienceItem[] = [
     tags: ["Coordination", "Notion", "Excel", "Google Workspace"],
   },
   {
-    period: "2023",
+    period: "2022",
     role: "Bachelor's Degree",
     org: "Undergraduate Studies",
     kind: "education",
@@ -130,43 +165,43 @@ export const experience: ExperienceItem[] = [
   },
 ];
 
+/** Delivery phases for the experience arc visual. */
+export const deliveryPhases: Chip[] = [
+  { label: "Planning", icon: ClipboardList },
+  { label: "Execution", icon: Rocket },
+  { label: "Monitoring", icon: Activity },
+  { label: "Closing", icon: CheckCircle2 },
+];
+
 export const projects: Project[] = [
   {
-    id: "sprint-orchestration",
-    title: "Agile Sprint Orchestration",
+    id: "website-development",
+    title: "Website Development Project",
     description:
-      "Designed and ran a full Scrum cadence — backlog grooming, sprint planning, reviews and retros — with Jira boards and burndown tracking wired for visibility.",
-    tags: ["Scrum", "Jira", "Facilitation"],
-    outcome: "Noticeably improved sprint predictability",
-    icon: Workflow,
+      "Managed project planning, team coordination, requirement gathering and successful delivery of a responsive website.",
+    tags: ["Planning", "Team Coordination", "Delivery"],
+    image: "/images/project-web.jpg",
+    icon: Globe,
   },
   {
-    id: "delivery-tracker",
-    title: "Cross-Team Delivery Tracker",
+    id: "process-improvement",
+    title: "Business Process Improvement",
     description:
-      "Built a unified delivery tracker combining Jira status, Notion documentation and Excel rollups so every team reads from the same page.",
-    tags: ["Jira", "Notion", "Excel"],
-    outcome: "Single source of truth across three teams",
-    icon: FolderKanban,
+      "Identified process gaps and implemented improvements to enhance workflow efficiency by 30%.",
+    tags: ["Analysis", "Optimization", "Efficiency"],
+    image: "/images/project-process.jpg",
+    icon: TrendingUp,
   },
   {
-    id: "stakeholder-reporting",
-    title: "Stakeholder Reporting System",
+    id: "task-management",
+    title: "Task Management System",
     description:
-      "Standardized weekly executive reporting with reusable Excel and slide templates — progress, risks, decisions and next steps in one consistent format.",
-    tags: ["Excel", "Communication", "Reporting"],
-    outcome: "Reusable one-click weekly reporting",
-    icon: Gauge,
-  },
-  {
-    id: "ai-pm-workflow",
-    title: "AI-Assisted PM Workflow",
-    description:
-      "Integrated AI tooling into meeting notes, documentation drafts and status summaries, with human review gates to keep quality high.",
-    tags: ["AI Tools", "Documentation", "Time Management"],
-    outcome: "Hours saved on weekly admin work",
-    icon: Sparkles,
+      "Coordinated the implementation of a task management system using Agile methodology and sprint planning.",
+    tags: ["Agile", "Jira", "Sprint Planning"],
+    image: "/images/project-tasks.jpg",
+    icon: Kanban,
   },
 ];
 
-export const sectionIcons = { GraduationCap };
+/** Kept for icon usage in auxiliary UI. */
+export const miscIcons = { CalendarDays, Clock, Files, Gauge, MessageSquare, Shield, UserCheck };

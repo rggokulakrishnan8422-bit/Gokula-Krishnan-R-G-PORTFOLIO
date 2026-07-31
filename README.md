@@ -35,7 +35,7 @@ npm run start      # serve the production build
 
 ## What was built (phase summary)
 
-- **Phase 0 — Plan:** IA `Hero → About → Skills → Tools → Experience → Projects → Contact → Footer`;
+- **Phase 0 — Plan:** mockup-aligned page order `Hero → Treatments → About → Skills → Tools → Projects → Experience → Contact → Footer`;
   token system (8px spacing · Sora+Inter · 80/56/28/18/14 type scale · 4 radii · 4 shadows ·
   150/250/400/600/800 ms motion · 12/8/4-col grid @1280 px max); component & folder map per Section 17.
 - **Phase 1 — Foundation:** Next.js 15 scaffold, token-driven Tailwind setup, dual-theme system
@@ -61,8 +61,9 @@ npm run start      # serve the production build
 |---|---|
 | Production build (`next build`) | ✅ compiled, type-checked, 8/8 static routes |
 | Routes verified over HTTP | ✅ `/`, robots.txt, sitemap.xml, manifest, icon, resume.pdf, images → 200; unknown → 404 |
-| First Load JS | 210 kB (Three.js excluded — separate lazy chunk) |
+| First Load JS | 211 kB (Three.js excluded — separate lazy chunk) |
 | SEO | ✅ title/template, full OpenGraph + Twitter card, canonical, robots, sitemap, JSON-LD Person |
+| Redesign | ✅ matches approved mockup (globe hero + widgets, treatments strip, stat about, skill bars + orbit + config panel, tool pills, image projects, phase-arc experience, tri-column contact) |
 | Config single-sourcing | ✅ email/phone/LinkedIn/resume render only from `config/site.ts` (DOM greps verified) |
 | Reduced motion | ✅ global CSS guard + `useReducedMotion` static fallbacks + `MotionConfig reducedMotion="user"`; Lenis/cursor/3D never mount |
 | Accessibility | ✅ skip link, landmarks, aria labels, labelled form fields, `aria-invalid` errors, focus-visible ring, AA-contrast token pairs, keyboard-operable menu (Esc + focus return) |

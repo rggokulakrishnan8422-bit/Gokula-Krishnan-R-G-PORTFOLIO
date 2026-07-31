@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Check, Clock, Copy, Mail, Phone, Send } from "lucide-react";
 import { site } from "@/config/site";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -9,23 +10,20 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ResumeButton } from "@/components/ui/resume-button";
 import { LinkedInIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
 import type { AsyncState } from "@/types";
 
 /**
- * Contact (Master Prompt Sections 7, 9 — Contact Form + Contact Card).
- * All channel values resolve from config/site.ts. The form validates
- * client-side and composes a pre-filled email via mailto (no backend
- * required) with loading → success/error feedback via toast.
+ * Contact — mockup layout: channel cards left, blended portrait center,
+ * "Send a Message" panel right. All values resolve from config/site.ts.
  */
 const channels = [
   { label: "Email", value: site.email, href: site.emailHref, icon: Mail, copyable: true },
   { label: "Phone", value: site.phone, href: site.phoneHref, icon: Phone, copyable: true },
   {
     label: "LinkedIn",
-    value: "Connect on LinkedIn",
+    value: "gokula-krishnan-r-g-00a124286",
     href: site.linkedin,
     icon: LinkedInIcon,
     copyable: false,
@@ -91,9 +89,7 @@ export function Contact() {
     window.setTimeout(() => {
       try {
         const subject = encodeURIComponent(`Portfolio inquiry from ${values.name}`);
-        const body = encodeURIComponent(
-          `${values.message}\n\n— ${values.name} (${values.email})`,
-        );
+        const body = encodeURIComponent(`${values.message}\n\n— ${values.name} (${values.email})`);
         window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
         setState("success");
         setValues({ name: "", email: "", message: "" });
@@ -115,13 +111,17 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" aria-label="Contact" className="section-pad relative scroll-mt-24">
-      <div className="container-x grid gap-12 lg:grid-cols-12">
-        <div className="flex flex-col gap-8 lg:col-span-5">
+    <section
+      id="contact"
+      aria-label="Contact"
+      className="section-line section-pad relative scroll-mt-24 overflow-hidden"
+    >
+      <div className="container-x grid items-center gap-12 lg:grid-cols-12">
+        <div className="flex flex-col gap-8 lg:col-span-4">
           <Reveal>
             <SectionHeading
-              eyebrow="06 · Contact"
-              title="Let's put it on the roadmap."
+              eyebrow="Get In Touch"
+              title="Let's Work Together"
               description="Have a project, a role, or a question about delivery? My inbox is open — I typically reply within 24 hours."
             />
           </Reveal>
@@ -166,27 +166,38 @@ export function Contact() {
               );
             })}
           </div>
+        </div>
 
-          <Reveal delay={0.25}>
-            <GlassCard className="flex flex-col gap-3 p-6">
-              <p className="font-semibold">Prefer async?</p>
-              <p className="text-caption text-muted">
-                Grab the PDF version — same story, printable.
-              </p>
-              <ResumeButton variant="secondary" className="mt-1 w-fit" />
-            </GlassCard>
+        {/* Blended portrait center column */}
+        <div className="hidden lg:col-span-3 lg:block">
+          <Reveal className="h-full" delay={0.1}>
+            <div className="relative h-full min-h-[480px]">
+              <div
+                aria-hidden
+                className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[110px]"
+              />
+              <Image
+                src="/images/portrait-hero.jpg"
+                alt=""
+                fill
+                sizes="300px"
+                className="mask-fade-b object-cover object-top opacity-95"
+              />
+            </div>
           </Reveal>
         </div>
 
-        <Reveal className="lg:col-span-7" delay={0.1}>
+        {/* Send a Message panel */}
+        <Reveal className="lg:col-span-5" delay={0.1}>
           <GlassCard className="h-full p-6 md:p-8">
-            <form onSubmit={onSubmit} noValidate className="flex h-full flex-col gap-5">
+            <h3 className="mb-6 font-display text-card font-semibold">Send a Message</h3>
+            <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Input
                   id="contact-name"
                   label="Name"
                   autoComplete="name"
-                  placeholder="Your name"
+                  placeholder="Your Name"
                   required
                   value={values.name}
                   onChange={setField("name")}
@@ -197,7 +208,7 @@ export function Contact() {
                   label="Email"
                   type="email"
                   autoComplete="email"
-                  placeholder="you@company.com"
+                  placeholder="Your Email"
                   required
                   value={values.email}
                   onChange={setField("email")}
@@ -207,24 +218,19 @@ export function Contact() {
               <Textarea
                 id="contact-message"
                 label="Message"
-                placeholder="Tell me about your project, role, or question…"
+                placeholder="Your Message"
                 required
                 value={values.message}
                 onChange={setField("message")}
                 error={errors.message}
               />
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <p className="flex items-center gap-2 text-caption text-muted">
                   <Clock className="size-4" aria-hidden />
-                  Typically replies within 24 hours
+                  Replies within 24 hours
                 </p>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  loading={state === "loading"}
-                >
-                  {state === "success" ? "Draft ready" : "Send message"}
+                <Button type="submit" variant="primary" size="lg" loading={state === "loading"}>
+                  {state === "success" ? "Draft ready" : "Send Message"}
                   {state !== "loading" && <Send className="size-4" aria-hidden />}
                 </Button>
               </div>
