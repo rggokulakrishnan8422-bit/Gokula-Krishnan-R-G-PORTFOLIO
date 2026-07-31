@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Design tokens (Master Prompt Section 4)
+   Colors are RGB triplets consumed as rgb(var(--x) / alpha) so one token
+   set serves both themes. --glass-alpha / --border-alpha hold the
+   enterprise-glass intensity per theme.
+   ========================================================================== */
+:root {
+  --color-primary: 43 93 224; /* #2B5DE0 */
+  --color-secondary: 8 145 178; /* #0891B2 */
+  --color-surface: 246 248 252; /* #F6F8FC */
+  --color-text: 15 23 42;
+  --color-muted: 75 88 109; /* AA contrast on surface */
+  --color-glass: 15 23 42;
+  --color-border: 15 23 42;
+  --glass-alpha: 0.045;
+  --border-alpha: 0.12;
+  --color-success: 4 120 87;
+  --color-warning: 146 100 4;
+  --color-error: 194 38 32;
+  --grid-line: 15 23 42;
+  --shadow-color: 222 47% 6%;
+  --ring: 43 93 224;
+}
+
+.dark {
+  --color-primary: 91 140 255; /* #5B8CFF */
+  --color-secondary: 34 211 238; /* #22D3EE */
+  --color-surface: 9 13 28; /* #090D1C */
+  --color-text: 230 237 249;
+  --color-muted: 150 163 188; /* AA contrast on surface */
+  --color-glass: 148 163 184;
+  --color-border: 148 163 184;
+  --glass-alpha: 0.055;
+  --border-alpha: 0.14;
+  --color-success: 52 211 153;
+  --color-warning: 251 191 36;
+  --color-error: 248 113 113;
+  --grid-line: 148 163 184;
+  --shadow-color: 225 60% 2%;
+  --ring: 91 140 255;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: rgb(var(--color-border) / var(--border-alpha));
+  }
+
+  html,
+  body {
+    overflow-x: clip; /* Section 13 — no horizontal overflow, ever */
+  }
+
+  body {
+    @apply bg-surface font-sans antialiased;
+    color: rgb(var(--color-text));
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(var(--color-primary) / 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--ring));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Lenis recommended styles */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body::-webkit-scrollbar {
+    width: 10px;
+  }
+  body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  body::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-muted) / 0.35);
+    border-radius: 8px;
+    border: 2px solid rgb(var(--color-surface));
+  }
+
+  /* Section 10/15 — one global CSS guard: reduced motion means
+     static, not merely faster. JS animations consult useReducedMotion(). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Horizontal rhythm: 4-col/8-col/12-col grid, 1280px max (Section 4 Grid) */
+  .container-x {
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Section padding — 64 / 96 / 120 from the 8px spacing scale */
+  .section-pad {
+    @apply py-16 md:py-24 lg:py-[120px];
+  }
+
+  .glass-card {
+    @apply rounded-lg shadow-sm backdrop-blur-md;
+    background: rgb(var(--color-glass) / var(--glass-alpha));
+    border: 1px solid rgb(var(--color-border) / var(--border-alpha));
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      120deg,
+      rgb(var(--color-primary)),
+      rgb(var(--color-secondary))
+    );
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(
+        rgb(var(--grid-line) / 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgb(var(--grid-line) / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Blends portraits into the environment (Section 5) */
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent);
+    mask-image: linear-gradient(to bottom, black 78%, transparent);
+  }
+
+  .skip-link {
+    @apply fixed left-4 top-4 z-[100] -translate-y-[200%] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-transform duration-small;
+  }
+  .skip-link:focus-visible {
+    @apply translate-y-0;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
