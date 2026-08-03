@@ -1,12 +1,31 @@
+import Image from "next/image";
 import { toolsWall } from "@/config/content";
 import { Reveal } from "@/components/ui/reveal";
 import { Badge } from "@/components/ui/badge";
 
-/** Tools — centered pill strip (mockup "Tools I Use"). */
+/** Tools — centered pill strip with the silhouette treatment as backdrop. */
 export function Tools() {
   return (
-    <section id="tools" aria-label="Tools" className="section-line scroll-mt-24 py-16 md:py-24">
-      <div className="container-x flex flex-col items-center gap-8">
+    <section
+      id="tools"
+      aria-label="Tools"
+      className="section-line relative scroll-mt-24 overflow-hidden py-16 md:py-24"
+    >
+      {/* Background silhouette treatment (Section 5) */}
+      <div
+        aria-hidden
+        className="absolute right-0 top-1/2 hidden h-[420px] w-[330px] -translate-y-1/2 opacity-[0.12] [mask-image:linear-gradient(to_left,black,transparent)] lg:block"
+      >
+        <Image
+          src="/images/portrait-silhouette.jpg"
+          alt=""
+          fill
+          sizes="330px"
+          className="object-cover"
+        />
+      </div>
+
+      <div className="container-x relative flex flex-col items-center gap-8">
         <Reveal>
           <Badge variant="primary" className="uppercase tracking-[0.14em]">
             Tools I Use

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -173,6 +174,23 @@ export function Skills() {
                     Live values from config/site.ts — edit that file once and the whole site
                     follows.
                   </p>
+                </div>
+                <div className="flex items-center gap-3 border-b pb-4">
+                  <div className="relative size-11 shrink-0 overflow-hidden rounded-md">
+                    <Image
+                      src="/images/portrait-blue.jpg"
+                      alt=""
+                      fill
+                      sizes="44px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex min-w-0 flex-col leading-tight">
+                    <span className="truncate text-sm font-semibold">{site.name}</span>
+                    <span className="text-xs text-muted">
+                      {site.role} · {site.location}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex flex-col gap-3">
                   {configFields.map(([label, value]) => (

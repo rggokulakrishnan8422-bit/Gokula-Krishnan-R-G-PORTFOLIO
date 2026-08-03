@@ -5,6 +5,7 @@ import { projects } from "@/config/content";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { GlassCard } from "@/components/ui/glass-card";
+import { Tilt } from "@/components/ui/tilt";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -16,7 +17,21 @@ export function Projects() {
       aria-label="Projects"
       className="section-line section-pad relative scroll-mt-24 overflow-hidden"
     >
-      <div className="container-x flex flex-col gap-12">
+      {/* Enterprise dashboard overlay treatment as faint ambience */}
+      <div
+        aria-hidden
+        className="absolute left-0 top-1/2 hidden h-[460px] w-[380px] -translate-y-1/2 opacity-[0.1] [mask-image:linear-gradient(to_right,black,transparent)] lg:block"
+      >
+        <Image
+          src="/images/portrait-dashboard.jpg"
+          alt=""
+          fill
+          sizes="380px"
+          className="object-cover"
+        />
+      </div>
+
+      <div className="container-x relative flex flex-col gap-12">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Reveal>
             <SectionHeading eyebrow="Featured Projects" title="Projects That I'm Proud Of" />
@@ -39,7 +54,8 @@ export function Projects() {
             const Icon = project.icon;
             return (
               <Reveal key={project.id} delay={Math.min(i * 0.08, 0.24)} y={24}>
-                <GlassCard hover className="group relative flex h-full flex-col overflow-hidden p-0">
+                <Tilt className="h-full">
+                  <GlassCard hover className="group relative flex h-full flex-col overflow-hidden p-0">
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image
                       src={project.image}
@@ -77,7 +93,8 @@ export function Projects() {
                       </span>
                     </div>
                   </div>
-                </GlassCard>
+                  </GlassCard>
+                </Tilt>
               </Reveal>
             );
           })}

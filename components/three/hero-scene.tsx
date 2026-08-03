@@ -121,7 +121,33 @@ function CameraRig() {
   return null;
 }
 
-function SceneContent({ particleCount }: { particleCount: number }) {
+/** Slow wireframe globe echoing the hero portrait's network motif. */
+function GlobeEcho({ mobile }: { mobile: boolean }) {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame((_, delta) => {
+    if (ref.current) ref.current.rotation.y += delta * 0.05;
+  });
+
+  if (mobile) return null;
+
+  return (
+    <Float speed={0.8} rotationIntensity={0} floatIntensity={0.6}>
+      <mesh ref={ref} position={[3.4, 0.4, -1.2]}>
+        <icosahedronGeometry args={[2.3, 2]} />
+        <meshBasicMaterial
+          color="#527EFF"
+          wireframe
+          transparent
+          opacity={0.07}
+          depthWrite={false}
+        />
+      </mesh>
+    </Float>
+  );
+}
+
+function SceneContent({ particleCount, mobile }: { particleCount: number; mobile: boolean }) {
   const group = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
@@ -133,6 +159,7 @@ function SceneContent({ particleCount }: { particleCount: number }) {
       <Particles count={particleCount} color="#5B8CFF" size={0.035} />
       <Particles count={Math.floor(particleCount / 3)} color="#22D3EE" size={0.05} />
       <KanbanPlanes />
+      <GlobeEcho mobile={mobile} />
     </group>
   );
 }
@@ -162,7 +189,7 @@ export default function HeroScene() {
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
       <CameraRig />
-      <SceneContent particleCount={mobile ? 420 : 2000} />
+      <SceneContent particleCount={mobile ? 420 : 2000} mobile={mobile} />
     </Canvas>
   );
 }

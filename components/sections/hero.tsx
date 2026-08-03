@@ -183,6 +183,25 @@ export function Hero() {
               />
             </div>
 
+            {/* Holographic identity chip */}
+            <div className="absolute -bottom-4 left-0 hidden sm:block md:-left-6">
+              <div className="glass-card flex animate-float items-center gap-3 p-3 shadow-lg [animation-delay:1.8s]">
+                <div className="relative size-11 overflow-hidden rounded-md">
+                  <Image
+                    src="/images/portrait-holo.jpg"
+                    alt=""
+                    fill
+                    sizes="44px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col pr-1 leading-tight">
+                  <span className="text-sm font-semibold">{site.firstName}</span>
+                  <span className="text-xs text-muted">{site.role}</span>
+                </div>
+              </div>
+            </div>
+
             {/* Project Timeline widget */}
             <div className="absolute -right-2 top-2 hidden w-48 sm:block md:-right-6">
               <div aria-hidden className="glass-card animate-float flex-col gap-2.5 p-4 shadow-lg [animation-delay:0.3s]">
