@@ -8,24 +8,7 @@
    set serves both themes. --glass-alpha / --border-alpha hold the
    enterprise-glass intensity per theme.
    ========================================================================== */
-:root {
-  --color-primary: 43 93 224; /* #2B5DE0 */
-  --color-secondary: 8 145 178; /* #0891B2 */
-  --color-surface: 246 248 252; /* #F6F8FC */
-  --color-text: 15 23 42;
-  --color-muted: 75 88 109; /* AA contrast on surface */
-  --color-glass: 15 23 42;
-  --color-border: 15 23 42;
-  --glass-alpha: 0.045;
-  --border-alpha: 0.12;
-  --color-success: 4 120 87;
-  --color-warning: 146 100 4;
-  --color-error: 194 38 32;
-  --grid-line: 15 23 42;
-  --shadow-color: 222 47% 6%;
-  --ring: 43 93 224;
-}
-
+:root,
 .dark {
   --color-primary: 82 126 255; /* #527EFF — electric enterprise blue */
   --color-secondary: 34 211 238; /* #22D3EE */
@@ -34,8 +17,8 @@
   --color-muted: 146 160 186; /* AA contrast on surface */
   --color-glass: 148 163 184;
   --color-border: 129 140 180;
-  --glass-alpha: 0.06;
-  --border-alpha: 0.16;
+  --glass-alpha: 0.08;
+  --border-alpha: 0.18;
   --color-success: 52 211 153;
   --color-warning: 251 191 36;
   --color-error: 248 113 113;

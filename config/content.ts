@@ -1,5 +1,6 @@
 import {
   Activity,
+  AppWindow,
   BookOpen,
   Briefcase,
   CalendarDays,
@@ -7,24 +8,34 @@ import {
   ClipboardList,
   Clock,
   Columns3,
+  Cpu,
+  Database,
   FileText,
   Files,
   FolderKanban,
   Gauge,
   Globe,
+  GraduationCap,
   Kanban,
+  Layers,
+  Layout,
   Lightbulb,
+  MapPin,
   MessageSquare,
   NotebookPen,
+  PhoneCall,
   RefreshCw,
   Rocket,
+  Share2,
   Sheet,
   Shield,
+  Smartphone,
   Sparkles,
   TrendingUp,
   UserCheck,
   Users,
   Workflow,
+  Wrench,
 } from "lucide-react";
 import type {
   Chip,
@@ -37,11 +48,7 @@ import type {
   Tool,
 } from "@/types";
 
-/**
- * Editable content data — redesign matches the approved mockup.
- * Identity/contact fields still live in config/site.ts.
- */
-
+/** Navigation items - exact smooth scroll anchors */
 export const navLinks: NavLink[] = [
   { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
@@ -52,156 +59,214 @@ export const navLinks: NavLink[] = [
   { label: "Contact", href: "#contact" },
 ];
 
-/** Hero — roles strip under the role pill, and summary copy. */
-export const heroRoles = ["Agile Enthusiast", "Project Coordinator", "Team Collaborator"];
+/** Hero roles & summary */
+export const heroRoles = [
+  "Project Coordinator",
+  "Junior Project Manager",
+  "Operations Specialist",
+  "Flutter Developer",
+];
 
 export const heroSummary =
-  "Motivated Junior Project Manager passionate about Agile methodologies, stakeholder communication, project planning, and digital transformation. Dedicated to delivering efficient, organized, and high-quality project outcomes through collaboration, structured execution, and continuous learning.";
+  "Project Management professional with 2+ years of experience coordinating cross-functional teams and end-to-end delivery across software, operations, and process-improvement initiatives. Managing a portfolio of 7 projects (4 concurrently) with teams ranging from 1 to 16 resources, delivering 3 projects to completion with structured reporting cadences.";
 
-/** About section. */
+/** About Section */
 export const aboutParagraph =
-  "I am a motivated Junior Project Manager with hands-on experience in Agile methodologies, stakeholder communication, and team collaboration. I enjoy turning ideas into reality through planning, execution, and continuous improvement.";
+  "I specialize in bridging the gap between business objectives, cross-functional teams, and technical execution. Experienced in Agile-aligned coordination using Jira, Azure DevOps, Trello, and Google Workspace, combined with hands-on technical grounding in Flutter and Dart mobile development.";
 
 export const aboutChips: Chip[] = [
-  { label: "Agile Mindset", icon: RefreshCw },
-  { label: "Team Player", icon: Users },
-  { label: "Problem Solver", icon: Lightbulb },
-  { label: "Continuous Learner", icon: BookOpen },
+  { label: "Portfolio Management", icon: FolderKanban },
+  { label: "Agile & Scrum Cadence", icon: RefreshCw },
+  { label: "Cross-Functional Leadership", icon: Users },
+  { label: "Process & Risk Optimization", icon: TrendingUp },
 ];
 
 export const aboutStats: StatItem[] = [
-  { value: 3, suffix: "+", label: "Projects Handled", icon: FolderKanban },
-  { value: 10, suffix: "+", label: "Team Collaborations", icon: Users },
-  { value: 40, suffix: "+", label: "Tasks Completed", icon: CheckCircle2 },
-  { value: 20, suffix: "+", label: "Client Meetings", icon: Briefcase },
+  { value: 7, suffix: "", label: "Projects Managed", icon: FolderKanban },
+  { value: 3, suffix: "", label: "Projects Delivered", icon: CheckCircle2 },
+  { value: 16, suffix: "+", label: "Team Size Handled", icon: Users },
+  { value: 2, suffix: "+", label: "Years Experience", icon: Briefcase },
 ];
 
 export const aboutQuote =
-  "Good project management isn't about tools, it's about people, purpose and the drive to deliver value.";
+  "Effective project coordination hinges on crisp reporting, proactive blocker escalation, and structured stakeholder alignment.";
 
-/** Technical skills with levels — Section 8 list, mockup presentation. */
+/** Technical skills with levels */
 export const technicalSkills: TechnicalSkill[] = [
-  { label: "Agile", icon: RefreshCw, level: 80 },
-  { label: "Scrum", icon: Workflow, level: 75 },
-  { label: "Jira", icon: Kanban, level: 78 },
-  { label: "Trello", icon: Columns3, level: 72 },
-  { label: "Notion", icon: NotebookPen, level: 70 },
-  { label: "Excel", icon: Sheet, level: 75 },
-  { label: "Word", icon: FileText, level: 75 },
-  { label: "MS Office", icon: Briefcase, level: 80 },
-  { label: "Google Workspace", icon: Globe, level: 78 },
-  { label: "AI Tools", icon: Sparkles, level: 65 },
+  { label: "Jira & Agile Workflows", icon: Kanban, level: 85 },
+  { label: "Trello & Task Boards", icon: Columns3, level: 80 },
+  { label: "Google Workspace & Sheets", icon: Globe, level: 85 },
+  { label: "MS Office (Excel/Word/PPT)", icon: FileText, level: 85 },
+  { label: "Flutter & Dart App Dev", icon: Smartphone, level: 75 },
+  { label: "REST API Integration", icon: Share2, level: 80 },
+  { label: "State Mgmt (Provider/GetX)", icon: Layers, level: 75 },
+  { label: "Azure DevOps", icon: Cpu, level: 70 },
+  { label: "Firebase & Data", icon: Database, level: 70 },
 ];
 
-/** Professional skills — dot-matrix presentation (spec list + mockup extras). */
+/** Professional skills matrix */
 export const professionalSkills: ProfessionalSkill[] = [
-  { label: "Stakeholder Management", level: 80 },
-  { label: "Communication", level: 82 },
-  { label: "Planning & Scheduling", level: 78 },
-  { label: "Risk Management", level: 70 },
-  { label: "Documentation", level: 75 },
-  { label: "Problem Solving", level: 76 },
-  { label: "Leadership", level: 68 },
-  { label: "Time Management", level: 78 },
-  { label: "Decision Making", level: 72 },
-  { label: "Team Collaboration", level: 80 },
-  { label: "Meeting Coordination", level: 74 },
+  { label: "Stakeholder Management", level: 90 },
+  { label: "Communication & Escalation", level: 90 },
+  { label: "Planning & Scheduling", level: 88 },
+  { label: "Requirement Gathering", level: 85 },
+  { label: "Risk & Blocker Tracking", level: 85 },
+  { label: "Sprint Planning", level: 82 },
+  { label: "Status Reporting Cadence", level: 90 },
+  { label: "Resource Allocation", level: 80 },
+  { label: "Process Improvement", level: 85 },
+  { label: "Vendor & Client Coordination", level: 82 },
 ];
 
-/** Tool pills strip. */
+/** Tool pills wall */
 export const toolsWall: Tool[] = [
-  { label: "Jira", icon: Kanban, hint: "Boards & workflows" },
-  { label: "Trello", icon: Columns3, hint: "Visual tracking" },
-  { label: "Notion", icon: NotebookPen, hint: "Docs & wikis" },
-  { label: "Excel", icon: Sheet, hint: "Trackers & reports" },
-  { label: "Word", icon: FileText, hint: "Documentation" },
-  { label: "MS Office", icon: Briefcase, hint: "Business suite" },
-  { label: "Google Workspace", icon: Globe, hint: "Collaboration" },
-  { label: "AI Tools", icon: Sparkles, hint: "Assisted workflows" },
+  { label: "Jira", icon: Kanban, hint: "Sprint boards & backlog" },
+  { label: "Azure DevOps", icon: Cpu, hint: "Task & issue tracking" },
+  { label: "Trello", icon: Columns3, hint: "Kanban & milestone views" },
+  { label: "Google Workspace", icon: Globe, hint: "Docs & cloud collaboration" },
+  { label: "MS Excel & Sheets", icon: Sheet, hint: "Formulas & status reports" },
+  { label: "Flutter & Dart", icon: Smartphone, hint: "Mobile app codebase" },
+  { label: "VS Code & Android Studio", icon: AppWindow, hint: "Dev IDEs" },
+  { label: "AI Tools & Extensions", icon: Sparkles, hint: "Workflow acceleration" },
 ];
 
+/** Career Experience Timeline */
 export const experience: ExperienceItem[] = [
   {
-    period: "2023 — Present",
-    role: "Junior Project Manager",
-    org: "Technology / IT Services",
+    period: "Oct 2025 — Present",
+    role: "Junior Project Manager (Project Coordinator)",
+    org: "Dreams Technologies | Coimbatore, India",
     kind: "work",
-    summary: "Owning delivery end-to-end for software projects — from kickoff to release.",
+    summary:
+      "Managing a portfolio of 7 projects (4 concurrently) with cross-functional teams ranging from 1 to 16 resources.",
     points: [
-      "Planned and tracked project schedules and milestones.",
-      "Coordinated with developers, designers and stakeholders.",
-      "Conducted sprint planning, stand-ups and review meetings.",
-      "Managed risks, issues and change requests.",
-      "Prepared reports and project presentations.",
-      "Ensured delivery within scope, time and budget.",
+      "Coordinated projects including Tony (Aseda), Global Connect Kannaku, Best & Service (B&S), Trulyselly, UCC (Urgent Care Colombia), Doccure, PaguiShop, and FinancaPlus.",
+      "Successfully delivered 3 projects to completion, owning requirement gathering, sprint planning, and stakeholder communication.",
+      "Designed and implemented a structured reporting cadence — alternate-day status updates, weekly summaries, and monthly reviews — elevating senior leadership visibility.",
+      "Tracked project risks, blockers, and escalations using Jira, Azure DevOps, Trello, and Google Workspace.",
+      "Supported senior project management with sprint planning, task breakdown, and cross-team coordination.",
     ],
-    tags: ["Agile", "Scrum", "Jira", "Stakeholder Management"],
+    tags: [
+      "Portfolio Management",
+      "Agile/Scrum",
+      "Jira",
+      "Azure DevOps",
+      "Stakeholder Communication",
+      "Sprint Planning",
+    ],
   },
   {
-    period: "2022 — 2023",
-    role: "Project Coordinator",
-    org: "Digital Solutions Studio",
+    period: "Mar 2025 — Oct 2025",
+    role: "Branch Operations Manager",
+    org: "VFurnish | Coimbatore, India",
     kind: "work",
-    summary: "Supported planning and reporting across concurrent client projects.",
+    summary:
+      "Directed daily task allocation and branch operations for a combined workforce of 14–21 personnel.",
     points: [
-      "Coordinated schedules, notes and wikis in Notion and Google Workspace.",
-      "Built Excel trackers for timelines, budgets and action-item follow-ups.",
-      "Assisted UAT coordination and release-note preparation.",
+      "Allocated and scheduled daily tasks for 8–11 on-site (field visit) personnel and 6–10 off-site staff.",
+      "Maintained regular progress and risk reporting to senior leadership, keeping delivery timelines on track.",
+      "Monitored task completion across concurrent workstreams and directed day-to-day branch administration and recordkeeping.",
     ],
-    tags: ["Coordination", "Notion", "Excel", "Google Workspace"],
+    tags: [
+      "Operations Management",
+      "Resource Allocation",
+      "Workforce Scheduling",
+      "Timeline Control",
+    ],
   },
   {
-    period: "2022",
-    role: "Bachelor's Degree",
-    org: "Undergraduate Studies",
+    period: "Dec 2022 — May 2024",
+    role: "Process Associate",
+    org: "I-Cons Technologies | Coimbatore, India",
+    kind: "work",
+    summary:
+      "Processed high-volume documentation and data workflows within a 55+ person team.",
+    points: [
+      "Extracted and reformatted 20–60 documents weekly across PDF, Excel, Word, and PowerPoint with strict accuracy.",
+      "Conducted web research and image annotation projects, leveraging AI tools and Google extensions for enhanced turnaround speed.",
+      "Built and maintained Excel formulas and Google Sheets workflows to power reporting and data analysis.",
+      "Coordinated internal team communication and supported the Project Manager with client-facing interactions.",
+    ],
+    tags: [
+      "Process Optimization",
+      "Documentation",
+      "Excel/Google Sheets",
+      "AI Workflows",
+      "Client Support",
+    ],
+  },
+  {
+    period: "Jun 2024 — Sep 2024",
+    role: "Certification: Flutter Developer Course",
+    org: "Nschool Academy | Coimbatore, India",
     kind: "education",
     summary:
-      "Academic foundation in project management methods, agile practices and business communication.",
+      "Intensive training in cross-platform mobile app development, state management, and REST APIs.",
     points: [
-      "Coursework spanning planning, documentation and team leadership.",
-      "Led academic project teams using agile practices.",
+      "Developed mobile application architectures in Flutter & Dart.",
+      "Integrated REST APIs, Google Maps API, Firebase, and State Management (Provider, GetX, Riverpod).",
     ],
-    tags: ["Education", "Foundations"],
+    tags: ["Flutter", "Dart", "REST API", "Firebase", "State Management"],
+  },
+  {
+    period: "2019 — 2022",
+    role: "Bachelor of Science in Computer Science",
+    org: "Kathir College of Arts and Science | Coimbatore, India",
+    kind: "education",
+    summary:
+      "Core computer science foundation covering algorithms, software engineering principles, and databases.",
+    points: [
+      "Graduated with strong analytical and problem-solving grounding.",
+      "Active team lead in academic projects and technical presentations.",
+    ],
+    tags: ["Computer Science", "B.Sc Degree", "Software Engineering"],
   },
 ];
 
-/** Delivery phases for the experience arc visual. */
+/** Delivery lifecycle phases */
 export const deliveryPhases: Chip[] = [
-  { label: "Planning", icon: ClipboardList },
-  { label: "Execution", icon: Rocket },
-  { label: "Monitoring", icon: Activity },
-  { label: "Closing", icon: CheckCircle2 },
+  { label: "Requirements & Planning", icon: ClipboardList },
+  { label: "Sprint Execution", icon: Rocket },
+  { label: "Monitoring & Reporting", icon: Activity },
+  { label: "Delivery & Closing", icon: CheckCircle2 },
 ];
 
+/** Featured Portfolio Projects */
 export const projects: Project[] = [
   {
-    id: "website-development",
-    title: "Website Development Project",
+    id: "software-portfolio-delivery",
+    title: "Software Portfolio Delivery & Agile Coordination",
     description:
-      "Managed project planning, team coordination, requirement gathering and successful delivery of a responsive website.",
-    tags: ["Planning", "Team Coordination", "Delivery"],
-    image: "/images/project-web.jpg",
-    icon: Globe,
+      "Coordinated a portfolio of 7 projects (4 concurrently) at Dreams Technologies including Tony (Aseda), FinancaPlus, and UCC. Delivered 3 projects on schedule through alternate-day reporting and structured sprint planning.",
+    tags: ["Jira", "Agile/Scrum", "Portfolio Mgmt", "Sprint Planning"],
+    image: "/images/project-tasks.jpg",
+    icon: Kanban,
   },
   {
-    id: "process-improvement",
-    title: "Business Process Improvement",
+    id: "branch-operations-workforce",
+    title: "Branch Operations & Workforce Scheduling",
     description:
-      "Identified process gaps and implemented improvements to enhance workflow efficiency by 30%.",
-    tags: ["Analysis", "Optimization", "Efficiency"],
+      "Directed daily operations and task scheduling for 14-21 personnel (field & off-site) at VFurnish, implementing risk reporting cadences that ensured 100% on-time milestone delivery.",
+    tags: ["Operations", "Workforce Scheduling", "Resource Allocation"],
     image: "/images/project-process.jpg",
     icon: TrendingUp,
   },
   {
-    id: "task-management",
-    title: "Task Management System",
+    id: "flutter-mobile-app",
+    title: "Cross-Platform Flutter Application Suite",
     description:
-      "Coordinated the implementation of a task management system using Agile methodology and sprint planning.",
-    tags: ["Agile", "Jira", "Sprint Planning"],
-    image: "/images/project-tasks.jpg",
-    icon: Kanban,
+      "Architected and developed modular Flutter/Dart mobile applications with REST API integrations, state management (Provider/GetX/Riverpod), and Firebase backends.",
+    tags: ["Flutter", "Dart", "REST API", "Firebase", "State Mgmt"],
+    image: "/images/project-web.jpg",
+    icon: Smartphone,
   },
 ];
 
-/** Kept for icon usage in auxiliary UI. */
+/** Languages supported */
+export const languages = [
+  { language: "English", proficiency: "Read, Write, Speak" },
+  { language: "Tamil", proficiency: "Read, Write, Speak" },
+  { language: "Telugu", proficiency: "Speak" },
+];
+
 export const miscIcons = { CalendarDays, Clock, Files, Gauge, MessageSquare, Shield, UserCheck };

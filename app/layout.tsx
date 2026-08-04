@@ -28,33 +28,15 @@ export const metadata = defaultMetadata;
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F6F8FC" },
-    { media: "(prefers-color-scheme: dark)", color: "#090D1C" },
-  ],
+  themeColor: "#050816",
 };
-
-/** Applies the persisted/system theme before first paint (no FOUC). */
-const themeScript = `(() => {
-  try {
-    const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const dark = stored ? stored === "dark" : prefersDark;
-    document.documentElement.classList.toggle("dark", dark);
-  } catch (e) {
-    document.documentElement.classList.add("dark");
-  }
-})();`;
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body className={`${sora.variable} ${inter.variable} font-sans antialiased`}>
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
+      <body className={`${sora.variable} ${inter.variable} font-sans antialiased bg-surface text-text`}>
         <a href="#content" className="skip-link">
           Skip to content
         </a>

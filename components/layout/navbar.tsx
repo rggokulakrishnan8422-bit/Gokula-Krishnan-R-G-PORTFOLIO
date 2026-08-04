@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/config/content";
 import { site } from "@/config/site";
-import { ThemeToggle } from "./theme-toggle";
 import { ResumeButton } from "@/components/ui/resume-button";
 import { LinkedInIcon } from "@/components/ui/icons";
 import { useLenis, scrollToTop } from "@/components/motion/lenis-provider";
@@ -126,7 +125,6 @@ export function Navbar() {
           <div className="hidden sm:block">
             <ResumeButton variant="primary" size="sm" />
           </div>
-          <ThemeToggle />
           <button
             ref={menuButtonRef}
             type="button"

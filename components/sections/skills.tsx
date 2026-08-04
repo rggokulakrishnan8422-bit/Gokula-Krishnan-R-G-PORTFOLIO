@@ -1,39 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { site } from "@/config/site";
 import { professionalSkills, technicalSkills, toolsWall } from "@/config/content";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { GlassCard } from "@/components/ui/glass-card";
-import { ResumeButton } from "@/components/ui/resume-button";
 import { cn } from "@/lib/utils";
-
-/** Live view of the identity config (read-only — the file is the editor). */
-const configFields: Array<[string, string]> = [
-  ["Name", site.name],
-  ["Role", site.role],
-  ["Email", site.email],
-  ["Phone", site.phone],
-  ["LinkedIn", site.linkedin],
-  ["Location", site.location],
-  ["Resume file", site.resumePath],
-];
 
 const ORBIT_RADIUS = 132;
 
-/** Tools orbiting the monogram — CSS-driven, reduced-motion falls back static. */
+/** Tools orbiting the monogram */
 function ToolOrbit() {
   return (
     <div aria-hidden className="relative mx-auto aspect-square w-full max-w-[340px]">
       <div className="absolute inset-0 rounded-full border border-primary/15" />
       <div className="absolute inset-10 rounded-full border border-primary/10" />
       <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10" />
-      <div className="glass-card absolute left-1/2 top-1/2 z-10 flex size-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl shadow-lg">
+      <div className="glass-card absolute left-1/2 top-1/2 z-10 flex size-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl shadow-lg border border-primary/20 bg-surface/80 backdrop-blur-md">
         <span className="text-gradient font-display text-2xl font-bold">GK</span>
       </div>
       <div className="absolute inset-0 animate-spin-slow">
@@ -48,7 +34,7 @@ function ToolOrbit() {
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translate(${ORBIT_RADIUS}px) rotate(${-angle}deg)`,
               }}
             >
-              <span className="glass-card flex size-12 items-center justify-center rounded-xl shadow-md">
+              <span className="glass-card flex size-12 items-center justify-center rounded-xl shadow-md border border-primary/20 bg-surface/60 backdrop-blur-md">
                 <span className="animate-spin-slow-reverse">
                   <Icon className="size-5 text-primary" />
                 </span>
@@ -61,13 +47,13 @@ function ToolOrbit() {
   );
 }
 
-/** Skills — mockup layout: percentage bars, orbit, dot matrix, config panel. */
+/** Skills section */
 export function Skills() {
   const reduced = useReducedMotion();
   const barsRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (reduced) return; // static fallback: bars render at full level
+    if (reduced) return;
     const scope = barsRef.current!;
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-skill-bar]").forEach((bar, i) => {
@@ -92,14 +78,14 @@ export function Skills() {
     <section id="skills" aria-label="Skills" className="section-line section-pad scroll-mt-24">
       <div className="container-x flex flex-col gap-12">
         <Reveal>
-          <SectionHeading eyebrow="My Skills" title="Expertise & Competencies" />
+          <SectionHeading eyebrow="My Skills & Expertise" title="Core Capabilities & Tech Stack" />
         </Reveal>
 
-        <div className="grid items-start gap-8 lg:grid-cols-12">
+        <div className="grid items-stretch gap-8 lg:grid-cols-12">
           {/* Technical — animated level bars */}
-          <Reveal className="lg:col-span-4">
+          <Reveal className="lg:col-span-5">
             <GlassCard className="flex h-full flex-col gap-6 p-6 md:p-7">
-              <h3 className="font-display text-lg font-semibold">Technical Skills</h3>
+              <h3 className="font-display text-lg font-semibold text-text">Technical Proficiency</h3>
               <ul ref={barsRef} className="flex flex-col gap-4">
                 {technicalSkills.map((skill) => {
                   const Icon = skill.icon;
@@ -115,7 +101,7 @@ export function Skills() {
                       <div
                         role="img"
                         aria-label={`${skill.label}: ${skill.level} out of 100`}
-                        className="h-1.5 w-full overflow-hidden rounded-full bg-[rgb(var(--color-glass)/0.12)]"
+                        className="h-1.5 w-full overflow-hidden rounded-full bg-border/20"
                       >
                         <div
                           data-skill-bar
@@ -132,19 +118,21 @@ export function Skills() {
           </Reveal>
 
           {/* Center — orbiting tool icons */}
-          <Reveal className="flex items-center justify-center lg:col-span-4" delay={0.1}>
+          <Reveal className="hidden items-center justify-center lg:flex lg:col-span-2" delay={0.1}>
             <ToolOrbit />
           </Reveal>
 
-          {/* Right — professional dot matrix + config panel */}
-          <div className="flex flex-col gap-6 lg:col-span-4">
-            <Reveal delay={0.15}>
-              <GlassCard className="p-6 md:p-7">
-                <h3 className="mb-5 font-display text-lg font-semibold">Professional Skills</h3>
-                <ul className="flex flex-col gap-3.5">
+          {/* Right — professional dot matrix */}
+          <Reveal className="lg:col-span-5" delay={0.15}>
+            <GlassCard className="flex h-full flex-col justify-between p-6 md:p-7">
+              <div>
+                <h3 className="mb-6 font-display text-lg font-semibold text-text">
+                  Professional & Management Competencies
+                </h3>
+                <ul className="flex flex-col gap-4">
                   {professionalSkills.map((skill) => (
                     <li key={skill.label} className="flex items-center justify-between gap-4">
-                      <span className="text-sm font-medium">{skill.label}</span>
+                      <span className="text-sm font-medium text-text">{skill.label}</span>
                       <span className="flex items-center gap-1.5">
                         <span className="sr-only">{`${skill.level} out of 100`}</span>
                         {Array.from({ length: 10 }).map((_, d) => (
@@ -152,8 +140,10 @@ export function Skills() {
                             key={d}
                             aria-hidden
                             className={cn(
-                              "size-1.5 rounded-full",
-                              d < Math.round(skill.level / 10) ? "bg-primary" : "bg-muted/30",
+                              "size-2 rounded-full transition-colors",
+                              d < Math.round(skill.level / 10)
+                                ? "bg-primary shadow-sm shadow-primary/50"
+                                : "bg-border/30",
                             )}
                           />
                         ))}
@@ -161,57 +151,9 @@ export function Skills() {
                     </li>
                   ))}
                 </ul>
-              </GlassCard>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <GlassCard className="flex flex-col gap-4 p-6">
-                <div className="flex flex-col gap-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Resume & Site Config
-                  </p>
-                  <p className="text-caption text-muted">
-                    Live values from config/site.ts — edit that file once and the whole site
-                    follows.
-                  </p>
-                </div>
-                <div className="flex items-center gap-3 border-b pb-4">
-                  <div className="relative size-11 shrink-0 overflow-hidden rounded-md">
-                    <Image
-                      src="/images/portrait-blue.jpg"
-                      alt=""
-                      fill
-                      sizes="44px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex min-w-0 flex-col leading-tight">
-                    <span className="truncate text-sm font-semibold">{site.name}</span>
-                    <span className="text-xs text-muted">
-                      {site.role} · {site.location}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  {configFields.map(([label, value]) => (
-                    <div key={label} className="flex flex-col gap-1.5">
-                      <span className="text-xs uppercase tracking-[0.12em] text-muted">
-                        {label}
-                      </span>
-                      <span className="truncate rounded-md border bg-[rgb(var(--color-glass)/0.06)] px-3 py-2 text-sm">
-                        {value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-caption text-muted">
-                  Replace public/resume.pdf with your latest resume — the Download Resume button
-                  always serves the newest file.
-                </p>
-                <ResumeButton variant="primary" size="sm" className="w-full" />
-              </GlassCard>
-            </Reveal>
-          </div>
+              </div>
+            </GlassCard>
+          </Reveal>
         </div>
       </div>
     </section>

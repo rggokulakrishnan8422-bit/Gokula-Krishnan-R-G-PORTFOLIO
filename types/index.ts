@@ -64,5 +64,18 @@ export type ToastItem = {
   description?: string;
 };
 
+/** Resume metadata definition for download/preview modal system */
+export type ResumeItem = {
+  id: string;
+  title: string;
+  subtitle: string;
+  filename: string;
+  path: string;
+  size: string;
+  updated: string;
+  description: string;
+  primary?: boolean;
+};
+
 /** Component state machine shared by form/async UI (Section 9). */
 export type AsyncState = "idle" | "loading" | "success" | "error";

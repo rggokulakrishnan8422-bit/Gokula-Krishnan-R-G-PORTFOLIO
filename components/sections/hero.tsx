@@ -62,15 +62,14 @@ function ProgressRing({ value }: { value: number }) {
 }
 
 /**
- * Hero — mockup layout: two-tone name, role pill, roles strip, summary,
- * CTAs, blended globe portrait with floating sprint widgets, side rail.
+ * Hero section.
  */
 export function Hero() {
   const reduced = useReducedMotion();
   const scope = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (reduced) return; // static fallback: everything simply visible
+    if (reduced) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-hero]",
@@ -95,7 +94,7 @@ export function Hero() {
       aria-label="Intro"
       className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-24 md:pt-28"
     >
-      {/* WebGL environment (or its static fallback) */}
+      {/* WebGL environment */}
       <div aria-hidden className="absolute inset-0">
         <HeroScene />
       </div>
@@ -268,18 +267,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      <a
-        href="#about"
-        data-hero
-        aria-label="Scroll down to About section"
-        className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted transition-colors duration-micro hover:text-primary md:flex"
-      >
-        <span className="flex h-9 w-6 items-start justify-center rounded-full border-2 border-current p-1.5">
-          <span className="size-1 animate-float rounded-full bg-current [animation-duration:1.6s]" />
-        </span>
-        <span className="text-xs uppercase tracking-[0.2em]">Scroll Down</span>
-      </a>
     </section>
   );
 }

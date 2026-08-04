@@ -3,12 +3,9 @@ import { cn } from "@/lib/utils";
 import { Spinner } from "./loading";
 
 /**
- * Button — primary / secondary / ghost (Master Prompt Section 9).
- * States: default · hover (lift, 150ms) · focus (global focus-visible ring)
- * · active (scale 0.98) · disabled · loading (spinner + aria-busy).
- * `buttonVariants` lets anchors (<a>, <Link>) share the same styling.
+ * Button — primary / secondary / ghost / outline
  */
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -17,8 +14,10 @@ const base =
 const variantClasses: Record<Variant, string> = {
   primary: "bg-primary text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg",
   secondary:
-    "border backdrop-blur-md hover:-translate-y-0.5 hover:border-primary/60 hover:text-primary",
-  ghost: "hover:bg-[rgb(var(--color-glass)/var(--glass-alpha))] hover:text-primary",
+    "border border-border/40 bg-glass/10 backdrop-blur-md hover:-translate-y-0.5 hover:border-primary/60 hover:text-primary",
+  ghost: "hover:bg-glass/10 hover:text-primary",
+  outline:
+    "border border-primary/40 bg-transparent text-primary hover:bg-primary/10 hover:border-primary",
 };
 
 const sizeClasses: Record<Size, string> = {

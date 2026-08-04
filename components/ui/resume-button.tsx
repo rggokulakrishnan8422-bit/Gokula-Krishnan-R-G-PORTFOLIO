@@ -1,34 +1,40 @@
+"use client";
+
+import { useState } from "react";
 import { Download } from "lucide-react";
-import { site } from "@/config/site";
 import { buttonVariants } from "./button";
+import { ResumeModal } from "./resume-modal";
 import { cn } from "@/lib/utils";
 
-/**
- * Resume Download Button (Master Prompt Sections 9, 12).
- * The path comes from config/site.ts — swapping public/resume.pdf is the
- * only action needed to update what every instance downloads.
- */
 export function ResumeButton({
   variant = "secondary",
   size = "md",
   className,
+  label = "Download Resume",
 }: {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "outline";
   size?: "sm" | "md" | "lg";
   className?: string;
+  label?: string;
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <a
-      href={site.resumePath}
-      download="Gokula-Krishnan-RG-Resume.pdf"
-      className={cn(buttonVariants({ variant, size }), "group", className)}
-      aria-label={`Download resume (PDF) — ${site.name}`}
-    >
-      <Download
-        className="size-4 transition-transform duration-small group-hover:-translate-y-0.5"
-        aria-hidden
-      />
-      Download Resume
-    </a>
+    <>
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(true)}
+        className={cn(buttonVariants({ variant, size }), "group cursor-pointer", className)}
+        aria-label="Download or preview resumes"
+      >
+        <Download
+          className="size-4 transition-transform duration-micro group-hover:-translate-y-0.5"
+          aria-hidden
+        />
+        <span>{label}</span>
+      </button>
+
+      <ResumeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }
