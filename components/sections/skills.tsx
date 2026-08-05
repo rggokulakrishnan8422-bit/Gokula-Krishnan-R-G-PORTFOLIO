@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const ORBIT_RADIUS = 136;
 
-/** 3D Glowing Isometric Cube Matrix + Orbiting Tech Icons */
+/** 3D Glowing Isometric Cube Matrix Core + 6 Orbiting Glass Icon Badges */
 function IsometricCubeOrbit() {
   return (
     <div aria-hidden className="relative mx-auto aspect-square w-full max-w-[360px] flex items-center justify-center">
@@ -21,9 +21,8 @@ function IsometricCubeOrbit() {
       <div className="absolute inset-10 rounded-full border border-primary/15" />
       <div className="absolute -inset-4 rounded-full border border-dashed border-primary/15" />
 
-      {/* Central 3D Glowing Isometric Tech Cube */}
+      {/* Central 3D Glowing Isometric Tech Cube Core */}
       <div className="relative z-10 flex size-28 items-center justify-center rounded-2xl border-2 border-cyan-400/50 bg-surface/90 shadow-[0_0_30px_rgba(34,211,238,0.3)] backdrop-blur-md">
-        {/* Isometric Cube Grid Inner SVG */}
         <svg className="size-16 text-cyan-400 animate-pulse" viewBox="0 0 64 64" fill="none">
           <path
             d="M32 6L54 18V46L32 58L10 46V18L32 6Z"
@@ -66,10 +65,12 @@ function IsometricCubeOrbit() {
 export function Skills() {
   const reduced = useReducedMotion();
   const barsRef = useRef<HTMLUListElement>(null);
+  const [activeTab, setActiveTab] = useState<"technical" | "professional">("technical");
 
   useEffect(() => {
     if (reduced) return;
-    const scope = barsRef.current!;
+    const scope = barsRef.current;
+    if (!scope) return;
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-skill-bar]").forEach((bar, i) => {
         const level = bar.dataset.level ?? "0";
@@ -87,20 +88,50 @@ export function Skills() {
       });
     }, scope);
     return () => ctx.revert();
-  }, [reduced]);
+  }, [reduced, activeTab]);
 
   return (
     <section id="skills" aria-label="Skills" className="section-line section-pad scroll-mt-24">
-      <div className="container-x flex flex-col gap-12">
+      <div className="container-x flex flex-col gap-10">
         <Reveal>
-          <SectionHeading eyebrow="My Skills & Expertise" title="Expertise & Competencies" />
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <SectionHeading eyebrow="MY SKILLS" title="Expertise & Competencies" />
+
+            {/* Technical Skills vs Professional Skills Toggle Tabs */}
+            <div className="inline-flex rounded-full border border-primary/30 bg-surface/80 p-1 shadow-inner backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setActiveTab("technical")}
+                className={cn(
+                  "rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200",
+                  activeTab === "technical"
+                    ? "bg-primary text-white shadow-md"
+                    : "text-muted hover:text-text",
+                )}
+              >
+                Technical Skills
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("professional")}
+                className={cn(
+                  "rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200",
+                  activeTab === "professional"
+                    ? "bg-primary text-white shadow-md"
+                    : "text-muted hover:text-text",
+                )}
+              >
+                Professional Skills
+              </button>
+            </div>
+          </div>
         </Reveal>
 
         <div className="grid items-stretch gap-8 lg:grid-cols-12">
           {/* Left Column: Technical Skills Percentage Level Bars */}
           <Reveal className="lg:col-span-5">
-            <GlassCard className="flex h-full flex-col gap-5 p-6 md:p-7">
-              <h3 className="font-display text-base font-semibold text-text uppercase tracking-wider text-primary">
+            <GlassCard className="flex h-full flex-col gap-5 p-6 md:p-7 border-primary/20">
+              <h3 className="font-display text-sm font-semibold text-text uppercase tracking-wider text-primary">
                 Technical Skills
               </h3>
               <ul ref={barsRef} className="flex flex-col gap-3.5">
@@ -134,16 +165,16 @@ export function Skills() {
             </GlassCard>
           </Reveal>
 
-          {/* Center Column: 3D Isometric Cube Core */}
+          {/* Center Column: 3D Isometric Tech Cube Matrix */}
           <Reveal className="hidden items-center justify-center lg:flex lg:col-span-2" delay={0.1}>
             <IsometricCubeOrbit />
           </Reveal>
 
-          {/* Right Column: Professional Skills 8-Dot Matrix */}
+          {/* Right Column: Professional Skills 6-Dot Matrix */}
           <Reveal className="lg:col-span-5" delay={0.15}>
-            <GlassCard className="flex h-full flex-col justify-between p-6 md:p-7">
+            <GlassCard className="flex h-full flex-col justify-between p-6 md:p-7 border-primary/20">
               <div>
-                <h3 className="mb-5 font-display text-base font-semibold text-text uppercase tracking-wider text-primary">
+                <h3 className="mb-5 font-display text-sm font-semibold text-text uppercase tracking-wider text-primary">
                   Professional Skills
                 </h3>
                 <ul className="flex flex-col gap-3.5">
@@ -152,13 +183,13 @@ export function Skills() {
                       <span className="text-xs sm:text-sm font-medium text-text">{skill.label}</span>
                       <span className="flex items-center gap-1.5">
                         <span className="sr-only">{`${skill.level} out of 100`}</span>
-                        {Array.from({ length: 8 }).map((_, d) => (
+                        {Array.from({ length: 6 }).map((_, d) => (
                           <span
                             key={d}
                             aria-hidden
                             className={cn(
                               "size-2.5 rounded-full transition-all duration-300",
-                              d < Math.round((skill.level / 100) * 8)
+                              d < Math.round((skill.level / 100) * 6)
                                 ? "bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.8)]"
                                 : "bg-border/30",
                             )}

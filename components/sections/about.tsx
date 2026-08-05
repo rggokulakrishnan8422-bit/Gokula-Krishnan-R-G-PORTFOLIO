@@ -7,6 +7,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Counter } from "@/components/ui/counter";
 import { Tilt } from "@/components/ui/tilt";
+import { SignatureCard } from "@/components/ui/signature-card";
 
 const aboutStats = [
   { value: 8, suffix: "+", label: "Projects Handled", icon: FolderKanban },
@@ -15,25 +16,21 @@ const aboutStats = [
   { value: 60, suffix: "+", label: "Client Meetings", icon: MessageSquare },
 ];
 
-const checklistItems = [
-  "Agile Mindset",
-  "Detail-Oriented",
-  "Team Player",
-  "Problem Solver",
-];
+const checklistItems = ["Agile Mindset", "Team Player", "Problem Solver"];
 
 export function About() {
   return (
     <section id="about" aria-label="About" className="section-line section-pad scroll-mt-24">
-      <div className="container-x flex flex-col gap-12">
-        {/* Heading */}
+      {/* Light Frosted Glass Background Container */}
+      <div className="container-x flex flex-col gap-10 rounded-3xl border border-primary/20 bg-surface/50 p-6 md:p-10 shadow-2xl backdrop-blur-xl">
+        {/* Section Heading */}
         <Reveal>
           <SectionHeading
-            eyebrow="About Me"
+            eyebrow="ABOUT ME"
             title={
               <>
                 <span>Turning Plans Into </span>
-                <span className="bg-gradient-to-r from-primary via-purple-400 to-secondary bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                   Successful Outcomes.
                 </span>
               </>
@@ -73,18 +70,15 @@ export function About() {
                   className="rounded-xl object-cover object-top mask-fade-b"
                 />
 
-                {/* Gokula Signature Overlay */}
-                <div
-                  aria-hidden
-                  className="absolute bottom-4 left-4 font-display text-lg font-bold italic tracking-wider text-primary drop-shadow-[0_0_10px_rgba(82,126,255,0.8)]"
-                >
-                  Gokula
+                {/* Signature Overlay */}
+                <div className="absolute bottom-3 left-3 z-20 scale-90">
+                  <SignatureCard />
                 </div>
               </div>
             </div>
           </Reveal>
 
-          {/* Right Column: Bio + 4 Stat Cards + Checklist & Quote */}
+          {/* Right Column: Bio + 4 Stat Cards Row + Checklist & Quote */}
           <div className="flex flex-col gap-6 lg:col-span-8">
             {/* Bio Paragraph */}
             <Reveal delay={0.15}>
@@ -100,7 +94,7 @@ export function About() {
                 return (
                   <Reveal key={stat.label} delay={Math.min(i * 0.06, 0.25)} y={20}>
                     <Tilt className="h-full">
-                      <GlassCard hover className="flex h-full flex-col justify-between p-4 text-center">
+                      <GlassCard hover className="flex h-full flex-col justify-between p-4 text-center border-primary/20">
                         <span className="mx-auto flex size-9 items-center justify-center rounded-lg bg-primary/15 text-primary mb-2">
                           <Icon className="size-4.5" aria-hidden />
                         </span>
@@ -131,7 +125,7 @@ export function About() {
 
               {/* Quote Card */}
               <Reveal className="sm:col-span-7" delay={0.2}>
-                <GlassCard hover className="flex h-full gap-3.5 p-5 border-l-4 border-l-primary">
+                <GlassCard hover className="flex h-full gap-3.5 p-5 border-l-4 border-l-primary bg-surface/80">
                   <Quote className="size-6 shrink-0 text-primary opacity-80" aria-hidden />
                   <p className="text-xs sm:text-sm font-medium leading-relaxed text-muted italic">
                     {aboutQuote}
