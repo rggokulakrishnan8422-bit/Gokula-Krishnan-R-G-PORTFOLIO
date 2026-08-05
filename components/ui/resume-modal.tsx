@@ -18,6 +18,18 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>(site.resumes.map((r) => r.id));
   const [previewResume, setPreviewResume] = useState<ResumeItem | null>(null);
 
+  // Lock body scroll when modal is active
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen && !previewResume) {
@@ -49,6 +61,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         const link = document.createElement("a");
         link.href = resume.path;
         link.download = resume.filename;
+        link.target = "_blank";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -65,7 +78,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Download Resumes"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6"
         >
           {/* Backdrop */}
           <motion.div
@@ -73,7 +86,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            className="absolute inset-0 bg-black/85 backdrop-blur-md"
           />
 
           {/* Modal Content */}
@@ -81,10 +94,10 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
-            className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-primary/20 bg-surface p-6 shadow-2xl sm:p-8"
+            className="relative flex flex-col w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-2xl border border-primary/25 bg-surface p-6 shadow-2xl sm:p-8"
           >
             {/* Header */}
-            <div className="flex items-start justify-between gap-4 pb-6 border-b border-border/40">
+            <div className="flex items-start justify-between gap-4 pb-5 border-b border-border/40 shrink-0">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-2">
                   <FileText className="size-3.5" />
@@ -93,15 +106,15 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 <h2 className="font-display text-2xl font-bold text-text">
                   Download & Preview Resumes
                 </h2>
-                <p className="mt-1 text-sm text-muted">
-                  Select individual or multiple versions tailored for Project Coordination & Management.
+                <p className="mt-1 text-xs sm:text-sm text-muted">
+                  Select individual or multiple versions of Gokula Krishnan&apos;s Project Manager resumes.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex size-9 items-center justify-center rounded-lg border border-border/40 bg-glass/10 text-muted transition-colors hover:bg-glass/30 hover:text-text"
+                className="inline-flex size-9 items-center justify-center rounded-lg border border-border/40 bg-glass/10 text-muted transition-colors hover:bg-glass/30 hover:text-text shrink-0"
                 aria-label="Close modal"
               >
                 <X className="size-5" />
@@ -109,7 +122,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
 
             {/* Select All Bar */}
-            <div className="flex items-center justify-between py-4">
+            <div className="flex items-center justify-between py-3 shrink-0">
               <button
                 type="button"
                 onClick={toggleSelectAll}
@@ -131,8 +144,8 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               </span>
             </div>
 
-            {/* Resume Cards */}
-            <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto pr-1">
+            {/* Resume Cards Container */}
+            <div className="flex flex-col gap-4 overflow-y-auto pr-1 py-1 my-1 flex-1">
               {site.resumes.map((resume) => {
                 const isSelected = selectedIds.includes(resume.id);
                 return (
@@ -145,7 +158,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                         : "border-border/40 bg-glass/5 hover:border-primary/30 hover:bg-glass/10",
                     )}
                   >
-                    <div className="flex items-start gap-4">
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
                       {/* Checkbox */}
                       <button
                         type="button"
@@ -162,14 +175,14 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                       </button>
 
                       {/* Info */}
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-1 min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <h3 className="font-display text-base font-semibold text-text">
                             {resume.title}
                           </h3>
                           {resume.primary && (
                             <span className="rounded bg-primary/20 px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase text-primary">
-                              Primary
+                              ATS Primary
                             </span>
                           )}
                         </div>
@@ -186,25 +199,27 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-2 self-end sm:self-center shrink-0 pt-2 sm:pt-0">
+                    {/* Action buttons */}
+                    <div className="flex items-center gap-2.5 self-end sm:self-center shrink-0 pt-2 sm:pt-0">
                       <button
                         type="button"
                         onClick={() => setPreviewResume(resume)}
                         className={buttonVariants({ variant: "outline", size: "sm" })}
                         title="Preview PDF"
                       >
-                        <Eye className="size-3.5 mr-1" />
+                        <Eye className="size-3.5 mr-1.5" />
                         Preview
                       </button>
 
                       <a
                         href={resume.path}
                         download={resume.filename}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={buttonVariants({ variant: "primary", size: "sm" })}
                         title="Download PDF"
                       >
-                        <Download className="size-3.5 mr-1" />
+                        <Download className="size-3.5 mr-1.5" />
                         Download
                       </a>
                     </div>
@@ -214,7 +229,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
 
             {/* Footer */}
-            <div className="mt-6 flex flex-col-reverse items-center justify-between gap-3 border-t border-border/40 pt-4 sm:flex-row">
+            <div className="mt-4 flex flex-col-reverse items-center justify-between gap-3 border-t border-border/40 pt-4 sm:flex-row shrink-0">
               <button
                 type="button"
                 onClick={onClose}
