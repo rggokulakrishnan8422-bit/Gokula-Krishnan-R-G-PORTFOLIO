@@ -57,7 +57,7 @@ const config: Config = {
         hero: "800ms",
       },
       maxWidth: {
-        content: "1600px",
+        content: "1800px",
       },
       keyframes: {
         float: {

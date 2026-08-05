@@ -94,14 +94,14 @@
 }
 
 @layer components {
-  /* Horizontal rhythm: 4-col/8-col/12-col grid, 1600px max (Section 4 Grid) */
+  /* Horizontal rhythm: 4-col/8-col/12-col grid, 1800px max (Section 4 Grid) */
   .container-x {
-    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8 xl:px-10;
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-6 xl:px-8;
   }
 
-  /* Compact section padding */
+  /* Ultra compact section padding */
   .section-pad {
-    @apply py-10 md:py-14 lg:py-16;
+    @apply py-6 md:py-10 lg:py-12;
   }
 
   .glass-card {
@@ -153,8 +153,8 @@
     inset: 0 0 auto 0;
     height: 1px;
     margin-inline: auto;
-    max-width: 1600px;
-    width: 95%;
+    max-width: 1800px;
+    width: 96%;
     background: linear-gradient(
       90deg,
       transparent,
