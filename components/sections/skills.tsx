@@ -10,17 +10,26 @@ import { Reveal } from "@/components/ui/reveal";
 import { GlassCard } from "@/components/ui/glass-card";
 import { cn } from "@/lib/utils";
 
+import Image from "next/image";
+
 const ORBIT_RADIUS = 132;
 
-/** Tools orbiting the monogram */
+/** Tools orbiting the Monochrome Blue portrait core */
 function ToolOrbit() {
   return (
     <div aria-hidden className="relative mx-auto aspect-square w-full max-w-[340px]">
       <div className="absolute inset-0 rounded-full border border-primary/15" />
       <div className="absolute inset-10 rounded-full border border-primary/10" />
       <div className="absolute -inset-4 rounded-full border border-dashed border-primary/10" />
-      <div className="glass-card absolute left-1/2 top-1/2 z-10 flex size-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl shadow-lg border border-primary/20 bg-surface/80 backdrop-blur-md">
-        <span className="text-gradient font-display text-2xl font-bold">GK</span>
+      <div className="absolute left-1/2 top-1/2 z-10 flex size-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-2xl border-2 border-primary/40 bg-surface/90 shadow-xl shadow-primary/20 backdrop-blur-md">
+        <Image
+          src="/images/portrait-blue.jpg"
+          alt="Gokula Krishnan — Monochrome Blue"
+          fill
+          sizes="112px"
+          className="object-cover object-top filter hue-rotate-15 contrast-110 saturate-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-primary/10" />
       </div>
       <div className="absolute inset-0 animate-spin-slow">
         {toolsWall.map((tool, i) => {
