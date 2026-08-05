@@ -92,7 +92,7 @@ export function Hero() {
       ref={scope}
       id="top"
       aria-label="Intro"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-24 md:pt-28"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-20 md:pt-24"
     >
       {/* WebGL environment */}
       <div aria-hidden className="absolute inset-0">
