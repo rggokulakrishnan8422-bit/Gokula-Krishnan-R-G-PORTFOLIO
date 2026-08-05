@@ -45,7 +45,7 @@ export const site = {
       subtitle: "ATS-Optimized & Structured Format",
       filename: "Gokula_Krishnan_Project_Manager_ATS_Resume.pdf",
       path: "/resumes/Gokula_Krishnan_Project_Manager_ATS_Resume.pdf",
-      size: "173 KB",
+      size: "567 KB",
       updated: "Aug 2026",
       description:
         "ATS-compliant Project Manager resume focusing on core competencies, portfolio coordination, Agile methodology, and structured reporting.",
@@ -57,7 +57,7 @@ export const site = {
       subtitle: "Visual Glassmorphic & Modern Layout",
       filename: "Gokula_Krishnan_Project_Manager_Modern_Design_Resume.pdf",
       path: "/resumes/Gokula_Krishnan_Project_Manager_Modern_Design_Resume.pdf",
-      size: "567 KB",
+      size: "173 KB",
       updated: "Aug 2026",
       description:
         "Modern visual resume highlighting end-to-end software project lifecycles, cross-functional leadership, technical Flutter capabilities, and achievements.",
