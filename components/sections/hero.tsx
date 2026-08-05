@@ -106,7 +106,7 @@ export function Hero() {
       {/* Left decorative rail */}
       <div
         aria-hidden
-        className="absolute bottom-28 left-6 top-32 hidden w-5 flex-col items-center gap-4 lg:flex"
+        className="absolute bottom-28 left-4 top-32 hidden w-5 flex-col items-center gap-4 lg:flex"
       >
         <span className="text-caption font-medium text-muted">01</span>
         <span className="w-px flex-1 bg-gradient-to-b from-primary/70 via-primary/25 to-transparent" />
@@ -118,7 +118,7 @@ export function Hero() {
       </div>
 
       <div className="container-x relative z-10 grid items-center gap-16 lg:grid-cols-12 lg:gap-8">
-        <div className="flex flex-col gap-6 lg:col-span-6">
+        <div className="flex flex-col gap-6 lg:col-span-6 lg:pl-10 xl:pl-14">
           <div data-hero>
             <p className="text-body font-medium text-primary">Hi, I&apos;m</p>
             <h1 className="mt-1 text-balance font-display text-hero font-bold">
