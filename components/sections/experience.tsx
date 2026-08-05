@@ -15,20 +15,20 @@ export function Experience() {
       className="section-line section-pad relative scroll-mt-24 overflow-hidden"
     >
       <div className="container-x grid items-start gap-12 lg:grid-cols-12">
-        {/* Left/Center — Experience cards aligned smoothly to the right */}
-        <div className="flex flex-col gap-10 lg:col-span-8 lg:pl-6 xl:pl-10">
+        {/* Left/Center — Section heading left-aligned; experience cards shifted right */}
+        <div className="flex flex-col gap-10 lg:col-span-8">
           <Reveal>
             <SectionHeading eyebrow="Experience" title="My Professional Journey" />
           </Reveal>
 
-          <ol className="relative ml-4 flex flex-col gap-6 border-l border-primary/20 pl-10 sm:ml-6 sm:pl-12 lg:ml-8 lg:pl-14">
+          <ol className="relative ml-6 flex flex-col gap-8 border-l border-primary/25 pl-7 sm:ml-10 sm:pl-10 lg:ml-10 xl:ml-12 lg:pl-12">
             {experience.map((entry, i) => {
               const KindIcon = entry.kind === "education" ? GraduationCap : Briefcase;
               return (
                 <li key={`${entry.role}-${entry.period}`} className="relative">
                   <span
                     aria-hidden
-                    className="absolute -left-[20.5px] top-1 flex size-10 items-center justify-center rounded-full border border-primary/30 bg-surface/90 shadow-md backdrop-blur-md"
+                    className="absolute -left-[19px] sm:-left-[21px] top-6 z-10 flex size-9 sm:size-10 items-center justify-center rounded-full border border-primary/40 bg-surface/95 text-primary shadow-lg ring-4 ring-surface backdrop-blur-md transition-transform duration-300 hover:scale-110"
                   >
                     <KindIcon className="size-4 text-primary" />
                   </span>

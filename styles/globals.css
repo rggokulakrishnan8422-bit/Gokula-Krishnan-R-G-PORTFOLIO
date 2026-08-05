@@ -40,7 +40,10 @@
   }
 
   body {
-    @apply bg-surface font-sans antialiased;
+    background-color: rgb(var(--color-surface));
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: rgb(var(--color-text));
     text-rendering: optimizeLegibility;
   }
@@ -96,22 +99,57 @@
 @layer components {
   /* Horizontal rhythm: 4-col/8-col/12-col grid, 1800px max (Section 4 Grid) */
   .container-x {
-    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-6 xl:px-8;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1800px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-x {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
   /* Ultra compact section padding */
   .section-pad {
-    @apply py-6 md:py-10 lg:py-12;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-pad {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
   }
 
   .glass-card {
-    @apply rounded-lg shadow-sm backdrop-blur-md;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     background: rgb(var(--color-glass) / var(--glass-alpha));
     border: 1px solid rgb(var(--color-border) / var(--border-alpha));
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     background-image: linear-gradient(
       120deg,
       rgb(var(--color-primary)),
@@ -170,13 +208,27 @@
   }
 
   .skip-link {
-    @apply fixed left-4 top-4 z-[100] -translate-y-[200%] rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-transform duration-small;
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    transform: translateY(-200%);
+    border-radius: 12px;
+    background-color: rgb(var(--color-primary));
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: #ffffff;
+    transition-property: transform;
+    transition-duration: 250ms;
   }
   .skip-link:focus-visible {
-    @apply translate-y-0;
+    transform: translateY(0);
   }
 
   .text-balance {
     text-wrap: balance;
   }
 }
+
