@@ -161,6 +161,18 @@ export function Hero() {
               </a>
             </Magnetic>
           </div>
+
+          <div data-hero className="pt-2">
+            <a
+              href="#about"
+              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted transition-colors hover:text-primary"
+            >
+              <span className="flex size-7 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary animate-bounce">
+                ↓
+              </span>
+              Scroll Down
+            </a>
+          </div>
         </div>
 
         {/* Blended globe portrait + floating sprint widgets */}
