@@ -7,6 +7,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { BackgroundLayer } from "@/components/layout/background-layer";
 import { ScrollIndicator } from "@/components/layout/scroll-indicator";
 import { Navbar } from "@/components/layout/navbar";
+import { NavRail } from "@/components/layout/nav-rail";
 import { Footer } from "@/components/layout/footer";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Cursor } from "@/components/ui/cursor";
@@ -45,6 +46,7 @@ export default function RootLayout({
             <BackgroundLayer />
             <ScrollIndicator />
             <Navbar />
+            <NavRail />
             <main id="content">{children}</main>
             <Footer />
             <BackToTop />

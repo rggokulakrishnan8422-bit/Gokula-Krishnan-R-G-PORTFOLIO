@@ -3,67 +3,47 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, BarChart3, CheckCircle2, ChevronDown } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { site } from "@/config/site";
-import { heroRoles, heroSummary } from "@/config/content";
+import { heroSummary } from "@/config/content";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ResumeButton } from "@/components/ui/resume-button";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
-/** Three.js scene is code-split and never rendered on the server (Section 16). */
+/** Three.js scene code-split */
 const HeroScene = dynamic(() => import("@/components/three/hero-scene"), { ssr: false });
 
 const timelineRows = [
-  { label: "Planning", w: "100%" },
-  { label: "Execution", w: "72%" },
-  { label: "Monitoring", w: "48%" },
-  { label: "Closing", w: "22%" },
+  { label: "Planning", done: true },
+  { label: "Execution", done: true },
+  { label: "Monitoring", done: true },
+  { label: "Delivery", done: false },
 ];
 
-/** SVG progress ring for the Sprint Progress widget. */
-function ProgressRing({ value }: { value: number }) {
-  const r = 26;
+/** SVG Progress Ring for Task Progress 78% widget */
+function TaskProgressRing({ value }: { value: number }) {
+  const r = 28;
   const c = 2 * Math.PI * r;
+  const strokeDashoffset = c - (value / 100) * c;
   return (
-    <svg viewBox="0 0 64 64" className="size-16 shrink-0" aria-hidden>
-      <defs>
-        <linearGradient id="sprint-ring" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="rgb(82 126 255)" />
-          <stop offset="1" stopColor="rgb(34 211 238)" />
-        </linearGradient>
-      </defs>
+    <svg className="size-16 -rotate-90" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r={r} className="stroke-border/30 fill-none stroke-[5]" />
       <circle
         cx="32"
         cy="32"
         r={r}
-        fill="none"
-        stroke="rgb(var(--color-border) / var(--border-alpha))"
-        strokeWidth="6"
-      />
-      <circle
-        cx="32"
-        cy="32"
-        r={r}
-        fill="none"
-        stroke="url(#sprint-ring)"
-        strokeWidth="6"
-        strokeLinecap="round"
+        className="stroke-primary fill-none stroke-[5] transition-all duration-1000"
         strokeDasharray={c}
-        strokeDashoffset={c * (1 - value / 100)}
-        transform="rotate(-90 32 32)"
+        strokeDashoffset={strokeDashoffset}
+        strokeLinecap="round"
       />
     </svg>
   );
 }
 
-/**
- * Hero section.
- */
 export function Hero() {
   const reduced = useReducedMotion();
   const scope = useRef<HTMLElement>(null);
@@ -92,65 +72,54 @@ export function Hero() {
       ref={scope}
       id="top"
       aria-label="Intro"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-20 md:pt-24"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-24 md:pt-28"
     >
-      {/* WebGL environment */}
+      {/* 3D WebGL Background Scene */}
       <div aria-hidden className="absolute inset-0">
         <HeroScene />
       </div>
+
+      {/* Surface Gradient Fade */}
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[rgb(var(--color-surface))] to-transparent"
+        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-surface to-transparent"
       />
 
-      {/* Left decorative rail */}
-      <div
-        aria-hidden
-        className="absolute bottom-28 left-4 top-32 hidden w-5 flex-col items-center gap-4 lg:flex"
-      >
-        <span className="text-caption font-medium text-muted">01</span>
-        <span className="w-px flex-1 bg-gradient-to-b from-primary/70 via-primary/25 to-transparent" />
-        <span className="flex flex-col gap-2.5">
-          <span className="size-1.5 rounded-full bg-primary" />
-          <span className="size-1.5 rounded-full bg-primary/50" />
-          <span className="size-1.5 rounded-full bg-primary/25" />
-        </span>
-      </div>
-
-      <div className="container-x relative z-10 grid items-center gap-16 lg:grid-cols-12 lg:gap-8">
-        <div className="flex flex-col gap-6 lg:col-span-6 lg:pl-10 xl:pl-14">
+      <div className="container-x relative z-10 grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+        {/* Left Column Text Content */}
+        <div className="flex flex-col gap-6 lg:col-span-6 lg:pl-6 xl:pl-10">
+          {/* Available for Work Status Badge */}
           <div data-hero>
-            <p className="text-body font-medium text-primary">Hi, I&apos;m</p>
-            <h1 className="mt-1 text-balance font-display text-hero font-bold">
-              <span className="block">Gokula</span>
-              <span className="text-gradient block">Krishnan R G</span>
-            </h1>
-          </div>
-
-          <div data-hero>
-            <Badge className="gap-2 px-4 py-1.5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3.5 py-1 text-xs font-semibold text-success shadow-sm">
               <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-success" />
               </span>
-              {site.role}
-            </Badge>
+              Available for Work
+            </div>
           </div>
 
-          <p data-hero className="text-caption font-medium tracking-wide text-muted">
-            {heroRoles.map((role, i) => (
-              <span key={role}>
-                {role}
-                {i < heroRoles.length - 1 && <span className="mx-2.5 text-primary">•</span>}
+          {/* Headline */}
+          <div data-hero className="flex flex-col">
+            <p className="text-body font-medium text-primary">Hi, I&apos;m</p>
+            <h1 className="mt-1 text-balance font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              <span className="block text-text">Gokula</span>
+              <span className="bg-gradient-to-r from-purple-400 via-primary to-cyan-400 bg-clip-text text-transparent block">
+                Krishnan R G
               </span>
-            ))}
-          </p>
+            </h1>
+            <p className="mt-2 text-base font-semibold text-secondary sm:text-lg">
+              I plan. I organize. <span className="text-primary underline decoration-primary/40 underline-offset-4">I deliver.</span>
+            </p>
+          </div>
 
-          <p data-hero className="max-w-xl text-body text-muted">
+          {/* Bio Summary */}
+          <p data-hero className="max-w-xl text-xs leading-relaxed text-muted sm:text-sm">
             {heroSummary}
           </p>
 
-          <div data-hero className="flex flex-wrap items-center gap-4">
+          {/* Action Buttons */}
+          <div data-hero className="flex flex-wrap items-center gap-4 pt-1">
             <Magnetic>
               <ResumeButton variant="primary" size="lg" />
             </Magnetic>
@@ -162,118 +131,99 @@ export function Hero() {
             </Magnetic>
           </div>
 
-          <div data-hero className="pt-2">
+          {/* Scroll Down */}
+          <div data-hero className="pt-3">
             <a
               href="#about"
               className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted transition-colors hover:text-primary"
             >
               <span className="flex size-7 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary animate-bounce">
-                ↓
+                <ChevronDown className="size-4" />
               </span>
               Scroll Down
             </a>
           </div>
         </div>
 
-        {/* Blended globe portrait + floating sprint widgets */}
+        {/* Right Column: 3D Stage Pedestal + Portrait + 3 Floating Widgets */}
         <div className="lg:col-span-6" data-hero>
-          <div className="relative mx-auto w-full max-w-[520px]">
+          <div className="relative mx-auto w-full max-w-[500px]">
+            {/* Ambient Background Glow */}
             <div
               aria-hidden
               className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[130px]"
             />
-            <div className="relative aspect-[4/5]">
+
+            {/* Glowing 3D Stage Pedestal */}
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-primary/25 bg-surface/40 backdrop-blur-md shadow-2xl">
               <Image
                 src="/images/hero-globe.jpg"
                 alt={`Portrait of ${site.name}`}
                 fill
                 priority
                 fetchPriority="high"
-                sizes="(max-width: 1024px) 92vw, 520px"
+                sizes="(max-width: 1024px) 92vw, 500px"
                 className="mask-fade-b object-cover object-top"
               />
-            </div>
 
-            {/* Holographic identity chip */}
-            <div className="absolute -bottom-4 left-0 hidden sm:block md:-left-6">
-              <div className="glass-card flex animate-float items-center gap-3 p-3 shadow-lg [animation-delay:1.8s]">
-                <div className="relative size-11 overflow-hidden rounded-md">
-                  <Image
-                    src="/images/portrait-holo.jpg"
-                    alt=""
-                    fill
-                    sizes="44px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col pr-1 leading-tight">
-                  <span className="text-sm font-semibold">{site.firstName}</span>
-                  <span className="text-xs text-muted">{site.role}</span>
-                </div>
+              {/* Glowing 3D Pedestal Ring Base */}
+              <div
+                aria-hidden
+                className="absolute inset-x-8 bottom-4 h-14 rounded-full border-2 border-primary/40 bg-primary/10 shadow-lg shadow-primary/30 backdrop-blur-md"
+              />
+
+              {/* 3D Neon Signature Overlay */}
+              <div
+                aria-hidden
+                className="absolute bottom-10 right-6 font-display text-lg font-bold italic tracking-wider text-cyan-300 opacity-90 drop-shadow-[0_0_12px_rgba(34,211,238,0.8)]"
+              >
+                Gokula Krishnan
               </div>
             </div>
 
-            {/* Project Timeline widget */}
-            <div className="absolute -right-2 top-2 hidden w-48 sm:block md:-right-6">
-              <div aria-hidden className="glass-card animate-float flex-col gap-2.5 p-4 shadow-lg [animation-delay:0.3s]">
-                <p className="text-caption font-semibold">Project Timeline</p>
+            {/* Floating Widget 1: Project Timeline (Top-Left) */}
+            <div className="absolute -left-6 top-8 hidden rounded-xl border border-primary/20 bg-surface/85 p-3.5 shadow-xl backdrop-blur-md sm:block">
+              <p className="mb-2 text-[10px] font-mono font-semibold uppercase text-muted">
+                Project Timeline
+              </p>
+              <div className="flex flex-col gap-1.5">
                 {timelineRows.map((row) => (
-                  <div key={row.label} className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3.5 shrink-0 text-success" />
-                    <span className="flex-1 text-xs text-muted">{row.label}</span>
-                    <span className="h-1 w-8 overflow-hidden rounded-full bg-[rgb(var(--color-glass)/0.15)]">
-                      <span
-                        className="block h-full rounded-full bg-gradient-to-r from-primary to-secondary"
-                        style={{ width: row.w }}
-                      />
+                  <div key={row.label} className="flex items-center gap-2 text-xs">
+                    <span
+                      className={`size-2 rounded-full ${
+                        row.done ? "bg-primary shadow-sm shadow-primary" : "bg-border/40"
+                      }`}
+                    />
+                    <span className={row.done ? "font-medium text-text" : "text-muted"}>
+                      {row.label}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Project Status widget */}
-            <div className="absolute -left-2 top-[32%] hidden w-52 sm:block md:-left-10">
-              <div aria-hidden className="glass-card animate-float flex-col gap-2.5 p-4 shadow-lg [animation-delay:0.9s]">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-caption font-semibold">Project Status</p>
-                  <span className="flex items-center gap-1.5 text-xs font-medium text-success">
-                    <span className="size-1.5 rounded-full bg-success" />
-                    On Track
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-muted">Team Collaboration</span>
-                  <span className="flex items-center -space-x-1.5">
-                    {["from-primary to-secondary", "from-secondary to-primary", "from-success to-secondary", "from-warning to-primary"].map(
-                      (g, i) => (
-                        <span
-                          key={i}
-                          className={cn("size-4 rounded-full border border-[rgb(var(--color-surface))] bg-gradient-to-br", g)}
-                        />
-                      ),
-                    )}
-                    <span className="ml-2 text-xs font-medium text-muted">+4</span>
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-muted">Tasks Completed</span>
-                  <span className="text-xs font-bold text-primary">87%</span>
-                </div>
-                <span className="h-1.5 w-full overflow-hidden rounded-full bg-[rgb(var(--color-glass)/0.15)]">
-                  <span className="block h-full w-[87%] rounded-full bg-gradient-to-r from-primary to-secondary" />
-                </span>
+            {/* Floating Widget 2: Task Progress 78% (Top-Right) */}
+            <div className="absolute -right-6 top-12 hidden flex-col items-center gap-1 rounded-xl border border-primary/20 bg-surface/85 p-3.5 shadow-xl backdrop-blur-md sm:flex">
+              <p className="text-[10px] font-mono font-semibold uppercase text-muted">
+                Task Progress
+              </p>
+              <div className="relative flex items-center justify-center my-1">
+                <TaskProgressRing value={78} />
+                <span className="absolute font-display text-xs font-bold text-text">78%</span>
               </div>
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-success">
+                <span className="size-1.5 rounded-full bg-success animate-pulse" /> On Track
+              </span>
             </div>
 
-            {/* Sprint Progress widget */}
-            <div className="absolute -right-2 top-[52%] hidden sm:block md:-right-8">
-              <div aria-hidden className="glass-card animate-float items-center gap-3 p-4 shadow-lg [animation-delay:1.4s]">
-                <ProgressRing value={72} />
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted">Sprint Progress</span>
-                  <span className="font-display text-lg font-bold">72%</span>
-                </div>
+            {/* Floating Widget 3: Task Analytics Bar Chart (Bottom-Left) */}
+            <div className="absolute -left-4 bottom-16 hidden items-center gap-3 rounded-xl border border-primary/20 bg-surface/85 p-3 shadow-xl backdrop-blur-md sm:flex">
+              <div className="flex size-9 items-center justify-center rounded-lg bg-secondary/15 text-secondary">
+                <BarChart3 className="size-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-mono text-muted">Task Velocity</span>
+                <span className="text-xs font-bold text-text">High Performance</span>
               </div>
             </div>
           </div>

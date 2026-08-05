@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Check, Clock, Copy, Mail, Phone, Send } from "lucide-react";
+import { Check, Clock, Copy, Mail, MapPin, Phone, Send } from "lucide-react";
 import { site } from "@/config/site";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
@@ -14,16 +14,13 @@ import { LinkedInIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
 import type { AsyncState } from "@/types";
 
-/**
- * Contact — mockup layout: channel cards left, blended portrait center,
- * "Send a Message" panel right. All values resolve from config/site.ts.
- */
 const channels = [
   { label: "Email", value: site.email, href: site.emailHref, icon: Mail, copyable: true },
   { label: "Phone", value: site.phone, href: site.phoneHref, icon: Phone, copyable: true },
+  { label: "Location", value: "India, Coimbatore | Open to work globally", href: "#", icon: MapPin, copyable: false },
   {
     label: "LinkedIn",
-    value: "gokula-krishnan-r-g-00a124286",
+    value: "linkedin.com/in/gokula-krishnan-rgk",
     href: site.linkedin,
     icon: LinkedInIcon,
     copyable: false,
@@ -116,33 +113,35 @@ export function Contact() {
       aria-label="Contact"
       className="section-line section-pad relative scroll-mt-24 overflow-hidden"
     >
-      <div className="container-x grid items-center gap-12 lg:grid-cols-12">
-        <div className="flex flex-col gap-8 lg:col-span-4">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Get In Touch"
-              title="Let's Work Together"
-              description="Have a project, a role, or a question about delivery? My inbox is open — I typically reply within 24 hours."
-            />
-          </Reveal>
+      <div className="container-x flex flex-col gap-10">
+        <Reveal>
+          <SectionHeading
+            eyebrow="LET'S CONNECT"
+            title="Let's Build Something Great Together"
+          />
+        </Reveal>
 
-          <div className="flex flex-col gap-4">
+        <div className="grid items-center gap-8 lg:grid-cols-12">
+          {/* Left Column: Contact Channels */}
+          <div className="flex flex-col gap-4 lg:col-span-4">
             {channels.map((channel, i) => {
               const Icon = channel.icon;
               return (
                 <Reveal key={channel.label} delay={Math.min(i * 0.08, 0.2)} y={16}>
                   <GlassCard hover className="flex items-center gap-4 p-4">
-                    <span className="rounded-md bg-primary/10 p-2.5 text-primary">
+                    <span className="rounded-xl bg-primary/15 p-3 text-primary shadow-sm">
                       <Icon className="size-5" aria-hidden />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-caption text-muted">{channel.label}</p>
+                      <p className="text-[11px] font-mono uppercase tracking-wider text-muted">
+                        {channel.label}
+                      </p>
                       <a
                         href={channel.href}
                         {...("external" in channel && channel.external
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
-                        className="block truncate font-medium transition-colors duration-micro hover:text-primary"
+                        className="block truncate font-medium text-xs sm:text-sm text-text transition-colors hover:text-primary"
                       >
                         {channel.value}
                       </a>
@@ -152,7 +151,7 @@ export function Contact() {
                         type="button"
                         onClick={() => copyValue(channel.value, channel.label)}
                         aria-label={`Copy ${channel.label}`}
-                        className="rounded-md p-2 text-muted transition-colors duration-micro hover:text-primary"
+                        className="rounded-md p-2 text-muted transition-colors hover:text-primary"
                       >
                         {copied === channel.label ? (
                           <Check className="size-4 text-success" aria-hidden />
@@ -166,33 +165,33 @@ export function Contact() {
               );
             })}
           </div>
-        </div>
 
-        {/* Blended portrait center column */}
-        <div className="hidden lg:col-span-3 lg:block">
-          <Reveal className="h-full" delay={0.1}>
-            <div className="relative h-full min-h-[480px]">
-              <div
-                aria-hidden
-                className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[110px]"
-              />
-              <Image
-                src="/images/portrait-hero.jpg"
-                alt=""
-                fill
-                sizes="300px"
-                className="mask-fade-b object-cover object-top opacity-95"
-              />
-            </div>
-          </Reveal>
-        </div>
+          {/* Center Column: Standing Portrait Cutout on Glowing Radial Stage */}
+          <div className="hidden lg:col-span-4 lg:block">
+            <Reveal className="h-full" delay={0.1}>
+              <div className="relative mx-auto h-[440px] w-full max-w-[320px]">
+                {/* Glowing Blue Radial Platform Stage Base */}
+                <div
+                  aria-hidden
+                  className="absolute inset-x-4 bottom-2 h-20 rounded-[100%] border-2 border-cyan-400/40 bg-cyan-500/20 blur-sm shadow-[0_0_40px_rgba(34,211,238,0.4)]"
+                />
 
-        {/* Send a Message panel */}
-        <Reveal className="lg:col-span-5" delay={0.1}>
-          <GlassCard className="h-full p-6 md:p-8">
-            <h3 className="mb-6 font-display text-card font-semibold">Send a Message</h3>
-            <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-              <div className="grid gap-5 sm:grid-cols-2">
+                <Image
+                  src="/images/portrait-hero.jpg"
+                  alt=""
+                  fill
+                  sizes="320px"
+                  className="mask-fade-b object-cover object-top"
+                />
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right Column: Send Me a Message Form Panel */}
+          <Reveal className="lg:col-span-4" delay={0.15}>
+            <GlassCard className="h-full p-6 md:p-7 border-primary/20 shadow-2xl">
+              <h3 className="mb-5 font-display text-lg font-semibold text-text">Send Me a Message</h3>
+              <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
                 <Input
                   id="contact-name"
                   label="Name"
@@ -214,29 +213,25 @@ export function Contact() {
                   onChange={setField("email")}
                   error={errors.email}
                 />
-              </div>
-              <Textarea
-                id="contact-message"
-                label="Message"
-                placeholder="Your Message"
-                required
-                value={values.message}
-                onChange={setField("message")}
-                error={errors.message}
-              />
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <p className="flex items-center gap-2 text-caption text-muted">
-                  <Clock className="size-4" aria-hidden />
-                  Replies within 24 hours
-                </p>
-                <Button type="submit" variant="primary" size="lg" loading={state === "loading"}>
-                  {state === "success" ? "Draft ready" : "Send Message"}
-                  {state !== "loading" && <Send className="size-4" aria-hidden />}
-                </Button>
-              </div>
-            </form>
-          </GlassCard>
-        </Reveal>
+                <Textarea
+                  id="contact-message"
+                  label="Message"
+                  placeholder="Your Message"
+                  required
+                  value={values.message}
+                  onChange={setField("message")}
+                  error={errors.message}
+                />
+                <div className="pt-2">
+                  <Button type="submit" variant="primary" size="lg" loading={state === "loading"} className="w-full bg-gradient-to-r from-primary to-purple-600">
+                    {state === "success" ? "Draft ready" : "Send Message"}
+                    {state !== "loading" && <Send className="size-4 ml-2" aria-hidden />}
+                  </Button>
+                </div>
+              </form>
+            </GlassCard>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

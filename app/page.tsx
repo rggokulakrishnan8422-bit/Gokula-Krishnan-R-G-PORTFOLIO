@@ -5,8 +5,9 @@ import { Tools } from "@/components/sections/tools";
 import { Projects } from "@/components/sections/projects";
 import { Experience } from "@/components/sections/experience";
 import { Contact } from "@/components/sections/contact";
+import { ThemeShowcase } from "@/components/sections/theme-showcase";
 
-/** Home page layout incorporating contextual portrait treatments across sections */
+/** Home page layout following preferred mockup design */
 export default function Home() {
   return (
     <>
@@ -17,6 +18,7 @@ export default function Home() {
       <Projects />
       <Experience />
       <Contact />
+      <ThemeShowcase />
     </>
   );
 }
