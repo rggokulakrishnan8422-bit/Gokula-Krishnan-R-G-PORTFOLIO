@@ -12,6 +12,7 @@ export const site = {
   phone: "+91 95009 24842",
   phoneHref: "tel:+919500924842",
   linkedin: "https://www.linkedin.com/in/gokula-krishnan-r-g-00a124286",
+  github: "https://github.com/rggokulakrishnan8422-bit",
   url: "https://gokula-krishnan-r-g-portfolio.vercel.app",
   location: "Coimbatore, Tamil Nadu, India",
   tagline: "Driving Efficient, Structured Delivery across Software & Business Operations.",

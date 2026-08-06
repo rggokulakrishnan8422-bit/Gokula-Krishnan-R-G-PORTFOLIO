@@ -26,7 +26,7 @@ export function SignatureCard({ className, light = false }: SignatureCardProps) 
       <div
         aria-label="Gokula Krishnan R G Signature"
         className={cn(
-          "-mt-1 font-display text-2xl sm:text-3xl font-bold italic tracking-wide drop-shadow-[0_0_12px_rgba(34,211,238,0.6)] transition-all",
+          "-mt-1 font-display text-2xl sm:text-3xl font-bold italic tracking-wide drop-shadow-[0_0_12px_rgb(var(--cyan-300)/0.6)] transition-all",
           light
             ? "text-slate-900"
             : "bg-gradient-to-r from-cyan-300 via-primary to-purple-400 bg-clip-text text-transparent",

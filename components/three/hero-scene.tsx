@@ -68,7 +68,7 @@ function Particles({
 }
 
 /** Abstract wireframe panels — the kanban/data motif of Section 6. */
-function KanbanPlanes() {
+function KanbanPlanes({ color }: { color: string }) {
   const panels = useMemo(
     () =>
       Array.from({ length: 6 }, (_, i) => ({
@@ -95,7 +95,7 @@ function KanbanPlanes() {
           <mesh position={panel.position} rotation={panel.rotation} scale={panel.scale}>
             <planeGeometry args={[1.6, 1.05]} />
             <meshBasicMaterial
-              color="#5B8CFF"
+              color={color}
               wireframe
               transparent
               opacity={0.15}
@@ -122,7 +122,7 @@ function CameraRig() {
 }
 
 /** Slow wireframe globe echoing the hero portrait's network motif. */
-function GlobeEcho({ mobile }: { mobile: boolean }) {
+function GlobeEcho({ mobile, color }: { mobile: boolean; color: string }) {
   const ref = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
@@ -136,7 +136,7 @@ function GlobeEcho({ mobile }: { mobile: boolean }) {
       <mesh ref={ref} position={[3.4, 0.4, -1.2]}>
         <icosahedronGeometry args={[2.3, 2]} />
         <meshBasicMaterial
-          color="#527EFF"
+          color={color}
           wireframe
           transparent
           opacity={0.07}
@@ -147,7 +147,15 @@ function GlobeEcho({ mobile }: { mobile: boolean }) {
   );
 }
 
-function SceneContent({ particleCount, mobile }: { particleCount: number; mobile: boolean }) {
+function SceneContent({
+  particleCount,
+  mobile,
+  palette,
+}: {
+  particleCount: number;
+  mobile: boolean;
+  palette: HeroScenePalette;
+}) {
   const group = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
@@ -156,15 +164,27 @@ function SceneContent({ particleCount, mobile }: { particleCount: number; mobile
 
   return (
     <group ref={group}>
-      <Particles count={particleCount} color="#5B8CFF" size={0.035} />
-      <Particles count={Math.floor(particleCount / 3)} color="#22D3EE" size={0.05} />
-      <KanbanPlanes />
-      <GlobeEcho mobile={mobile} />
+      <Particles count={particleCount} color={palette.primary} size={0.035} />
+      <Particles count={Math.floor(particleCount / 3)} color={palette.secondary} size={0.05} />
+      <KanbanPlanes color={palette.planes} />
+      <GlobeEcho mobile={mobile} color={palette.primary} />
     </group>
   );
 }
 
-export default function HeroScene() {
+export interface HeroScenePalette {
+  primary: string;
+  secondary: string;
+  planes: string;
+}
+
+const DEFAULT_PALETTE: HeroScenePalette = {
+  primary: "#5B8CFF",
+  secondary: "#22D3EE",
+  planes: "#5B8CFF",
+};
+
+export default function HeroScene({ palette = DEFAULT_PALETTE }: { palette?: HeroScenePalette }) {
   const reduced = useReducedMotion();
   const mobile = useMediaQuery("(max-width: 767px)");
   const [webglOk, setWebglOk] = useState<boolean | null>(null);
@@ -189,7 +209,11 @@ export default function HeroScene() {
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
       <CameraRig />
-      <SceneContent particleCount={mobile ? 420 : 2000} mobile={mobile} />
+      <SceneContent
+        particleCount={mobile ? 420 : 2000}
+        mobile={mobile}
+        palette={palette}
+      />
     </Canvas>
   );
 }

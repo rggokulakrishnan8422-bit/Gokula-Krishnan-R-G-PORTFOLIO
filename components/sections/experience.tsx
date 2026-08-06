@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Briefcase, GraduationCap, Calendar, CheckCircle2, Sliders, Activity, Play, ClipboardList } from "lucide-react";
+import { site } from "@/config/site";
 import { experience } from "@/config/content";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const pipelineSteps = [
   { label: "Planning", icon: ClipboardList, active: true },
@@ -80,47 +82,67 @@ export function Experience() {
             </ol>
           </div>
 
-          {/* Right Column: Connected 5-Step Pipeline + Standing Portrait Visual */}
-          <div className="flex flex-col gap-8 lg:col-span-6">
-            {/* Connected 5-Step Process Pipeline */}
+          {/* Right Column: Delivery Lifecycle arc + frameless portrait */}
+          <div className="flex flex-col gap-10 lg:col-span-6">
+            {/* 5-phase delivery lifecycle (mockup arc) */}
             <Reveal delay={0.15}>
-              <GlassCard className="flex flex-col gap-6 p-6 sm:p-7 border-primary/20">
-                <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted">
-                  End-to-End Delivery Lifecycle
-                </h4>
-
-                <div className="relative flex items-center justify-between py-2">
-                  {/* Connecting Line behind */}
-                  <div className="absolute inset-x-6 top-1/2 h-0.5 -translate-y-1/2 bg-gradient-to-r from-primary via-cyan-400 to-success" />
-
-                  {/* 5 Step Nodes */}
-                  {pipelineSteps.map((step) => {
-                    const Icon = step.icon;
-                    return (
-                      <div key={step.label} className="relative z-10 flex flex-col items-center gap-2 group">
-                        <div className="flex size-10 sm:size-12 items-center justify-center rounded-full border-2 border-cyan-400 bg-surface/95 text-cyan-400 shadow-lg shadow-cyan-400/20 backdrop-blur-md transition-transform group-hover:scale-110">
-                          <Icon className="size-4 sm:size-5" />
-                        </div>
-                        <span className="text-[10px] sm:text-xs font-semibold text-text group-hover:text-primary transition-colors">
-                          {step.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </GlassCard>
+              <div
+                role="img"
+                aria-label="Delivery lifecycle: Planning, Execution, Monitoring, Controlling, Closing"
+                className="relative flex items-start justify-between px-1 pt-1"
+              >
+                {/* Connector line */}
+                <div
+                  aria-hidden
+                  className="absolute inset-x-8 top-[26px] h-0.5 bg-gradient-to-r from-primary/70 via-cyan-400/70 to-primary/50"
+                />
+                {pipelineSteps.map((step, i) => {
+                  const Icon = step.icon;
+                  const isFinal = i === pipelineSteps.length - 1;
+                  return (
+                    <div key={step.label} className="group relative z-10 flex flex-col items-center gap-3">
+                      <span className="text-[10px] font-medium text-muted transition-colors duration-small group-hover:text-text sm:text-xs">
+                        {step.label}
+                      </span>
+                      <span
+                        className={cn(
+                          "flex size-11 items-center justify-center rounded-full border-2 backdrop-blur-md transition-transform duration-small group-hover:scale-110 sm:size-12",
+                          isFinal
+                            ? "border-transparent bg-gradient-to-br from-primary to-cyan-400 text-white shadow-lg shadow-[rgb(var(--ring)/0.45)]"
+                            : "border-cyan-400/70 bg-[rgb(var(--color-surface)/0.95)] text-cyan-400 shadow-lg shadow-cyan-400/15",
+                        )}
+                      >
+                        <Icon className="size-4 sm:size-5" aria-hidden />
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </Reveal>
 
-            {/* Standing Portrait Visual Overlay */}
-            <Reveal delay={0.2} className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-primary/25 bg-surface/60 shadow-2xl backdrop-blur-md">
-              <Image
-                src="/images/portrait-holo.jpg"
-                alt="Gokula Krishnan — Experience Delivery Visual"
-                fill
-                sizes="(max-width: 1024px) 90vw, 500px"
-                className="object-cover object-top mask-fade-b filter contrast-110"
+            {/* Frameless portrait — melts into the section ambience */}
+            <Reveal delay={0.2} className="relative aspect-[16/9] w-full">
+              <div
+                aria-hidden
+                className="absolute right-4 top-1/2 h-[280px] w-[280px] -translate-y-1/2 rounded-full bg-primary/20 blur-[110px]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-primary/10" />
+              <Image
+                src="/images/portrait-blue.jpg"
+                alt={`${site.name} — delivery lifecycle visual`}
+                fill
+                sizes="(max-width: 1024px) 90vw, 560px"
+                className="mask-blend-radial-wide object-cover object-top contrast-110"
+              />
+              {/* Floating delivery chips (mockup ambience) */}
+              <span className="absolute left-6 top-8 hidden size-11 animate-float items-center justify-center rounded-xl border border-primary/30 bg-[rgb(var(--color-surface)/0.85)] shadow-xl backdrop-blur-md md:flex">
+                <ClipboardList className="size-5 text-cyan-400" aria-hidden />
+              </span>
+              <span
+                className="absolute right-10 top-14 hidden size-11 animate-float items-center justify-center rounded-xl border border-primary/30 bg-[rgb(var(--color-surface)/0.85)] shadow-xl backdrop-blur-md md:flex"
+                style={{ animationDelay: "1.2s" }}
+              >
+                <Activity className="size-5 text-purple-400" aria-hidden />
+              </span>
             </Reveal>
           </div>
         </div>

@@ -5,8 +5,9 @@ import { Tools } from "@/components/sections/tools";
 import { Projects } from "@/components/sections/projects";
 import { Experience } from "@/components/sections/experience";
 import { Contact } from "@/components/sections/contact";
+import { ThemeVariations } from "@/components/sections/theme-variations";
 
-/** Home page layout matching preferred mockup designs */
+/** Home page layout matching the Aug 5 preferred mockup (with theme strip) */
 export default function Home() {
   return (
     <>
@@ -17,6 +18,7 @@ export default function Home() {
       <Projects />
       <Experience />
       <Contact />
+      <ThemeVariations />
     </>
   );
 }

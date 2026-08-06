@@ -38,6 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
       <body className={`${sora.variable} ${inter.variable} font-sans antialiased bg-surface text-text`}>
+        {/* Applies the saved accent theme pre-paint (no flash). Mirrors lib/themes.ts */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("gk-accent-theme");if(["neon-blue","cyber-purple","ocean-teal","sunset-amber","forest-green"].indexOf(t)>-1){document.documentElement.dataset.theme=t;}}catch(e){}})();`,
+          }}
+        />
         <a href="#content" className="skip-link">
           Skip to content
         </a>

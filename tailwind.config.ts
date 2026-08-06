@@ -20,10 +20,27 @@ const config: Config = {
         primary: "rgb(var(--color-primary) / <alpha-value>)",
         secondary: "rgb(var(--color-secondary) / <alpha-value>)",
         surface: "rgb(var(--color-surface) / <alpha-value>)",
+        text: "rgb(var(--color-text) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
         muted: "rgb(var(--color-muted) / <alpha-value>)",
         success: "rgb(var(--color-success) / <alpha-value>)",
         warning: "rgb(var(--color-warning) / <alpha-value>)",
         error: "rgb(var(--color-error) / <alpha-value>)",
+        // Accent palette shades are var-mapped so the Theme Variations
+        // switcher (lib/themes.ts) re-colors every accent usage at once.
+        cyan: {
+          300: "rgb(var(--cyan-300) / <alpha-value>)",
+          400: "rgb(var(--cyan-400) / <alpha-value>)",
+          500: "rgb(var(--cyan-500) / <alpha-value>)",
+        },
+        purple: {
+          400: "rgb(var(--purple-400) / <alpha-value>)",
+          500: "rgb(var(--purple-500) / <alpha-value>)",
+          600: "rgb(var(--purple-600) / <alpha-value>)",
+        },
+        indigo: {
+          500: "rgb(var(--indigo-500) / <alpha-value>)",
+        },
       },
       fontFamily: {
         display: ["var(--font-sora)", "ui-sans-serif", "system-ui", "sans-serif"],

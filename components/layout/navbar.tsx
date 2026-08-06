@@ -6,7 +6,8 @@ import { Menu, X } from "lucide-react";
 import { navLinks } from "@/config/content";
 import { site } from "@/config/site";
 import { ResumeButton } from "@/components/ui/resume-button";
-import { LinkedInIcon } from "@/components/ui/icons";
+import { ThemeMenu } from "@/components/ui/theme-menu";
+import { ACCENT_THEMES, applyAccentTheme, useAccentTheme } from "@/lib/themes";
 import { useLenis, scrollToTop } from "@/components/motion/lenis-provider";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
  */
 export function Navbar() {
   const lenis = useLenis();
+  const theme = useAccentTheme();
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
@@ -87,12 +89,9 @@ export function Navbar() {
           }}
           className="group flex items-center gap-2.5"
         >
-          <span className="text-gradient font-display text-2xl font-bold transition-transform duration-small group-hover:scale-105">
-            GK
-          </span>
-          <span className="hidden flex-col leading-tight sm:flex">
-            <span className="font-display text-sm font-semibold">{site.name}</span>
-            <span className="text-xs text-muted">{site.role}</span>
+          <span className="font-display text-2xl font-bold transition-transform duration-small group-hover:scale-105">
+            <span className="text-gradient">GK</span>
+            <span className="text-primary">.</span>
           </span>
         </a>
 
@@ -113,15 +112,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href={site.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${site.name} on LinkedIn`}
-            className="hidden size-10 items-center justify-center rounded-md text-muted transition-colors duration-micro hover:text-primary sm:inline-flex"
-          >
-            <LinkedInIcon className="size-5" />
-          </a>
+          <ThemeMenu className="hidden sm:block" />
           <div className="hidden sm:block">
             <ResumeButton variant="primary" size="sm" />
           </div>
@@ -165,6 +156,33 @@ export function Navbar() {
                 </a>
               ))}
               <ResumeButton variant="primary" className="mt-3 w-full" />
+              {/* Accent theme swatches (Theme Variations) */}
+              <div className="mt-4 flex items-center justify-between rounded-lg border px-3 py-2.5">
+                <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-muted">
+                  Theme
+                </span>
+                <div className="flex items-center gap-2.5">
+                  {ACCENT_THEMES.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => applyAccentTheme(t.id)}
+                      aria-label={`${t.name} theme`}
+                      aria-pressed={t.id === theme.id}
+                      title={t.name}
+                      className={cn(
+                        "size-5 rounded-full shadow-inner transition-transform duration-micro",
+                        t.id === theme.id
+                          ? "scale-110 ring-2 ring-offset-2 ring-offset-[rgb(var(--color-surface))] ring-[rgb(var(--ring))]"
+                          : "opacity-70 hover:scale-105 hover:opacity-100",
+                      )}
+                      style={{
+                        background: `linear-gradient(135deg, rgb(${t.rgb.primary}), rgb(${t.rgb.secondary}))`,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
