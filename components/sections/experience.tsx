@@ -23,7 +23,7 @@ export function Experience() {
     >
       <div className="container-x flex flex-col gap-12">
         <Reveal>
-          <SectionHeading eyebrow="Experience" title="My Professional Journey" />
+          <SectionHeading eyebrow="EXPERIENCE" title="My Professional Journey" />
         </Reveal>
 
         <div className="grid items-start gap-12 lg:grid-cols-12">

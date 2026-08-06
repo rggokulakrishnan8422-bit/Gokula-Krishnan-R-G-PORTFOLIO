@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const ORBIT_RADIUS = 136;
 
-/** 3D Glowing Isometric Cube Matrix Core + 6 Orbiting Glass Icon Badges */
+/** 3D Glowing Isometric Cube Matrix Core + Orbiting Tech Icons */
 function IsometricCubeOrbit() {
   return (
     <div aria-hidden className="relative mx-auto aspect-square w-full max-w-[360px] flex items-center justify-center">
@@ -65,7 +65,6 @@ function IsometricCubeOrbit() {
 export function Skills() {
   const reduced = useReducedMotion();
   const barsRef = useRef<HTMLUListElement>(null);
-  const [activeTab, setActiveTab] = useState<"technical" | "professional">("technical");
 
   useEffect(() => {
     if (reduced) return;
@@ -88,57 +87,27 @@ export function Skills() {
       });
     }, scope);
     return () => ctx.revert();
-  }, [reduced, activeTab]);
+  }, [reduced]);
 
   return (
     <section id="skills" aria-label="Skills" className="section-line section-pad scroll-mt-24">
       <div className="container-x flex flex-col gap-10">
         <Reveal>
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <SectionHeading eyebrow="MY SKILLS" title="Expertise & Competencies" />
-
-            {/* Technical Skills vs Professional Skills Toggle Tabs */}
-            <div className="inline-flex rounded-full border border-primary/30 bg-surface/80 p-1 shadow-inner backdrop-blur-md">
-              <button
-                type="button"
-                onClick={() => setActiveTab("technical")}
-                className={cn(
-                  "rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200",
-                  activeTab === "technical"
-                    ? "bg-primary text-white shadow-md"
-                    : "text-muted hover:text-text",
-                )}
-              >
-                Technical Skills
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("professional")}
-                className={cn(
-                  "rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200",
-                  activeTab === "professional"
-                    ? "bg-primary text-white shadow-md"
-                    : "text-muted hover:text-text",
-                )}
-              >
-                Professional Skills
-              </button>
-            </div>
-          </div>
+          <SectionHeading eyebrow="MY SKILLS & EXPERTISE" title="My Skills & Expertise" />
         </Reveal>
 
         <div className="grid items-stretch gap-8 lg:grid-cols-12">
-          {/* Left Column: Technical Skills Percentage Level Bars */}
+          {/* Left Column: Technical Skills Level Bars */}
           <Reveal className="lg:col-span-5">
-            <GlassCard className="flex h-full flex-col gap-5 p-6 md:p-7 border-primary/20">
-              <h3 className="font-display text-sm font-semibold text-text uppercase tracking-wider text-primary">
-                Technical Skills
+            <GlassCard className="flex h-full flex-col gap-4 p-6 md:p-7 border-primary/20">
+              <h3 className="font-display text-xs font-semibold text-text uppercase tracking-wider text-primary mb-1">
+                TECHNICAL SKILLS
               </h3>
-              <ul ref={barsRef} className="flex flex-col gap-3.5">
+              <ul ref={barsRef} className="flex flex-col gap-3">
                 {technicalSkills.map((skill) => {
                   const Icon = skill.icon;
                   return (
-                    <li key={skill.label} className="flex flex-col gap-1.5">
+                    <li key={skill.label} className="flex flex-col gap-1">
                       <div className="flex items-center justify-between gap-3 text-xs sm:text-sm">
                         <span className="flex items-center gap-2 font-medium text-text">
                           <Icon className="size-4 text-cyan-400" aria-hidden />
@@ -170,26 +139,26 @@ export function Skills() {
             <IsometricCubeOrbit />
           </Reveal>
 
-          {/* Right Column: Professional Skills 6-Dot Matrix */}
+          {/* Right Column: Professional Skills 8-Dot Matrix */}
           <Reveal className="lg:col-span-5" delay={0.15}>
             <GlassCard className="flex h-full flex-col justify-between p-6 md:p-7 border-primary/20">
               <div>
-                <h3 className="mb-5 font-display text-sm font-semibold text-text uppercase tracking-wider text-primary">
-                  Professional Skills
+                <h3 className="mb-4 font-display text-xs font-semibold text-text uppercase tracking-wider text-primary">
+                  PROFESSIONAL SKILLS
                 </h3>
-                <ul className="flex flex-col gap-3.5">
+                <ul className="flex flex-col gap-2.5">
                   {professionalSkills.map((skill) => (
                     <li key={skill.label} className="flex items-center justify-between gap-4">
-                      <span className="text-xs sm:text-sm font-medium text-text">{skill.label}</span>
+                      <span className="text-xs font-medium text-text">{skill.label}</span>
                       <span className="flex items-center gap-1.5">
                         <span className="sr-only">{`${skill.level} out of 100`}</span>
-                        {Array.from({ length: 6 }).map((_, d) => (
+                        {Array.from({ length: 8 }).map((_, d) => (
                           <span
                             key={d}
                             aria-hidden
                             className={cn(
                               "size-2.5 rounded-full transition-all duration-300",
-                              d < Math.round((skill.level / 100) * 6)
+                              d < Math.round((skill.level / 100) * 8)
                                 ? "bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.8)]"
                                 : "bg-border/30",
                             )}
@@ -203,6 +172,29 @@ export function Skills() {
             </GlassCard>
           </Reveal>
         </div>
+
+        {/* Tools I Use Wall Below */}
+        <Reveal delay={0.2}>
+          <div className="flex flex-col gap-3 rounded-2xl border border-primary/20 bg-surface/50 p-5 backdrop-blur-md">
+            <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted">
+              TOOLS I USE
+            </h4>
+            <div className="flex flex-wrap items-center gap-3">
+              {toolsWall.map((tool) => {
+                const Icon = tool.icon;
+                return (
+                  <span
+                    key={tool.label}
+                    className="inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-surface/80 px-4 py-2 text-xs font-semibold text-text shadow-sm backdrop-blur-md transition-transform hover:scale-105"
+                  >
+                    <Icon className="size-4 text-cyan-400" />
+                    {tool.label}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

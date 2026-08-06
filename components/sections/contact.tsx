@@ -183,6 +183,16 @@ export function Contact() {
                   sizes="320px"
                   className="mask-fade-b object-cover object-top"
                 />
+
+                {/* Floating Glass Pill 1: Email (Left) */}
+                <div className="absolute left-0 top-24 flex size-12 items-center justify-center rounded-2xl border border-primary/30 bg-surface/90 text-primary shadow-xl backdrop-blur-md animate-bounce">
+                  <Mail className="size-5 text-cyan-400" />
+                </div>
+
+                {/* Floating Glass Pill 2: Message/LinkedIn (Right) */}
+                <div className="absolute right-0 top-36 flex size-12 items-center justify-center rounded-2xl border border-primary/30 bg-surface/90 text-primary shadow-xl backdrop-blur-md animate-pulse">
+                  <LinkedInIcon className="size-5 text-cyan-400" />
+                </div>
               </div>
             </Reveal>
           </div>

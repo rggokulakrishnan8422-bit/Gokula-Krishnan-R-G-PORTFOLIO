@@ -82,52 +82,53 @@ export const aboutChips: Chip[] = [
 ];
 
 export const aboutStats: StatItem[] = [
-  { value: 7, suffix: "", label: "Projects Managed", icon: FolderKanban },
-  { value: 3, suffix: "", label: "Projects Delivered", icon: CheckCircle2 },
-  { value: 16, suffix: "+", label: "Team Size Handled", icon: Users },
-  { value: 2, suffix: "+", label: "Years Experience", icon: Briefcase },
+  { value: 8, suffix: "+", label: "Projects Handled", icon: FolderKanban },
+  { value: 25, suffix: "+", label: "Team Collaborated", icon: Users },
+  { value: 120, suffix: "+", label: "Tasks Completed", icon: CheckCircle2 },
+  { value: 60, suffix: "+", label: "Client Meetings", icon: Briefcase },
 ];
 
 export const aboutQuote =
-  "Effective project coordination hinges on crisp reporting, proactive blocker escalation, and structured stakeholder alignment.";
+  "Good project management isn't about tools, it's about people, purpose and the drive to deliver value.";
 
-/** Technical skills with levels */
+/** Technical skills with levels matching 04_33_03 PM mockup */
 export const technicalSkills: TechnicalSkill[] = [
-  { label: "Jira & Agile Workflows", icon: Kanban, level: 85 },
-  { label: "Trello & Task Boards", icon: Columns3, level: 80 },
-  { label: "Google Workspace & Sheets", icon: Globe, level: 85 },
-  { label: "MS Office (Excel/Word/PPT)", icon: FileText, level: 85 },
-  { label: "Flutter & Dart App Dev", icon: Smartphone, level: 75 },
-  { label: "REST API Integration", icon: Share2, level: 80 },
-  { label: "State Mgmt (Provider/GetX)", icon: Layers, level: 75 },
-  { label: "Azure DevOps", icon: Cpu, level: 70 },
-  { label: "Firebase & Data", icon: Database, level: 70 },
+  { label: "Agile", icon: Kanban, level: 95 },
+  { label: "Scrum", icon: RefreshCw, level: 90 },
+  { label: "Jira", icon: Kanban, level: 85 },
+  { label: "Asana", icon: Layout, level: 90 },
+  { label: "Trello", icon: Columns3, level: 88 },
+  { label: "Excel", icon: Sheet, level: 92 },
+  { label: "MS Office", icon: FileText, level: 92 },
+  { label: "Google Workspace", icon: Globe, level: 90 },
+  { label: "AI Tools", icon: Sparkles, level: 75 },
 ];
 
 /** Professional skills matrix */
 export const professionalSkills: ProfessionalSkill[] = [
   { label: "Stakeholder Management", level: 90 },
-  { label: "Communication & Escalation", level: 90 },
+  { label: "Communication", level: 90 },
   { label: "Planning & Scheduling", level: 88 },
-  { label: "Requirement Gathering", level: 85 },
-  { label: "Risk & Blocker Tracking", level: 85 },
-  { label: "Sprint Planning", level: 82 },
-  { label: "Status Reporting Cadence", level: 90 },
-  { label: "Resource Allocation", level: 80 },
-  { label: "Process Improvement", level: 85 },
-  { label: "Vendor & Client Coordination", level: 82 },
+  { label: "Risk Management", level: 85 },
+  { label: "Documentation", level: 85 },
+  { label: "Problem Solving", level: 88 },
+  { label: "Leadership", level: 85 },
+  { label: "Time Management", level: 82 },
+  { label: "Decision Making", level: 85 },
+  { label: "Team Collaboration", level: 90 },
+  { label: "Meeting Coordination", level: 88 },
 ];
 
 /** Tool pills wall */
 export const toolsWall: Tool[] = [
   { label: "Jira", icon: Kanban, hint: "Sprint boards & backlog" },
-  { label: "Azure DevOps", icon: Cpu, hint: "Task & issue tracking" },
+  { label: "Notion", icon: FileText, hint: "Docs & wikis" },
   { label: "Trello", icon: Columns3, hint: "Kanban & milestone views" },
   { label: "Google Workspace", icon: Globe, hint: "Docs & cloud collaboration" },
-  { label: "MS Excel & Sheets", icon: Sheet, hint: "Formulas & status reports" },
-  { label: "Flutter & Dart", icon: Smartphone, hint: "Mobile app codebase" },
-  { label: "VS Code & Android Studio", icon: AppWindow, hint: "Dev IDEs" },
-  { label: "AI Tools & Extensions", icon: Sparkles, hint: "Workflow acceleration" },
+  { label: "Excel", icon: Sheet, hint: "Formulas & status reports" },
+  { label: "Word", icon: FileText, hint: "Documentation" },
+  { label: "MS Office", icon: FileText, hint: "Suite" },
+  { label: "AI Tools", icon: Sparkles, hint: "Workflow acceleration" },
 ];
 
 /** Career Experience Timeline */

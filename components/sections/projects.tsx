@@ -34,7 +34,7 @@ export function Projects() {
       <div className="container-x relative flex flex-col gap-12">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Reveal>
-            <SectionHeading eyebrow="Featured Projects" title="Projects That I'm Proud Of" />
+            <SectionHeading eyebrow="FEATURED PROJECTS" title="Some Projects I'm Proud Of" />
           </Reveal>
           <Reveal delay={0.1}>
             <a

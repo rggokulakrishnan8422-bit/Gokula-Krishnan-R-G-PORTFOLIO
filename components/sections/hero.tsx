@@ -98,18 +98,18 @@ export function Hero() {
             <p className="text-body font-medium text-primary">Hi, I&apos;m</p>
             <h1 className="mt-1 text-balance font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               <span className="block text-text">Gokula</span>
-              <span className="bg-gradient-to-r from-cyan-300 via-primary to-purple-400 bg-clip-text text-transparent block">
-                Krishnan R G
+              <span className="bg-gradient-to-r from-purple-400 via-primary to-indigo-500 bg-clip-text text-transparent block">
+                Krishnan
               </span>
             </h1>
-            <p className="mt-2 text-base font-semibold text-secondary sm:text-lg">
-              I plan. I organize. <span className="text-primary underline decoration-primary/40 underline-offset-4">I deliver.</span>
+            <p className="mt-2 text-base font-semibold text-text sm:text-lg">
+              I plan. I organize. <span className="text-cyan-400 underline decoration-cyan-400/40 underline-offset-4">I deliver.</span>
             </p>
           </div>
 
           {/* Bio Summary */}
           <p data-hero className="max-w-xl text-xs leading-relaxed text-muted sm:text-sm">
-            {heroSummary}
+            Motivated and results-driven Project Manager with over 6+ years of experience in agile project management, cross-functional coordination, stakeholder communication, and delivering effective solutions on time, within scope, and on business value.
           </p>
 
           {/* Action Buttons */}
