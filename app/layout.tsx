@@ -1,5 +1,5 @@
 import type { Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Dancing_Script, Inter, Sora } from "next/font/google";
 import "@/styles/globals.css";
 import { defaultMetadata, personJsonLd } from "@/lib/seo";
 import { LenisProvider } from "@/components/motion/lenis-provider";
@@ -24,6 +24,13 @@ const inter = Inter({
   display: "swap",
 });
 
+/** Handwriting font for the hero script signature (Aug 5 mockup) */
+const script = Dancing_Script({
+  subsets: ["latin"],
+  variable: "--font-script",
+  display: "swap",
+});
+
 export const metadata = defaultMetadata;
 
 export const viewport: Viewport = {
@@ -37,7 +44,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
-      <body className={`${sora.variable} ${inter.variable} font-sans antialiased bg-surface text-text`}>
+      <body className={`${sora.variable} ${inter.variable} ${script.variable} font-sans antialiased bg-surface text-text`}>
         {/* Applies the saved accent theme pre-paint (no flash). Mirrors lib/themes.ts */}
         <script
           dangerouslySetInnerHTML={{

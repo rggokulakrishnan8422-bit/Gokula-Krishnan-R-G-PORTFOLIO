@@ -9,7 +9,6 @@ import {
   useAccentTheme,
   type AccentTheme,
 } from "@/lib/themes";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
@@ -107,18 +106,11 @@ export function ThemeVariations() {
       aria-label="Theme variations"
       className="section-line section-pad scroll-mt-24"
     >
-      <div className="container-x flex flex-col gap-10">
+      <div className="container-x flex flex-col gap-8">
         <Reveal>
-          <SectionHeading
-            eyebrow="THEME VARIATIONS"
-            title={
-              <>
-                One Portfolio.{" "}
-                <span className="text-gradient">Five Moods.</span>
-              </>
-            }
-            description="Pick an accent palette — the whole site re-themes instantly and remembers your choice on this device."
-          />
+          <h2 className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted">
+            Theme Variations
+          </h2>
         </Reveal>
 
         <div
@@ -149,23 +141,28 @@ export function ThemeVariations() {
                       : undefined
                   }
                 >
-                  <ThemePreview t={t} />
-                  <span className="flex w-full items-center justify-between gap-2 bg-[rgb(7_11_30/0.9)] px-3.5 py-3">
-                    <span className="text-xs font-semibold text-text sm:text-sm">{t.name}</span>
-                    {isActive ? (
-                      <span
-                        aria-hidden
-                        className="flex size-5 items-center justify-center rounded-full text-white"
-                        style={{ background: `rgb(${t.rgb.primary})` }}
-                      >
-                        <Check className="size-3" />
+                  <span className="relative block">
+                    <ThemePreview t={t} />
+                    {/* Name pill floats on the preview (Aug 5 mockup) */}
+                    <span className="absolute inset-x-2.5 bottom-2.5 flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-[rgb(5_8_22/0.88)] px-3 py-2 backdrop-blur-md">
+                      <span className="text-xs font-semibold text-text sm:text-[13px]">
+                        {t.name}
                       </span>
-                    ) : (
-                      <span
-                        aria-hidden
-                        className="size-5 rounded-full border border-dashed border-border transition-colors duration-small group-hover:border-muted"
-                      />
-                    )}
+                      {isActive ? (
+                        <span
+                          aria-hidden
+                          className="flex size-5 items-center justify-center rounded-full text-white"
+                          style={{ background: `rgb(${t.rgb.primary})` }}
+                        >
+                          <Check className="size-3" />
+                        </span>
+                      ) : (
+                        <span
+                          aria-hidden
+                          className="size-5 rounded-full border border-dashed border-border transition-colors duration-small group-hover:border-muted"
+                        />
+                      )}
+                    </span>
                   </span>
                 </button>
               </Reveal>

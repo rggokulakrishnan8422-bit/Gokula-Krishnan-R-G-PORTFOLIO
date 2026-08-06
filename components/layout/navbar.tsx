@@ -89,32 +89,46 @@ export function Navbar() {
           }}
           className="group flex items-center gap-2.5"
         >
-          <span className="font-display text-2xl font-bold transition-transform duration-small group-hover:scale-105">
-            <span className="text-gradient">GK</span>
+          <span className="font-display text-2xl font-bold tracking-tight transition-transform duration-small group-hover:scale-105">
+            <span className="text-text">GK</span>
             <span className="text-primary">.</span>
           </span>
         </a>
 
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
             <a
-              key={link.href}
+              key={link.label}
               href={link.href}
               aria-current={active === link.href ? "true" : undefined}
               className={cn(
-                "rounded-md px-3 py-2 text-sm font-medium text-muted transition-colors duration-micro hover:text-[rgb(var(--color-text))]",
-                active === link.href && "bg-primary/10 text-primary",
+                "relative py-2 text-sm font-medium transition-colors duration-micro",
+                active === link.href
+                  ? "text-text"
+                  : "text-muted hover:text-[rgb(var(--color-text))]",
               )}
             >
               {link.label}
+              {/* Active underline bar (Aug 5 mockup) */}
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-primary transition-all duration-small",
+                  active === link.href ? "opacity-100" : "opacity-0",
+                )}
+              />
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <ThemeMenu className="hidden sm:block" />
           <div className="hidden sm:block">
-            <ResumeButton variant="primary" size="sm" />
+            <ResumeButton
+              variant="primary"
+              size="sm"
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg shadow-purple-900/30"
+            />
           </div>
           <button
             ref={menuButtonRef}
@@ -143,7 +157,7 @@ export function Navbar() {
             <div className="container-x flex flex-col gap-1 py-4">
               {navLinks.map((link, i) => (
                 <a
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   autoFocus={i === 0}

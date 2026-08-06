@@ -114,56 +114,57 @@ export function Contact() {
       className="section-line section-pad relative scroll-mt-24 overflow-hidden"
     >
       <div className="container-x flex flex-col gap-10">
-        <Reveal>
-          <SectionHeading
-            eyebrow="LET'S CONNECT"
-            title="Let's Build Something Great Together"
-          />
-        </Reveal>
-
-        <div className="grid items-center gap-8 lg:grid-cols-12">
-          {/* Left Column: Contact Channels */}
-          <div className="flex flex-col gap-4 lg:col-span-4">
-            {channels.map((channel, i) => {
-              const Icon = channel.icon;
-              return (
-                <Reveal key={channel.label} delay={Math.min(i * 0.08, 0.2)} y={16}>
-                  <GlassCard hover className="flex items-center gap-4 p-4">
-                    <span className="rounded-xl bg-primary/15 p-3 text-primary shadow-sm">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-mono uppercase tracking-wider text-muted">
-                        {channel.label}
-                      </p>
-                      <a
-                        href={channel.href}
-                        {...("external" in channel && channel.external
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                        className="block truncate font-medium text-xs sm:text-sm text-text transition-colors hover:text-primary"
-                      >
-                        {channel.value}
-                      </a>
-                    </div>
-                    {channel.copyable && (
-                      <button
-                        type="button"
-                        onClick={() => copyValue(channel.value, channel.label)}
-                        aria-label={`Copy ${channel.label}`}
-                        className="rounded-md p-2 text-muted transition-colors hover:text-primary"
-                      >
-                        {copied === channel.label ? (
-                          <Check className="size-4 text-success" aria-hidden />
-                        ) : (
-                          <Copy className="size-4" aria-hidden />
-                        )}
-                      </button>
-                    )}
-                  </GlassCard>
-                </Reveal>
-              );
-            })}
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
+          {/* Left Column: Heading + contact channels (mockup) */}
+          <div className="flex flex-col gap-7 lg:col-span-4">
+            <Reveal>
+              <SectionHeading
+                eyebrow="LET'S CONNECT"
+                title="Let's Build Something Great Together"
+              />
+            </Reveal>
+            <ul className="flex flex-col gap-6">
+              {channels.map((channel, i) => {
+                const Icon = channel.icon;
+                return (
+                  <Reveal key={channel.label} delay={Math.min(0.05 + i * 0.07, 0.25)} y={14}>
+                    <li className="flex items-center gap-4">
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
+                        <Icon className="size-5" aria-hidden />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted">
+                          {channel.label}
+                        </p>
+                        <a
+                          href={channel.href}
+                          {...("external" in channel && channel.external
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                          className="block truncate text-sm font-medium text-text transition-colors duration-micro hover:text-primary"
+                        >
+                          {channel.value}
+                        </a>
+                      </div>
+                      {channel.copyable && (
+                        <button
+                          type="button"
+                          onClick={() => copyValue(channel.value, channel.label)}
+                          aria-label={`Copy ${channel.label}`}
+                          className="rounded-md p-2 text-muted transition-colors duration-micro hover:text-primary"
+                        >
+                          {copied === channel.label ? (
+                            <Check className="size-4 text-success" aria-hidden />
+                          ) : (
+                            <Copy className="size-4" aria-hidden />
+                          )}
+                        </button>
+                      )}
+                    </li>
+                  </Reveal>
+                );
+              })}
+            </ul>
           </div>
 
           {/* Center Column: Standing portrait on double neon-ring pedestal (mockup) */}

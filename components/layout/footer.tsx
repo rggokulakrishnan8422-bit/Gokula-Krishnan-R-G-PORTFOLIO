@@ -32,9 +32,9 @@ export function Footer() {
         <a
           href="#top"
           aria-label={`${site.name} — back to top`}
-          className="font-display text-xl font-bold transition-transform duration-small hover:scale-105"
+          className="font-display text-xl font-bold tracking-tight transition-transform duration-small hover:scale-105"
         >
-          <span className="text-gradient">GK</span>
+          <span className="text-text">GK</span>
           <span className="text-primary">.</span>
         </a>
 

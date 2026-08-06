@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Palette } from "lucide-react";
+import { Check, Moon, Sun } from "lucide-react";
 import { ACCENT_THEMES, applyAccentTheme, useAccentTheme } from "@/lib/themes";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -50,9 +50,11 @@ export function ThemeMenu({ className }: { className?: string }) {
         aria-haspopup="menu"
         aria-label={`Change accent theme — current: ${theme.name}`}
         title={`Theme: ${theme.name}`}
-        className="inline-flex size-10 items-center justify-center rounded-md text-muted transition-colors duration-micro hover:text-primary"
+        className="inline-flex h-10 items-center gap-1.5 rounded-full border px-3 text-muted transition-colors duration-micro hover:border-primary/50 hover:text-primary"
       >
-        <Palette className="size-5" aria-hidden />
+        <Sun className="size-4" aria-hidden />
+        <span aria-hidden className="h-4 w-px bg-border" />
+        <Moon className="size-4" aria-hidden />
       </button>
 
       <AnimatePresence>

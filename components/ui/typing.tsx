@@ -9,7 +9,15 @@ import { cn } from "@/lib/utils";
  * Screen readers receive the full word list via sr-only text; the animated
  * span is aria-hidden. Reduced motion: the first word renders statically.
  */
-export function Typing({ words, className }: { words: string[]; className?: string }) {
+export function Typing({
+  words,
+  className,
+  loop = true,
+}: {
+  words: string[];
+  className?: string;
+  loop?: boolean;
+}) {
   const reduced = useReducedMotion();
   const [text, setText] = useState("");
 
@@ -30,6 +38,7 @@ export function Typing({ words, className }: { words: string[]; className?: stri
 
       let delay = deleting ? 40 : 75;
       if (!deleting && charIndex === current.length) {
+        if (!loop && wordIndex === words.length - 1) return; // type once, hold (mockup)
         delay = 1800;
         deleting = true;
       } else if (deleting && charIndex === 0) {
@@ -42,7 +51,7 @@ export function Typing({ words, className }: { words: string[]; className?: stri
 
     timeout = window.setTimeout(tick, 600);
     return () => window.clearTimeout(timeout);
-  }, [reduced, words]);
+  }, [reduced, words, loop]);
 
   return (
     <>

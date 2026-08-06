@@ -17,7 +17,6 @@ import { site } from "@/config/site";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ResumeButton } from "@/components/ui/resume-button";
 import { buttonVariants } from "@/components/ui/button";
-import { SignatureCard } from "@/components/ui/signature-card";
 import { Typing } from "@/components/ui/typing";
 import { useAccentTheme } from "@/lib/themes";
 
@@ -107,23 +106,23 @@ export function Hero() {
       <div className="container-x relative z-10 grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
         {/* ================= Left Column — Text ================= */}
         <div className="flex flex-col gap-6 lg:col-span-6 lg:pl-14 xl:pl-24">
-          {/* Available for Work badge (mockup) */}
+          {/* Available for Work badge (mockup — dot trails the label) */}
           <div data-hero>
-            <div className="inline-flex items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3.5 py-1 text-xs font-semibold text-success shadow-sm">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-success" />
-              </span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-success/25 bg-[rgb(var(--color-surface)/0.6)] px-3.5 py-1 text-[11px] font-medium text-success/90 backdrop-blur-sm">
               Available for Work
+              <span className="relative flex size-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-success" />
+              </span>
             </div>
           </div>
 
           {/* Headline */}
           <div data-hero className="flex flex-col">
             <p className="text-body font-medium text-text/90">Hi, I&apos;m</p>
-            <h1 className="mt-1 text-balance font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-1 text-balance font-display text-hero font-bold">
               <span className="block text-text">Gokula</span>
-              <span className="bg-gradient-to-r from-purple-400 via-primary to-indigo-500 bg-clip-text text-transparent block">
+              <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent block">
                 Krishnan
               </span>
             </h1>
@@ -132,12 +131,13 @@ export function Hero() {
               <Typing
                 words={["I plan. I organize. I deliver."]}
                 className="text-text"
+                loop={false}
               />
             </p>
           </div>
 
           {/* Bio Summary (mockup copy) */}
-          <p data-hero className="max-w-xl text-xs leading-relaxed text-muted sm:text-sm">
+          <p data-hero className="max-w-xl text-sm leading-relaxed text-muted sm:text-base">
             Motivated and results-driven Project Manager with over 6+ years of
             experience in agile project management, cross-functional
             coordination, stakeholder communication, and delivering effective
@@ -147,7 +147,11 @@ export function Hero() {
           {/* Action Buttons */}
           <div data-hero className="flex flex-wrap items-center gap-4 pt-1">
             <Magnetic>
-              <ResumeButton variant="primary" size="lg" />
+              <ResumeButton
+                variant="primary"
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg shadow-purple-900/30"
+              />
             </Magnetic>
             <Magnetic>
               <a href="#contact" className={buttonVariants({ variant: "secondary", size: "lg" })}>
@@ -202,9 +206,18 @@ export function Hero() {
                 <div className="absolute -inset-x-4 -bottom-2 h-16 rounded-[100%] border border-primary/40" />
               </div>
 
-              {/* Signature — bleeds off the bottom-right like the mockup */}
-              <div className="absolute -bottom-3 right-0 z-20 scale-90 sm:scale-100">
-                <SignatureCard />
+              {/* Signature — cursive script bottom-right (Aug 5 mockup) */}
+              <div
+                aria-hidden
+                className="absolute -bottom-16 right-4 z-20 select-none text-right leading-[1.4]"
+                style={{ fontFamily: "var(--font-script), cursive" }}
+              >
+                <span className="block bg-gradient-to-br from-purple-400 via-primary to-cyan-300 bg-clip-text text-4xl italic text-transparent drop-shadow-[0_0_14px_rgb(var(--color-primary)/0.5)] sm:text-[44px]">
+                  Gokula
+                </span>
+                <span className="block bg-gradient-to-br from-purple-400 via-primary to-cyan-300 bg-clip-text pr-2 text-4xl italic text-transparent drop-shadow-[0_0_14px_rgb(var(--color-primary)/0.5)] sm:text-[44px]">
+                  Krishnan
+                </span>
               </div>
             </div>
 
