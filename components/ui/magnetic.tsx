@@ -1,65 +1,54 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
-import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { SPRING } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * Magnetic wrapper (Master Prompt Section 10 — magnetic buttons).
- * Gently attracts its child toward the pointer within a proximity field.
- * Disabled for touch pointers and reduced-motion users (static fallback).
+ * Magnetic wrapper — gently attracts its child toward the pointer within a
+ * proximity field. Desktop fine-pointer only; touch and reduced-motion
+ * users get a plain static wrapper.
  */
 export function Magnetic({
   children,
-  strength = 0.35,
+  strength = 0.3,
   className,
 }: {
   children: React.ReactNode;
   strength?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const fine = useMediaQuery("(pointer: fine)");
   const enabled = !reduced && fine;
 
-  useEffect(() => {
-    if (!enabled) return;
-    const el = ref.current!;
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, SPRING.pointer);
+  const sy = useSpring(y, SPRING.pointer);
 
-    const reset = () =>
-      gsap.to(el, { x: 0, y: 0, duration: DURATION.component, ease: GSAP_EASE_OUT });
+  if (!enabled) return <div className={cn("inline-block", className)}>{children}</div>;
 
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const dx = e.clientX - (rect.left + rect.width / 2);
-      const dy = e.clientY - (rect.top + rect.height / 2);
-      const range = Math.max(rect.width, rect.height) * 1.6;
-      if (Math.hypot(dx, dy) < range) {
-        gsap.to(el, {
-          x: dx * strength,
-          y: dy * strength,
-          duration: DURATION.component,
-          ease: GSAP_EASE_OUT,
-        });
-      } else {
-        reset();
-      }
-    };
-
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      gsap.set(el, { x: 0, y: 0 });
-    };
-  }, [enabled, strength]);
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - (rect.left + rect.width / 2)) * strength);
+    y.set((e.clientY - (rect.top + rect.height / 2)) * strength);
+  };
+  const onLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <div ref={ref} className={cn("inline-block", className)}>
+    <motion.div
+      className={cn("inline-block", className)}
+      style={{ x: sx, y: sy }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

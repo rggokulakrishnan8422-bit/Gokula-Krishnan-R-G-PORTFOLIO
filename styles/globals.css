@@ -1,95 +1,49 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
 
 /* ==========================================================================
-   Design tokens (Master Prompt Section 4)
-   Colors are RGB triplets consumed as rgb(var(--x) / alpha) so one token
-   set serves both themes. --glass-alpha / --border-alpha hold the
-   enterprise-glass intensity per theme.
+   Design tokens — Luxury Dark Editorial (champagne gold on warm black)
+   Colors are RGB triplets consumed as rgb(var(--x) / alpha).
+   Legacy accent vars (cyan/purple/indigo) are aliased to gold tints so any
+   leftover className resolves inside the luxury palette, never neon.
    ========================================================================== */
-:root,
-.dark {
-  --color-primary: 82 126 255; /* #527EFF — electric enterprise blue */
-  --color-secondary: 34 211 238; /* #22D3EE */
-  --color-surface: 5 8 22; /* #050816 — deep space navy */
-  --color-text: 231 238 250;
-  --color-muted: 146 160 186; /* AA contrast on surface */
-  --color-glass: 148 163 184;
-  --color-border: 129 140 180;
-  --glass-alpha: 0.08;
-  --border-alpha: 0.18;
-  --color-success: 52 211 153;
-  --color-warning: 251 191 36;
-  --color-error: 248 113 113;
-  --grid-line: 148 163 184;
-  --shadow-color: 225 60% 2%;
-  --ring: 82 126 255;
-  /* Accent palette (var-mapped Tailwind shades) — Neon Blue default */
-  --cyan-300: 103 232 249;
-  --cyan-400: 34 211 238;
-  --cyan-500: 6 182 212;
-  --purple-400: 192 132 252;
-  --purple-500: 168 85 247;
-  --purple-600: 147 51 234;
-  --indigo-500: 99 102 241;
-}
+:root {
+  --color-background: 6 6 8; /* #060608 — deep warm black */
+  --color-surface: 11 11 14; /* #0B0B0E — raised surface */
+  --color-surface-2: 16 16 20; /* #101014 — elevated card */
+  --color-text: 242 237 227; /* #F2EDE3 — warm white */
+  --color-muted: 164 158 148; /* #A49E94 — muted warm gray (AA on bg) */
+  --color-primary: 201 169 106; /* #C9A96A — champagne gold */
+  --color-secondary: 143 111 63; /* #8F6F3F — antique bronze */
+  --color-glass: 255 255 255; /* glass substrate */
+  --glass-alpha: 0.035;
+  --border-alpha: 0.14;
+  --color-border: 178 160 128; /* warm gold-tinted gray */
+  --color-success: 122 176 132;
+  --color-warning: 224 184 110;
+  --color-error: 214 122 112;
+  --grid-line: 201 169 106;
+  --shadow-color: 225 25% 2%;
+  --ring: 201 169 106;
 
-/* ==========================================================================
-   Theme Variations (Aug 5 mockup) — dark surface stays fixed; only the
-   accent palette swaps. Applied via <html data-theme="…"> (lib/themes.ts).
-   Values mirror lib/themes.ts — keep both in sync.
-   ========================================================================== */
-[data-theme="cyber-purple"] {
-  --color-primary: 168 85 247;
-  --color-secondary: 232 121 249;
-  --ring: 168 85 247;
-  --cyan-300: 240 171 252;
-  --cyan-400: 232 121 249;
-  --cyan-500: 217 70 239;
-  --purple-400: 216 180 254;
-  --purple-500: 192 132 252;
-  --purple-600: 168 85 247;
-  --indigo-500: 139 92 246;
-}
+  /* Gold shade scale (var-mapped so Tailwind opacity modifiers work) */
+  --gold-100: 248 242 230; /* #F8F2E6 */
+  --gold-200: 235 220 188; /* #EBDCBC */
+  --gold-300: 222 199 151; /* #DEC797 */
+  --gold-400: 211 182 121; /* #D3B679 */
+  --gold-500: 201 169 106; /* #C9A96A — base champagne */
+  --gold-600: 168 135 76; /* #A8874C */
+  --gold-700: 130 102 55; /* #82663 7 */
+  --gold-800: 94 74 40; /* #5E4A28 */
 
-[data-theme="ocean-teal"] {
-  --color-primary: 20 184 166;
-  --color-secondary: 45 212 191;
-  --ring: 20 184 166;
-  --cyan-300: 94 234 212;
-  --cyan-400: 45 212 191;
-  --cyan-500: 20 184 166;
-  --purple-400: 103 232 249;
-  --purple-500: 56 189 248;
-  --purple-600: 14 165 233;
-  --indigo-500: 56 189 248;
-}
-
-[data-theme="sunset-amber"] {
-  --color-primary: 245 158 11;
-  --color-secondary: 251 146 60;
-  --ring: 245 158 11;
-  --cyan-300: 252 211 77;
-  --cyan-400: 251 191 36;
-  --cyan-500: 245 158 11;
-  --purple-400: 253 186 116;
-  --purple-500: 251 146 60;
-  --purple-600: 249 115 22;
-  --indigo-500: 249 115 22;
-}
-
-[data-theme="forest-green"] {
-  --color-primary: 34 197 94;
-  --color-secondary: 52 211 153;
-  --ring: 34 197 94;
-  --cyan-300: 110 231 183;
-  --cyan-400: 52 211 153;
-  --cyan-500: 16 185 129;
-  --purple-400: 134 239 172;
-  --purple-500: 74 222 128;
-  --purple-600: 34 197 94;
-  --indigo-500: 16 185 129;
+  /* Legacy accent aliases → gold tints (never neon in the luxury theme) */
+  --cyan-300: 235 220 188;
+  --cyan-400: 222 199 151;
+  --cyan-500: 201 169 106;
+  --purple-400: 211 182 121;
+  --purple-500: 201 169 106;
+  --purple-600: 168 135 76;
+  --indigo-500: 130 102 55;
 }
 
 @layer base {
@@ -101,11 +55,11 @@
 
   html,
   body {
-    overflow-x: clip; /* Section 13 — no horizontal overflow, ever */
+    overflow-x: clip; /* no horizontal overflow, ever */
   }
 
   body {
-    background-color: rgb(var(--color-surface));
+    background-color: rgb(var(--color-background));
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -114,7 +68,19 @@
   }
 
   ::selection {
-    background: rgb(var(--color-primary) / 0.25);
+    background: rgb(var(--color-primary) / 0.28);
+    color: rgb(var(--gold-100));
+  }
+
+  /* Keep autofilled fields inside the glass system (WebKit overrides) */
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: rgb(var(--color-text));
+    caret-color: rgb(var(--color-text));
+    transition:
+      background-color 999999s ease-in-out 0s,
+      border-color 250ms,
+      box-shadow 250ms;
   }
 
   :focus-visible {
@@ -142,13 +108,16 @@
     background: transparent;
   }
   body::-webkit-scrollbar-thumb {
-    background: rgb(var(--color-muted) / 0.35);
+    background: rgb(var(--color-primary) / 0.28);
     border-radius: 8px;
-    border: 2px solid rgb(var(--color-surface));
+    border: 2px solid rgb(var(--color-background));
+  }
+  body::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-primary) / 0.45);
   }
 
-  /* Section 10/15 — one global CSS guard: reduced motion means
-     static, not merely faster. JS animations consult useReducedMotion(). */
+  /* One global guard: reduced motion means static, not merely faster.
+     JS animation consults useReducedMotion() / MotionConfig. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -162,12 +131,12 @@
 }
 
 @layer components {
-  /* Horizontal rhythm: 4-col/8-col/12-col grid, 1800px max (Section 4 Grid) */
+  /* Editorial measure — reference layout holds ~1200px */
   .container-x {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    max-width: 1800px;
+    max-width: 1200px;
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -184,69 +153,93 @@
     }
   }
 
-  /* Ultra compact section padding */
+  /* Spacious but connected editorial rhythm */
   .section-pad {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
   @media (min-width: 768px) {
     .section-pad {
-      padding-top: 2.5rem;
-      padding-bottom: 2.5rem;
+      padding-top: 5.5rem;
+      padding-bottom: 5.5rem;
     }
   }
   @media (min-width: 1024px) {
     .section-pad {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
+      padding-top: 7rem;
+      padding-bottom: 7rem;
     }
   }
 
+  /* Luxury glass — translucent dark surface, hairline warm border,
+     soft internal top highlight, restrained shadow. */
   .glass-card {
-    border-radius: 12px;
-    box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgb(var(--color-glass) / var(--glass-alpha));
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background:
+      linear-gradient(
+        180deg,
+        rgb(var(--color-glass) / 0.045),
+        rgb(var(--color-glass) / 0.02)
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 1px 2px hsl(var(--shadow-color) / 0.3),
+      0 12px 32px -12px hsl(var(--shadow-color) / 0.55);
     border: 1px solid rgb(var(--color-border) / var(--border-alpha));
   }
 
+  /* Subtle neumorphic control — ONLY for small controls/medallions */
+  .neu-control {
+    background: linear-gradient(
+      145deg,
+      rgb(var(--color-glass) / 0.06),
+      rgb(var(--color-glass) / 0.02)
+    );
+    border: 1px solid rgb(var(--color-border) / var(--border-alpha));
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 0.06),
+      inset 0 -1px 2px rgb(0 0 0 / 0.35),
+      0 6px 16px -8px rgb(0 0 0 / 0.8);
+  }
+
+  /* Champagne gradient text */
   .text-gradient {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     background-image: linear-gradient(
-      120deg,
-      rgb(var(--color-primary)),
-      rgb(var(--color-secondary))
+      115deg,
+      rgb(var(--gold-200)) 0%,
+      rgb(var(--color-primary)) 45%,
+      rgb(var(--color-secondary)) 100%
     );
+  }
+
+  /* Wide letter-spaced caps used for eyebrows / metadata */
+  .overline-caps {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgb(var(--color-muted));
   }
 
   .bg-grid {
     background-image: linear-gradient(
-        rgb(var(--grid-line) / 0.05) 1px,
+        rgb(var(--grid-line) / 0.04) 1px,
         transparent 1px
       ),
-      linear-gradient(90deg, rgb(var(--grid-line) / 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(90deg, rgb(var(--grid-line) / 0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
   }
 
   .bg-noise {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   }
 
-  /* Star field — tiny drifting particle dots for the space-navy theme */
-  .bg-stars {
-    background-image:
-      radial-gradient(1px 1px at 20px 30px, rgb(255 255 255 / 0.55) 50%, transparent 51%),
-      radial-gradient(1px 1px at 130px 80px, rgb(255 255 255 / 0.35) 50%, transparent 51%),
-      radial-gradient(1.5px 1.5px at 70px 150px, rgb(var(--color-primary) / 0.65) 50%, transparent 51%),
-      radial-gradient(1px 1px at 200px 40px, rgb(255 255 255 / 0.3) 50%, transparent 51%),
-      radial-gradient(1px 1px at 280px 180px, rgb(var(--color-secondary) / 0.5) 50%, transparent 51%);
-    background-size: 300px 300px;
-  }
-
-  /* Hairline separator with soft gradient between sections */
+  /* Hairline warm separator between sections */
   .section-line {
     position: relative;
   }
@@ -256,24 +249,23 @@
     inset: 0 0 auto 0;
     height: 1px;
     margin-inline: auto;
-    max-width: 1800px;
-    width: 96%;
+    max-width: 1200px;
+    width: calc(100% - 2rem);
     background: linear-gradient(
       90deg,
       transparent,
-      rgb(var(--color-border) / var(--border-alpha)),
+      rgb(var(--color-border) / var(--border-alpha)) 30%,
+      rgb(var(--color-border) / var(--border-alpha)) 70%,
       transparent
     );
   }
 
-  /* Blends portraits into the environment (Section 5) */
+  /* Frameless portrait blends — portrait melts into the dark stage */
   .mask-fade-b {
     -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent);
     mask-image: linear-gradient(to bottom, black 78%, transparent);
   }
 
-  /* Frameless portrait blend — fades every edge so the cutout melts into
-     the dark stage instead of sitting in a card (Aug 5 mockup treatment) */
   .mask-blend-radial {
     -webkit-mask-image: radial-gradient(
       ellipse 82% 88% at 50% 42%,
@@ -306,13 +298,13 @@
     top: 1rem;
     z-index: 100;
     transform: translateY(-200%);
-    border-radius: 12px;
+    border-radius: 9999px;
     background-color: rgb(var(--color-primary));
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.25rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
-    font-weight: 500;
-    color: #ffffff;
+    font-weight: 600;
+    color: rgb(var(--color-background));
     transition-property: transform;
     transition-duration: 250ms;
   }
@@ -324,4 +316,3 @@
     text-wrap: balance;
   }
 }
-

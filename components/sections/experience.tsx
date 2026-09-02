@@ -1,148 +1,217 @@
-import Image from "next/image";
-import { Briefcase, GraduationCap, Calendar, CheckCircle2, Sliders, Activity, Play, ClipboardList } from "lucide-react";
-import { site } from "@/config/site";
-import { experience } from "@/config/content";
+"use client";
+
+import { useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
+import { Briefcase, Calendar, ChevronLeft, ChevronRight, GraduationCap, Quote } from "lucide-react";
+import { experience, testimonials } from "@/config/content";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { SPRING, testimonialSlide } from "@/lib/motion";
 
-const pipelineSteps = [
-  { label: "Planning", icon: ClipboardList, active: true },
-  { label: "Execution", icon: Play, active: true },
-  { label: "Monitoring", icon: Activity, active: true },
-  { label: "Controlling", icon: Sliders, active: true },
-  { label: "Closing", icon: CheckCircle2, active: true },
-];
-
+/**
+ * 04 — MY EXPERIENCE JOURNEY (reference).
+ * Left: a gold timeline whose spine draws itself as you scroll; nodes and
+ * entries reveal with a restrained stagger.
+ * Right: serif-glass testimonial with directional, spring-based carousel
+ * controls (rendered only when multiple references exist).
+ */
 export function Experience() {
+  const reduced = useReducedMotion();
+  const listRef = useRef<HTMLOListElement>(null);
+
+  /* Spine draw — follows scroll through the list */
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 82%", "end 65%"],
+  });
+  const spine = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 });
+
+  const [[index, direction], setIndex] = useState<[number, number]>([0, 0]);
+  const total = testimonials.length;
+  const go = (dir: number) =>
+    setIndex(([i]) => [(i + dir + total) % total, dir]);
+  const current = testimonials[index];
+
   return (
     <section
       id="experience"
       aria-label="Experience"
-      className="section-line section-pad relative scroll-mt-24 overflow-hidden"
+      className="section-line section-pad scroll-mt-20"
     >
       <div className="container-x flex flex-col gap-12">
         <Reveal>
-          <SectionHeading eyebrow="EXPERIENCE" title="My Professional Journey" />
+          <SectionHeading
+            index="04"
+            eyebrow="My Experience Journey"
+            title={
+              <>
+                The Road <span className="text-gradient">So Far</span>
+              </>
+            }
+          />
         </Reveal>
 
-        <div className="grid items-start gap-12 lg:grid-cols-12">
-          {/* Left Column: Experience Timeline Cards */}
-          <div className="flex flex-col gap-8 lg:col-span-6">
-            <ol className="relative ml-6 flex flex-col gap-8 border-l border-primary/25 pl-7 sm:ml-10 sm:pl-10 lg:ml-8 lg:pl-10">
-              {experience.map((entry, i) => {
-                const KindIcon = entry.kind === "education" ? GraduationCap : Briefcase;
-                return (
-                  <li key={`${entry.role}-${entry.period}`} className="relative">
-                    <span
-                      aria-hidden
-                      className="absolute -left-[19px] sm:-left-[21px] top-6 z-10 flex size-9 sm:size-10 items-center justify-center rounded-full border border-primary/40 bg-surface/95 text-primary shadow-lg ring-4 ring-surface backdrop-blur-md transition-transform duration-300 hover:scale-110"
+        <div className="grid items-start gap-14 lg:grid-cols-12 lg:gap-10">
+          {/* ── Timeline ── */}
+          <ol
+            ref={listRef}
+            className="relative flex flex-col gap-10 lg:col-span-7"
+            aria-label="Career timeline"
+          >
+            {/* Spine: base hairline + gold draw */}
+            <span
+              aria-hidden
+              className="absolute bottom-2 left-[7px] top-2 w-px bg-glass/10"
+            />
+            <motion.span
+              aria-hidden
+              style={reduced ? undefined : { scaleY: spine }}
+              className="absolute bottom-2 left-[7px] top-2 w-px origin-top bg-gradient-to-b from-gold-400 via-gold-500/70 to-gold-700/40 shadow-[0_0_10px_rgb(var(--color-primary)/0.35)]"
+            />
+
+            {experience.map((entry, i) => {
+              const KindIcon = entry.kind === "education" ? GraduationCap : Briefcase;
+              return (
+                <li key={`${entry.role}-${entry.period}`} className="relative pl-10">
+                  {/* Node */}
+                  <motion.span
+                    aria-hidden
+                    initial={reduced ? undefined : { scale: 0, opacity: 0 }}
+                    whileInView={reduced ? undefined : { scale: 1, opacity: 1 }}
+                    viewport={{ once: true, margin: "-18% 0px" }}
+                    transition={{ ...SPRING.snappy, delay: 0.1 }}
+                    className="absolute left-0 top-1.5 flex size-4 items-center justify-center rounded-full border border-gold-500/60 bg-background shadow-[0_0_12px_rgb(var(--color-primary)/0.35)]"
+                  >
+                    <span className="size-1.5 rounded-full bg-gold-400" />
+                  </motion.span>
+
+                  <Reveal delay={Math.min(i * 0.06, 0.24)} y={20}>
+                    <motion.article
+                      whileHover={{ x: 4 }}
+                      transition={SPRING.gentle}
+                      className="flex flex-col gap-3 border-b border-gold-500/10 pb-8"
                     >
-                      <KindIcon className="size-4 text-primary" />
-                    </span>
-                    <Reveal delay={Math.min(i * 0.08, 0.3)}>
-                      <GlassCard hover className="flex flex-col gap-4 p-6 sm:p-7">
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <div>
-                            <h3 className="font-display text-card font-semibold text-text">{entry.role}</h3>
-                            <p className="text-caption font-medium text-primary">{entry.org}</p>
-                          </div>
-                          <Badge variant="primary" className="gap-1.5">
-                            <Calendar className="size-3" />
-                            {entry.period}
+                      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
+                        <div>
+                          <h3 className="font-display text-lg font-semibold leading-snug text-text">
+                            {entry.role}
+                          </h3>
+                          <p className="mt-0.5 text-[13px] font-medium text-gold-400/90">
+                            {entry.org}
+                          </p>
+                        </div>
+                        <span className="mt-0.5 inline-flex shrink-0 items-center gap-1.5 text-[12.5px] font-medium tracking-[0.02em] text-muted">
+                          <Calendar className="size-3.5 text-gold-500/80" aria-hidden />
+                          {entry.period}
+                        </span>
+                      </div>
+
+                      <p className="text-[13.5px] leading-relaxed text-muted">{entry.summary}</p>
+
+                      <ul className="flex flex-col gap-1.5">
+                        {entry.points.slice(0, 2).map((point) => (
+                          <li
+                            key={point}
+                            className="flex items-start gap-2.5 text-[13px] leading-relaxed text-muted/90"
+                          >
+                            <span
+                              aria-hidden
+                              className="mt-[7px] size-1 shrink-0 rounded-full bg-gold-500/80"
+                            />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex flex-wrap gap-1.5 pt-0.5">
+                        <span className="sr-only">
+                          {entry.kind === "education" ? "Education" : "Work"} — key areas:
+                        </span>
+                        <KindIcon className="sr-only" aria-hidden />
+                        {entry.tags.slice(0, 4).map((tag) => (
+                          <Badge key={tag} variant="outline" className="px-2.5 py-0.5 text-[11px]">
+                            {tag}
                           </Badge>
-                        </div>
+                        ))}
+                      </div>
+                    </motion.article>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
 
-                        <ul className="flex flex-col gap-2">
-                          {entry.points.map((point) => (
-                            <li key={point} className="flex items-start gap-2.5 text-caption text-muted">
-                              <span
-                                aria-hidden
-                                className="mt-[7px] size-1.5 shrink-0 rounded-full bg-primary"
-                              />
-                              {point}
-                            </li>
-                          ))}
-                        </ul>
-
-                        <div className="flex flex-wrap gap-2 pt-1">
-                          {entry.tags.map((tag) => (
-                            <Badge key={tag} variant="outline">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </GlassCard>
-                    </Reveal>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-
-          {/* Right Column: Delivery Lifecycle arc + frameless portrait */}
-          <div className="flex flex-col gap-10 lg:col-span-6">
-            {/* 5-phase delivery lifecycle (mockup arc) */}
+          {/* ── Testimonial ── */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28">
             <Reveal delay={0.15}>
-              <div
-                role="img"
-                aria-label="Delivery lifecycle: Planning, Execution, Monitoring, Controlling, Closing"
-                className="relative flex items-start justify-between px-1 pt-1"
-              >
-                {/* Connector line */}
-                <div
+              <figure className="glass-card relative flex flex-col gap-6 overflow-hidden p-7 sm:p-8">
+                <Quote
                   aria-hidden
-                  className="absolute inset-x-8 top-[26px] h-0.5 bg-gradient-to-r from-primary/70 via-cyan-400/70 to-primary/50"
+                  className="absolute right-6 top-6 size-10 text-gold-500/15"
                 />
-                {pipelineSteps.map((step, i) => {
-                  const Icon = step.icon;
-                  const isFinal = i === pipelineSteps.length - 1;
-                  return (
-                    <div key={step.label} className="group relative z-10 flex flex-col items-center gap-3">
-                      <span className="text-[10px] font-medium text-muted transition-colors duration-small group-hover:text-text sm:text-xs">
-                        {step.label}
-                      </span>
-                      <span
-                        className={cn(
-                          "flex size-11 items-center justify-center rounded-full border-2 backdrop-blur-md transition-transform duration-small group-hover:scale-110 sm:size-12",
-                          isFinal
-                            ? "border-transparent bg-gradient-to-br from-primary to-cyan-400 text-white shadow-lg shadow-[rgb(var(--ring)/0.45)]"
-                            : "border-cyan-400/70 bg-[rgb(var(--color-surface)/0.95)] text-cyan-400 shadow-lg shadow-cyan-400/15",
-                        )}
-                      >
-                        <Icon className="size-4 sm:size-5" aria-hidden />
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </Reveal>
+                <span
+                  aria-hidden
+                  className="font-serif text-6xl leading-[0.6] text-gold-500/80"
+                >
+                  &ldquo;
+                </span>
 
-            {/* Frameless portrait — melts into the section ambience */}
-            <Reveal delay={0.2} className="relative aspect-[16/9] w-full">
-              <div
-                aria-hidden
-                className="absolute right-4 top-1/2 h-[280px] w-[280px] -translate-y-1/2 rounded-full bg-primary/20 blur-[110px]"
-              />
-              <Image
-                src="/images/portrait-blue.jpg"
-                alt={`${site.name} — delivery lifecycle visual`}
-                fill
-                sizes="(max-width: 1024px) 90vw, 560px"
-                className="mask-blend-radial-wide object-cover object-top contrast-110"
-              />
-              {/* Floating delivery chips (mockup ambience) */}
-              <span className="absolute left-6 top-8 hidden size-11 animate-float items-center justify-center rounded-xl border border-primary/30 bg-[rgb(var(--color-surface)/0.85)] shadow-xl backdrop-blur-md md:flex">
-                <ClipboardList className="size-5 text-cyan-400" aria-hidden />
-              </span>
-              <span
-                className="absolute right-10 top-14 hidden size-11 animate-float items-center justify-center rounded-xl border border-primary/30 bg-[rgb(var(--color-surface)/0.85)] shadow-xl backdrop-blur-md md:flex"
-                style={{ animationDelay: "1.2s" }}
-              >
-                <Activity className="size-5 text-purple-400" aria-hidden />
-              </span>
+                <div className="min-h-[132px]">
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    <motion.blockquote
+                      key={index}
+                      custom={direction}
+                      variants={testimonialSlide}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      className="font-serif text-[17.5px] font-light leading-relaxed text-text/90"
+                    >
+                      {current.quote}
+                    </motion.blockquote>
+                  </AnimatePresence>
+                </div>
+
+                <figcaption className="flex items-center gap-4 border-t border-gold-500/10 pt-5">
+                  {/* Initials medallion — no fabricated photo */}
+                  <span
+                    aria-hidden
+                    className="neu-control flex size-12 items-center justify-center rounded-full font-display text-sm font-semibold tracking-wide text-gold-300"
+                  >
+                    {current.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-text">{current.name}</p>
+                    <p className="text-[12px] text-muted">{current.role}</p>
+                  </div>
+
+                  {total > 1 && (
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => go(-1)}
+                        aria-label="Previous testimonial"
+                        className="neu-control inline-flex size-9 items-center justify-center rounded-full text-muted transition-all duration-micro hover:text-gold-300"
+                      >
+                        <ChevronLeft className="size-4" aria-hidden />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => go(1)}
+                        aria-label="Next testimonial"
+                        className="neu-control inline-flex size-9 items-center justify-center rounded-full text-muted transition-all duration-micro hover:text-gold-300"
+                      >
+                        <ChevronRight className="size-4" aria-hidden />
+                      </button>
+                    </div>
+                  )}
+                </figcaption>
+              </figure>
             </Reveal>
           </div>
         </div>

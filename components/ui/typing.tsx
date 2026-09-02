@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
 
 /**
- * Typing effect (Master Prompt Sections 10 — hero).
+ * Typing effect — reference tagline types once and holds.
  * Screen readers receive the full word list via sr-only text; the animated
  * span is aria-hidden. Reduced motion: the first word renders statically.
  */
@@ -20,6 +20,8 @@ export function Typing({
 }) {
   const reduced = useReducedMotion();
   const [text, setText] = useState("");
+  /* Stable key so an inline-array prop doesn't restart the effect */
+  const wordKey = useMemo(() => words.join(""), [words]);
 
   useEffect(() => {
     if (reduced) {
@@ -38,7 +40,7 @@ export function Typing({
 
       let delay = deleting ? 40 : 75;
       if (!deleting && charIndex === current.length) {
-        if (!loop && wordIndex === words.length - 1) return; // type once, hold (mockup)
+        if (!loop && wordIndex === words.length - 1) return; // type once, hold
         delay = 1800;
         deleting = true;
       } else if (deleting && charIndex === 0) {
@@ -51,7 +53,8 @@ export function Typing({
 
     timeout = window.setTimeout(tick, 600);
     return () => window.clearTimeout(timeout);
-  }, [reduced, words, loop]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced, wordKey, loop]);
 
   return (
     <>
@@ -60,8 +63,8 @@ export function Typing({
         {text}
         <span
           className={cn(
-            "ml-1 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-primary",
-            !reduced && "animate-pulse-soft",
+            "ml-1 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-gold-400",
+            !reduced && "animate-pulse",
           )}
         />
       </span>

@@ -55,6 +55,19 @@ export type Project = {
   icon: LucideIcon;
 };
 
+/** Reference-style skill category card (icon + title + grounded bullets). */
+export type SkillCategory = {
+  title: string;
+  icon: LucideIcon;
+  bullets: string[];
+};
+
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+};
+
 export type ToastType = "success" | "error" | "info";
 
 export type ToastItem = {

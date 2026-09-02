@@ -43,30 +43,29 @@ import type {
   NavLink,
   ProfessionalSkill,
   Project,
+  SkillCategory,
   StatItem,
   TechnicalSkill,
+  Testimonial,
   Tool,
 } from "@/types";
 
-/** Navigation items - exact smooth scroll anchors */
+/** Navigation items — reference order, exact smooth scroll anchors */
 export const navLinks: NavLink[] = [
   { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
-  { label: "Tools", href: "#tools" },
-  { label: "Services", href: "#skills" },
   { label: "Contact", href: "#contact" },
 ];
 
-/** Hero roles & summary */
-export const heroRoles = [
-  "Project Coordinator",
-  "Junior Project Manager",
-  "Operations Specialist",
-  "Flutter Developer",
-];
+/** Hero tagline (typed once, reference mockup) */
+export const heroTagline = "Plan. Organize. Deliver.";
+
+/** Hero lead paragraph — concise positioning grounded in heroSummary. */
+export const heroLead =
+  "I turn ideas into impact — managing cross-functional teams, building robust systems and delivering results with clarity, strategy and passion.";
 
 export const heroSummary =
   "Project Management professional with 2+ years of experience coordinating cross-functional teams and end-to-end delivery across software, operations, and process-improvement initiatives. Managing a portfolio of 7 projects (4 concurrently) with teams ranging from 1 to 16 resources, delivering 3 projects to completion with structured reporting cadences.";
@@ -269,6 +268,61 @@ export const languages = [
   { language: "English", proficiency: "Read, Write, Speak" },
   { language: "Tamil", proficiency: "Read, Write, Speak" },
   { language: "Telugu", proficiency: "Speak" },
+];
+
+/**
+ * Skill category cards (reference "MY SKILLS & EXPERTISE" quadrant).
+ * Every bullet is drawn from existing content above — no invented tooling.
+ */
+export const skillCategories: SkillCategory[] = [
+  {
+    title: "Planning & Execution",
+    icon: ClipboardList,
+    bullets: deliveryPhases.map((p) => p.label),
+  },
+  {
+    title: "Team Leadership",
+    icon: Users,
+    bullets: [
+      "Cross-Functional Leadership",
+      "Agile & Scrum Cadence",
+      "Meeting Coordination",
+      "Team Collaboration",
+    ],
+  },
+  {
+    title: "Tools & Methodologies",
+    icon: Wrench,
+    bullets: [
+      "Jira & Azure DevOps",
+      "Trello & Asana",
+      "Google Workspace",
+      "Excel & MS Office",
+    ],
+  },
+  {
+    title: "Communication",
+    icon: MessageSquare,
+    bullets: [
+      "Stakeholder Management",
+      "Documentation & Reporting",
+      "Meeting Coordination",
+      "Client Communication",
+    ],
+  },
+];
+
+/**
+ * Testimonials — seeded from the owner's design mockup (Sep 2026).
+ * Replace with verified references when available.
+ */
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Gokula is a highly motivated project manager who ensures projects are delivered on time with quality. His leadership and communication skills make him an asset to any team.",
+    name: "Rohit Sharma",
+    role: "Senior Delivery Manager",
+  },
 ];
 
 export const miscIcons = { CalendarDays, Clock, Files, Gauge, MessageSquare, Shield, UserCheck };
