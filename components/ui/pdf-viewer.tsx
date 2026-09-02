@@ -13,14 +13,8 @@ interface PDFViewerProps {
 export function PDFViewer({ resume, onClose }: PDFViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  useEffect(() => {
-    if (resume) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [resume]);
+  /* Body scroll locking is owned by the parent (useScrollLock) so layered
+     modals never double-release the page. */
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,17 +38,17 @@ export function PDFViewer({ resume, onClose }: PDFViewerProps) {
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity animate-in fade-in-0 duration-200"
+        className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity "
       />
 
       {/* Modal Container */}
       <div
-        className={`relative flex w-full flex-col overflow-hidden rounded-xl border border-primary/30 bg-surface shadow-2xl transition-all duration-300 ${
+        className={`relative flex w-full flex-col overflow-hidden rounded-xl border border-gold-500/25 bg-background shadow-2xl transition-all duration-300 ${
           isFullscreen ? "h-full max-w-none" : "h-[88vh] max-w-5xl"
         }`}
       >
         {/* Header toolbar */}
-        <div className="flex flex-wrap items-center justify-between border-b border-border/40 bg-surface/95 px-4 py-3 backdrop-blur-md sm:px-6 gap-3 shrink-0">
+        <div className="flex flex-wrap items-center justify-between border-b border-border/50 bg-background/95 px-4 py-3 backdrop-blur-md sm:px-6 gap-3 shrink-0">
           <div className="flex min-w-0 flex-col">
             <h3 className="truncate font-display text-base font-semibold text-text sm:text-lg">
               {resume.title}
@@ -91,7 +85,7 @@ export function PDFViewer({ resume, onClose }: PDFViewerProps) {
             <button
               type="button"
               onClick={() => setIsFullscreen((prev) => !prev)}
-              className="inline-flex size-9 items-center justify-center rounded-md border border-border/40 bg-glass/10 text-muted transition-colors hover:bg-glass/30 hover:text-text"
+              className="inline-flex size-9 items-center justify-center rounded-md border border-border/50 bg-glass/10 text-muted transition-colors hover:bg-glass/30 hover:text-text"
               aria-label={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
             >
               {isFullscreen ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
@@ -100,7 +94,7 @@ export function PDFViewer({ resume, onClose }: PDFViewerProps) {
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary transition-colors hover:bg-primary/20"
+              className="inline-flex size-9 items-center justify-center rounded-md bg-gold-500/10 text-gold-300 transition-colors hover:bg-gold-500/20"
               aria-label="Close preview"
             >
               <X className="size-5" />
@@ -109,7 +103,7 @@ export function PDFViewer({ resume, onClose }: PDFViewerProps) {
         </div>
 
         {/* Content body with iframe preview */}
-        <div className="relative flex-1 bg-surface/80">
+        <div className="relative flex-1 bg-background/80">
           <iframe
             src={`${resume.path}#toolbar=1&navpanes=0&view=FitH`}
             title={`PDF Preview of ${resume.title}`}

@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
 
-/** Badge / Pill (Master Prompt Section 9). */
+/** Badge / Tag — hairline gold-tinted pill. */
 type BadgeVariant = "default" | "primary" | "outline";
 
 const variantClasses: Record<BadgeVariant, string> = {
-  default:
-    "border-[rgb(var(--color-border)/var(--border-alpha))] bg-[rgb(var(--color-glass)/var(--glass-alpha))] backdrop-blur-md",
-  primary: "border-primary/25 bg-primary/10 text-primary",
-  outline: "border-[rgb(var(--color-border)/var(--border-alpha))] text-muted",
+  default: "border-gold-500/20 bg-gold-500/[0.06] text-gold-200/90",
+  primary: "border-gold-500/30 bg-gold-500/10 text-gold-300",
+  outline: "border-border/60 text-muted",
 };
 
 export function Badge({
@@ -18,7 +17,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-caption font-medium",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium tracking-[0.02em]",
         variantClasses[variant],
         className,
       )}

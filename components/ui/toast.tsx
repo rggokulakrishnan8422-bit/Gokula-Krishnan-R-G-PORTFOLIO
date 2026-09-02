@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { CheckCircle2, Info, X, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ToastItem, ToastType } from "@/types";
@@ -34,7 +34,7 @@ const icons: Record<ToastType, LucideIcon> = {
 const iconColor: Record<ToastType, string> = {
   success: "text-success",
   error: "text-error",
-  info: "text-primary",
+  info: "text-gold-400",
 };
 
 const barColor: Record<ToastType, string> = {

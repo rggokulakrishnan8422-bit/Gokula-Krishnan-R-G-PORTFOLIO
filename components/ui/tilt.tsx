@@ -1,75 +1,69 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
-import { DURATION } from "@/lib/motion";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { SPRING } from "@/lib/motion";
 
 /**
- * Pointer-tracked 3D tilt — gives cards physical depth (rotateX/rotateY in
- * perspective, slight scale). Springs back on leave (250ms small timing).
- * Disabled for touch pointers and reduced-motion users (static fallback).
+ * Pointer-tracked 3D tilt — Apple-product-style restraint (±2–3° by
+ * default), spring-driven. Children can parallax independently via
+ * TiltLayer. Disabled for touch pointers and reduced-motion users.
  */
 export function Tilt({
   children,
-  max = 7,
+  max = 3,
+  scale = 1.01,
   className,
 }: {
   children: React.ReactNode;
+  /** max rotation in degrees (keep ≤ 4 for premium restraint) */
   max?: number;
+  scale?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const fine = useMediaQuery("(pointer: fine)");
   const enabled = !reduced && fine;
 
-  useEffect(() => {
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+  const sx = useSpring(px, SPRING.pointer);
+  const sy = useSpring(py, SPRING.pointer);
+
+  const rotateX = useTransform(sy, [0, 1], [max, -max]);
+  const rotateY = useTransform(sx, [0, 1], [-max, max]);
+  const s = useSpring(1, SPRING.pointer);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!enabled) return;
-    const el = ref.current!;
-    gsap.set(el, { transformPerspective: 900 });
+    const rect = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - rect.left) / rect.width);
+    py.set((e.clientY - rect.top) / rect.height);
+    s.set(scale);
+  };
+  const onLeave = () => {
+    px.set(0.5);
+    py.set(0.5);
+    s.set(1);
+  };
 
-    const rotateX = gsap.quickTo(el, "rotationX", {
-      duration: DURATION.small,
-      ease: "power2.out",
-    });
-    const rotateY = gsap.quickTo(el, "rotationY", {
-      duration: DURATION.small,
-      ease: "power2.out",
-    });
-    const scale = gsap.quickTo(el, "scale", { duration: DURATION.small, ease: "power2.out" });
-
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      rotateY(px * max);
-      rotateX(-py * max);
-      scale(1.015);
-    };
-    const onLeave = () => {
-      rotateX(0);
-      rotateY(0);
-      scale(1);
-    };
-
-    el.addEventListener("mousemove", onMove);
-    el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el.removeEventListener("mousemove", onMove);
-      el.removeEventListener("mouseleave", onLeave);
-      gsap.set(el, { rotationX: 0, rotationY: 0, scale: 1 });
-    };
-  }, [enabled, max]);
+  if (!enabled) return <div className={className}>{children}</div>;
 
   return (
-    <div
-      ref={ref}
+    <motion.div
       className={className}
-      style={{ willChange: enabled ? "transform" : undefined }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{
+        rotateX,
+        rotateY,
+        scale: s,
+        transformPerspective: 900,
+        willChange: "transform",
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

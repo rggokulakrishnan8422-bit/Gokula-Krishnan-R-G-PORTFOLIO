@@ -13,7 +13,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const fieldClasses =
-  "h-11 w-full rounded-md border bg-[rgb(var(--color-glass)/var(--glass-alpha))] px-4 text-base transition-colors duration-micro placeholder:text-muted/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-error aria-[invalid=true]:focus:ring-error/30";
+  "h-12 w-full rounded-xl border border-border/50 bg-glass/[0.035] px-4 text-[15px] backdrop-blur-sm transition-all duration-small placeholder:text-muted/60 focus:border-gold-500/60 focus:outline-none focus:ring-4 focus:ring-gold-500/15 focus:shadow-[0_0_24px_-6px_rgb(var(--color-primary)/0.4)] disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-error aria-[invalid=true]:focus:ring-error/20";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ id, label, error, className, ...props }, ref) => (

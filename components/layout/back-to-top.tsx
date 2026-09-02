@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowUp } from "lucide-react";
 import { useLenis, scrollToTop } from "@/components/motion/lenis-provider";
-import { DURATION, EASE_OUT } from "@/lib/motion";
+import { EASE_OUT } from "@/lib/motion";
 
-/** Back-to-Top (Master Prompt Section 9 — Layout/Nav). Appears after 600px. */
+/** Back-to-Top — quiet gold pill, appears after 600px. */
 export function BackToTop() {
   const lenis = useLenis();
   const [visible, setVisible] = useState(false);
@@ -23,13 +23,13 @@ export function BackToTop() {
       {visible && (
         <motion.button
           type="button"
-          initial={{ opacity: 0, scale: 0.8, y: 8 }}
+          initial={{ opacity: 0, scale: 0.85, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 8 }}
-          transition={{ duration: DURATION.small, ease: EASE_OUT }}
+          exit={{ opacity: 0, scale: 0.85, y: 10 }}
+          transition={{ duration: 0.25, ease: EASE_OUT }}
           onClick={() => scrollToTop(lenis)}
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-[70] flex size-11 items-center justify-center rounded-full border bg-[rgb(var(--color-surface)/0.8)] shadow-lg backdrop-blur-md transition-colors duration-micro hover:border-primary/60 hover:text-primary"
+          className="neu-control fixed bottom-6 right-6 z-[70] flex size-11 items-center justify-center rounded-full text-muted transition-colors duration-micro hover:text-gold-300"
         >
           <ArrowUp className="size-5" aria-hidden />
         </motion.button>

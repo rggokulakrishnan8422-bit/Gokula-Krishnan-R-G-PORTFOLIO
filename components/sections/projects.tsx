@@ -1,179 +1,152 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { site } from "@/config/site";
 import { projects } from "@/config/content";
+import type { Project } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { GlassCard } from "@/components/ui/glass-card";
 import { Tilt } from "@/components/ui/tilt";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { ProjectModal } from "@/components/ui/project-modal";
+import { useScrollLock } from "@/hooks/use-scroll-lock";
+import { SPRING } from "@/lib/motion";
 
 /**
- * Featured Projects — Aug 5 mockup: horizontal snap carousel with side
- * chevrons, imaged cards with an icon chip pinned to the photo top-left,
- * title/description/tags below.
+ * 03 — FEATURED PROJECTS (reference).
+ * Desktop cards carry a restrained 3D tilt (±2°) with the image drifting
+ * independently; tapping a card expands it into a premium project view via
+ * a shared layout transition (Apple-app style) — scroll position, focus,
+ * and body scroll are all preserved/restored.
  */
 export function Projects() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
+  const [selected, setSelected] = useState<Project | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  useScrollLock(!!selected);
 
-  const updateArrows = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 8);
-    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-  }, []);
-
-  useEffect(() => {
-    updateArrows();
-    const el = trackRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", updateArrows, { passive: true });
-    window.addEventListener("resize", updateArrows);
-    return () => {
-      el.removeEventListener("scroll", updateArrows);
-      window.removeEventListener("resize", updateArrows);
-    };
-  }, [updateArrows]);
-
-  const scrollBy = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-project-card]");
-    const step = card ? card.offsetWidth + 24 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  const open = (project: Project, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
+    setSelected(project);
+  };
+  const close = () => {
+    setSelected(null);
+    requestAnimationFrame(() => triggerRef.current?.focus());
   };
 
   return (
     <section
       id="projects"
       aria-label="Projects"
-      className="section-line section-pad relative scroll-mt-24 overflow-hidden"
+      className="section-line section-pad scroll-mt-20"
     >
-      {/* Enterprise dashboard overlay — faint ambience */}
-      <div
-        aria-hidden
-        className="absolute left-0 top-1/2 hidden h-[460px] w-[380px] -translate-y-1/2 opacity-[0.1] [mask-image:linear-gradient(to_right,black,transparent)] lg:block"
-      >
-        <Image
-          src="/images/portrait-dashboard.jpg"
-          alt=""
-          fill
-          sizes="380px"
-          className="object-cover"
-        />
-      </div>
-
-      <div className="container-x relative flex flex-col gap-10">
+      <div className="container-x flex flex-col gap-12">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Reveal>
-            <SectionHeading eyebrow="FEATURED PROJECTS" title="Some Projects I'm Proud Of" />
+            <SectionHeading
+              index="03"
+              eyebrow="Featured Projects"
+              title={
+                <>
+                  Work I&apos;m <span className="text-gradient">Proud Of</span>
+                </>
+              }
+            />
           </Reveal>
           <Reveal delay={0.1}>
             <a
               href={site.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className={buttonVariants({ variant: "secondary", size: "sm" })}
+              className="group inline-flex items-center gap-2 text-[13px] font-medium tracking-[0.04em] text-gold-300 transition-colors duration-micro hover:text-gold-200"
             >
               View All Projects
-              <ArrowRight className="size-4" aria-hidden />
+              <ArrowRight
+                className="size-4 transition-transform duration-small group-hover:translate-x-1"
+                aria-hidden
+              />
             </a>
           </Reveal>
         </div>
 
-        {/* Carousel */}
-        <div className="group/carousel relative">
-          {/* Prev chevron */}
-          <button
-            type="button"
-            onClick={() => scrollBy(-1)}
-            disabled={!canPrev}
-            aria-label="Previous project"
-            className={cn(
-              "absolute -left-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border bg-[rgb(var(--color-surface)/0.9)] text-muted shadow-xl backdrop-blur-md transition-all duration-small hover:border-primary/60 hover:text-primary sm:flex",
-              !canPrev && "pointer-events-none opacity-0",
-            )}
-          >
-            <ChevronLeft className="size-5" aria-hidden />
-          </button>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, i) => {
+            const Icon = project.icon;
+            const isSelected = selected?.id === project.id;
+            return (
+              <Reveal
+                key={project.id}
+                delay={Math.min(i * 0.08, 0.24)}
+                y={24}
+                className="h-full"
+              >
+                <Tilt max={2} scale={1.012} className="h-full">
+                  {/* layoutId swaps to the modal when selected (shared expansion) */}
+                  {isSelected ? (
+                    <div className="h-full min-h-[420px]" aria-hidden />
+                  ) : (
+                    <motion.button
+                      type="button"
+                      layoutId={`project-card-${project.id}`}
+                      onClick={(e) => open(project, e.currentTarget)}
+                      aria-haspopup="dialog"
+                      aria-label={`Open details: ${project.title}`}
+                      transition={SPRING.soft}
+                      className="glass-card group relative flex h-full w-full cursor-pointer flex-col overflow-hidden p-0 text-left"
+                    >
+                      {/* Image — drifts independently from the card tilt */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden">
+                        <Image
+                          src={project.image}
+                          alt={`${project.title} preview`}
+                          fill
+                          sizes="(max-width: 768px) 92vw, (max-width: 1200px) 45vw, 380px"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:-translate-y-1.5 group-hover:scale-[1.05]"
+                        />
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent"
+                        />
+                        <span className="neu-control absolute left-4 top-4 flex size-10 items-center justify-center rounded-xl text-gold-300">
+                          <Icon className="size-[18px]" aria-hidden />
+                        </span>
+                        <span
+                          aria-hidden
+                          className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-full border border-gold-500/40 bg-background/60 text-gold-300 opacity-0 backdrop-blur-md transition-all duration-small group-hover:opacity-100"
+                        >
+                          <ArrowUpRight className="size-4" />
+                        </span>
+                      </div>
 
-          <div
-            ref={trackRef}
-            className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {projects.map((project, i) => {
-              const Icon = project.icon;
-              return (
-                <Reveal
-                  key={project.id}
-                  delay={Math.min(i * 0.08, 0.24)}
-                  y={24}
-                  className="w-[86%] shrink-0 snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
-                >
-                  <div data-project-card className="h-full">
-                    <Tilt className="h-full">
-                      <GlassCard hover className="group relative flex h-full flex-col overflow-hidden p-0">
-                        <div className="relative aspect-[16/10] overflow-hidden">
-                          <Image
-                            src={project.image}
-                            alt={`${project.title} preview`}
-                            fill
-                            sizes="(max-width: 640px) 86vw, (max-width: 1024px) 45vw, 420px"
-                            className="object-cover transition-transform duration-component group-hover:scale-105"
-                          />
-                          <div
-                            aria-hidden
-                            className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-surface)/0.5)] to-transparent"
-                          />
-                          {/* Icon chip pinned top-left (mockup) */}
-                          <span className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-xl border border-primary/40 bg-gradient-to-br from-primary to-purple-600 text-white shadow-lg shadow-[rgb(var(--ring)/0.35)]">
-                            <Icon className="size-5" aria-hidden />
-                          </span>
+                      <div className="flex flex-1 flex-col gap-3 p-6">
+                        <h3 className="font-display text-lg font-semibold leading-snug text-text">
+                          {project.title}
+                        </h3>
+                        <p className="flex-1 text-[13.5px] leading-relaxed text-muted">
+                          {project.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {project.tags.map((tag) => (
+                            <Badge key={tag} variant="outline">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
-
-                        <div className="flex flex-1 flex-col gap-3 p-6">
-                          <h3 className="font-display text-lg font-semibold text-text">
-                            {project.title}
-                          </h3>
-                          <p className="flex-1 text-caption text-muted">{project.description}</p>
-                          <div className="flex flex-wrap gap-2 pt-1">
-                            {project.tags.map((tag) => (
-                              <Badge key={tag} variant="outline">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </GlassCard>
-                    </Tilt>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-
-          {/* Next chevron */}
-          <button
-            type="button"
-            onClick={() => scrollBy(1)}
-            disabled={!canNext}
-            aria-label="Next project"
-            className={cn(
-              "absolute -right-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border bg-[rgb(var(--color-surface)/0.9)] text-muted shadow-xl backdrop-blur-md transition-all duration-small hover:border-primary/60 hover:text-primary sm:flex",
-              !canNext && "pointer-events-none opacity-0",
-            )}
-          >
-            <ChevronRight className="size-5" aria-hidden />
-          </button>
+                      </div>
+                    </motion.button>
+                  )}
+                </Tilt>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
+
+      <AnimatePresence>
+        {selected && <ProjectModal project={selected} onClose={close} />}
+      </AnimatePresence>
     </section>
   );
 }

@@ -1,53 +1,47 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
-import { DURATION, GSAP_EASE_OUT } from "@/lib/motion";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useMemo } from "react";
+import { motion, type Variants } from "motion/react";
+import { EASE_OUT, VIEWPORT } from "@/lib/motion";
 
 /**
- * Scroll-linked reveal (Master Prompt Section 10 — fade/slide per section).
- * The "from" state is applied by GSAP on mount, so content is never hidden
- * if JS fails; with reduced motion the effect is skipped entirely and the
- * content simply renders in its final state.
+ * Scroll-linked reveal — fades/slides in once when entering the viewport.
+ * The hidden state is applied by Motion on mount, so without JS the content
+ * still renders. Reduced-motion users get the final state directly
+ * (MotionConfig reducedMotion="user").
  */
 export function Reveal({
   children,
   className,
   delay = 0,
-  y = 32,
+  y = 28,
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   y?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (reduced) return;
-    const el = ref.current!;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y },
-        {
-          opacity: 1,
-          y: 0,
-          duration: DURATION.section,
-          delay,
-          ease: GSAP_EASE_OUT,
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
-        },
-      );
-    }, el);
-    return () => ctx.revert();
-  }, [reduced, delay, y]);
+  const variants = useMemo<Variants>(
+    () => ({
+      hidden: { opacity: 0, y },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: EASE_OUT, delay },
+      },
+    }),
+    [delay, y],
+  );
 
   return (
-    <div ref={ref} className={className}>
+    <motion.div
+      className={className}
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

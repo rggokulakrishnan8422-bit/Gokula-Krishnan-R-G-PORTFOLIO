@@ -5,10 +5,9 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 /**
- * Custom cursor (Master Prompt Section 9 — Motion/Visual).
- * A small primary dot + trailing ring that scales over interactive
- * elements. Rendered only for fine pointers with motion allowed —
- * touch devices and reduced-motion users keep the native cursor.
+ * Custom cursor — a tiny champagne dot + trailing gold ring that scales
+ * over interactive elements. Fine pointers only; touch devices and
+ * reduced-motion users keep the native cursor untouched.
  */
 export function Cursor() {
   const reduced = useReducedMotion();
@@ -40,10 +39,10 @@ export function Cursor() {
     };
 
     const loop = () => {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
+      rx += (x - rx) * 0.16;
+      ry += (y - ry) * 0.16;
       ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${
-        hovering ? 1.6 : 1
+        hovering ? 1.7 : 1
       })`;
       raf = requestAnimationFrame(loop);
     };
@@ -66,13 +65,13 @@ export function Cursor() {
       <div
         ref={dotRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[95] size-1.5 rounded-full bg-primary"
+        className="pointer-events-none fixed left-0 top-0 z-[210] size-1.5 rounded-full bg-gold-400"
         style={{ transform: "translate3d(-100px, -100px, 0)" }}
       />
       <div
         ref={ringRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[94] size-8 rounded-full border border-primary/50"
+        className="pointer-events-none fixed left-0 top-0 z-[209] size-8 rounded-full border border-gold-500/40"
         style={{ transform: "translate3d(-100px, -100px, 0)" }}
       />
     </>

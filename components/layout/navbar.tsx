@@ -1,35 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { navLinks } from "@/config/content";
 import { site } from "@/config/site";
-import { ResumeButton } from "@/components/ui/resume-button";
-import { ThemeMenu } from "@/components/ui/theme-menu";
-import { ACCENT_THEMES, applyAccentTheme, useAccentTheme } from "@/lib/themes";
 import { useLenis, scrollToTop } from "@/components/motion/lenis-provider";
-import { DURATION, EASE_OUT } from "@/lib/motion";
+import { useScrollLock } from "@/hooks/use-scroll-lock";
+import { EASE_OUT, SPRING } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * Navbar (Master Prompt Section 9 — Layout/Nav).
- * - Glass surface appears after 8px of scroll (250ms)
- * - Active section tracked via IntersectionObserver
- * - Mobile menu: 250ms open, Esc closes, focus returns to the trigger
- * - Native anchor links (Lenis upgrades them with `anchors: true`)
+ * Navbar — Luxury reference navigation.
+ * - transparent at top → glass + hairline gold border once scrolled
+ * - active section: shared gold underline (layoutId) that glides link→link
+ * - mobile: full-screen glass menu rendered OUTSIDE the header (backdrop
+ *   filters make headers a containing block for fixed children), with
+ *   staggered spring items, Escape/backdrop close, locked body scroll and
+ *   focus restored to the trigger
  */
 export function Navbar() {
   const lenis = useLenis();
-  const theme = useAccentTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("#top");
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
 
+  useScrollLock(open);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -51,156 +52,187 @@ export function Navbar() {
     return () => io.disconnect();
   }, []);
 
+  /* Viewport crosses the desktop breakpoint while open → close the menu */
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  /* Escape closes + focus returns to the trigger */
   useEffect(() => {
     if (open) {
-      lenis?.stop();
-      document.body.style.overflow = "hidden";
       const onKey = (e: KeyboardEvent) => {
         if (e.key === "Escape") setOpen(false);
       };
       document.addEventListener("keydown", onKey);
-      return () => {
-        document.removeEventListener("keydown", onKey);
-        document.body.style.overflow = "";
-        lenis?.start();
-      };
+      return () => document.removeEventListener("keydown", onKey);
     }
     if (wasOpen.current) menuButtonRef.current?.focus();
     wasOpen.current = open;
-  }, [open, lenis]);
+  }, [open]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-small",
-        scrolled
-          ? "border-b bg-[rgb(var(--color-surface)/0.72)] backdrop-blur-xl"
-          : "border-b border-transparent",
-      )}
-    >
-      <nav aria-label="Primary" className="container-x flex h-16 items-center justify-between md:h-20">
-        <a
-          href="/"
-          aria-label={`${site.name} — back to top`}
-          onClick={(e) => {
-            e.preventDefault();
-            setOpen(false);
-            scrollToTop(lenis);
-          }}
-          className="group flex items-center gap-2.5"
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 transition-all duration-component",
+          scrolled
+            ? "border-b border-gold-500/10 bg-background/75 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.8)] backdrop-blur-xl"
+            : "border-b border-transparent",
+        )}
+      >
+        <nav
+          aria-label="Primary"
+          className="container-x flex h-[68px] items-center justify-between md:h-20"
         >
-          <span className="font-display text-2xl font-bold tracking-tight transition-transform duration-small group-hover:scale-105">
-            <span className="text-text">GK</span>
-            <span className="text-primary">.</span>
-          </span>
-        </a>
+          {/* Personal mark */}
+          <a
+            href="/"
+            aria-label={`${site.name} — back to top`}
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              scrollToTop(lenis);
+            }}
+            className="group flex items-center"
+          >
+            <span className="font-display text-[22px] font-semibold tracking-tight transition-transform duration-small group-hover:scale-[1.04]">
+              <span className="text-text">GK</span>
+              <span className="text-gold-500">.</span>
+            </span>
+          </a>
 
-        <div className="hidden items-center gap-6 lg:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              aria-current={active === link.href ? "true" : undefined}
-              className={cn(
-                "relative py-2 text-sm font-medium transition-colors duration-micro",
-                active === link.href
-                  ? "text-text"
-                  : "text-muted hover:text-[rgb(var(--color-text))]",
-              )}
-            >
-              {link.label}
-              {/* Active underline bar (Aug 5 mockup) */}
-              <span
-                aria-hidden
+          {/* Desktop links */}
+          <div className="hidden items-center gap-8 lg:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                aria-current={active === link.href ? "true" : undefined}
                 className={cn(
-                  "absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-primary transition-all duration-small",
-                  active === link.href ? "opacity-100" : "opacity-0",
+                  "relative py-2 text-[13.5px] font-medium tracking-[0.02em] transition-colors duration-micro",
+                  active === link.href ? "text-text" : "text-muted hover:text-text/90",
                 )}
+              >
+                {link.label}
+                {active === link.href && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    transition={SPRING.snappy}
+                    aria-hidden
+                    className="absolute inset-x-0 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent"
+                  />
+                )}
+              </a>
+            ))}
+          </div>
+
+          {/* Right — CTA + mobile trigger */}
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="group hidden h-10 select-none items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/[0.07] px-5 text-[13px] font-medium text-gold-300 backdrop-blur-md transition-all duration-small hover:-translate-y-0.5 hover:border-gold-400/70 hover:bg-gold-500/[0.14] hover:text-gold-200 sm:inline-flex"
+            >
+              Let&apos;s Connect
+              <ArrowRight
+                className="size-3.5 transition-transform duration-small group-hover:translate-x-0.5"
+                aria-hidden
               />
             </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <ThemeMenu className="hidden sm:block" />
-          <div className="hidden sm:block">
-            <ResumeButton
-              variant="primary"
-              size="sm"
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg shadow-purple-900/30"
-            />
+            <button
+              ref={menuButtonRef}
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="neu-control inline-flex size-11 items-center justify-center rounded-full text-text transition-colors duration-micro hover:text-gold-300 lg:hidden"
+            >
+              <Menu className="size-5" aria-hidden />
+            </button>
           </div>
-          <button
-            ref={menuButtonRef}
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex size-10 items-center justify-center rounded-md border bg-[rgb(var(--color-glass)/var(--glass-alpha))] backdrop-blur-md transition-colors duration-micro hover:border-primary/60 lg:hidden"
-          >
-            {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-          </button>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
+      {/* Mobile menu — full-screen glass, staggered spring items */}
       <AnimatePresence>
         {open && (
           <motion.div
             id="mobile-menu"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: DURATION.small, ease: EASE_OUT }}
-            className="border-b bg-[rgb(var(--color-surface)/0.92)] backdrop-blur-xl lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: EASE_OUT }}
+            className="fixed inset-0 z-[60] bg-background/85 backdrop-blur-2xl lg:hidden"
+            onClick={() => setOpen(false)}
           >
-            <div className="container-x flex flex-col gap-1 py-4">
+            {/* Close control mirrors the trigger position (overlay covers it) */}
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="neu-control absolute right-4 top-[13px] inline-flex size-11 items-center justify-center rounded-full text-text transition-colors duration-micro hover:text-gold-300 sm:right-6 md:top-[19px] xl:right-8"
+            >
+              <X className="size-5" aria-hidden />
+            </button>
+
+            <motion.nav
+              aria-label="Mobile"
+              className="container-x flex h-full flex-col justify-center gap-1"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={{
+                visible: { transition: { staggerChildren: 0.055, delayChildren: 0.08 } },
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
               {navLinks.map((link, i) => (
-                <a
+                <motion.a
                   key={link.label}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   autoFocus={i === 0}
+                  variants={{
+                    hidden: { opacity: 0, y: 26 },
+                    visible: { opacity: 1, y: 0, transition: SPRING.gentle },
+                  }}
                   className={cn(
-                    "rounded-md px-3 py-3 text-base font-medium text-muted transition-colors duration-micro hover:text-[rgb(var(--color-text))]",
-                    active === link.href && "bg-primary/10 text-primary",
+                    "group flex items-baseline gap-4 border-b border-gold-500/10 py-5",
+                    active === link.href && "text-gold-300",
                   )}
                 >
-                  {link.label}
-                </a>
+                  <span className="font-mono text-[11px] tracking-[0.2em] text-gold-500/70">
+                    0{i + 1}
+                  </span>
+                  <span className="font-display text-3xl font-medium text-text transition-colors duration-micro group-hover:text-gold-200">
+                    {link.label}
+                  </span>
+                </motion.a>
               ))}
-              <ResumeButton variant="primary" className="mt-3 w-full" />
-              {/* Accent theme swatches (Theme Variations) */}
-              <div className="mt-4 flex items-center justify-between rounded-lg border px-3 py-2.5">
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-muted">
-                  Theme
-                </span>
-                <div className="flex items-center gap-2.5">
-                  {ACCENT_THEMES.map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => applyAccentTheme(t.id)}
-                      aria-label={`${t.name} theme`}
-                      aria-pressed={t.id === theme.id}
-                      title={t.name}
-                      className={cn(
-                        "size-5 rounded-full shadow-inner transition-transform duration-micro",
-                        t.id === theme.id
-                          ? "scale-110 ring-2 ring-offset-2 ring-offset-[rgb(var(--color-surface))] ring-[rgb(var(--ring))]"
-                          : "opacity-70 hover:scale-105 hover:opacity-100",
-                      )}
-                      style={{
-                        background: `linear-gradient(135deg, rgb(${t.rgb.primary}), rgb(${t.rgb.secondary}))`,
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+              <motion.a
+                href="#contact"
+                onClick={() => setOpen(false)}
+                variants={{
+                  hidden: { opacity: 0, y: 26 },
+                  visible: { opacity: 1, y: 0, transition: SPRING.gentle },
+                }}
+                className="mt-8 inline-flex h-12 w-fit items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-7 text-sm font-medium text-gold-200"
+              >
+                Let&apos;s Connect
+                <ArrowRight className="size-4" aria-hidden />
+              </motion.a>
+            </motion.nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

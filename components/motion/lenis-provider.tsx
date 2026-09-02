@@ -2,8 +2,7 @@
 
 import Lenis from "lenis";
 import { createContext, useContext, useEffect, useState } from "react";
-import { MotionConfig } from "framer-motion";
-import { ScrollTrigger } from "@/lib/gsap";
+import { MotionConfig } from "motion/react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const LenisContext = createContext<Lenis | null>(null);
@@ -12,7 +11,7 @@ const LenisContext = createContext<Lenis | null>(null);
 export const useLenis = () => useContext(LenisContext);
 
 /**
- * Smooth scroll + global Framer reduced-motion config (Sections 10, 15).
+ * Smooth scroll + global Motion reduced-motion config.
  * When the user prefers reduced motion no Lenis instance is created at
  * all — the site falls back to plain native scrolling.
  */
@@ -28,7 +27,6 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       anchors: true, // native <a href="#id"> links get smooth scrolling
       smoothWheel: true,
     });
-    instance.on("scroll", ScrollTrigger.update);
 
     let raf = 0;
     const loop = (time: number) => {

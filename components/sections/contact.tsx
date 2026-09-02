@@ -1,23 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { Check, Clock, Copy, Mail, MapPin, Phone, Send } from "lucide-react";
+import { motion } from "motion/react";
+import { Check, Copy, Mail, MapPin, Phone, Send } from "lucide-react";
 import { site } from "@/config/site";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { LinkedInIcon } from "@/components/ui/icons";
+import { LinkedInIcon, GitHubIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
+import { SPRING } from "@/lib/motion";
 import type { AsyncState } from "@/types";
 
 const channels = [
   { label: "Email", value: site.email, href: site.emailHref, icon: Mail, copyable: true },
   { label: "Phone", value: site.phone, href: site.phoneHref, icon: Phone, copyable: true },
-  { label: "Location", value: "India, Coimbatore | Open to work globally", href: "#", icon: MapPin, copyable: false },
+  { label: "Location", value: "Coimbatore, India · Open to work globally", href: "#", icon: MapPin, copyable: false },
   {
     label: "LinkedIn",
     value: site.linkedin.replace("https://www.", ""),
@@ -42,6 +42,11 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
+/**
+ * 05 — LET'S CONNECT (reference). Existing working form (client-side
+ * validation → pre-filled mailto draft) and copy-to-clipboard channels,
+ * restyled to the luxury gold system.
+ */
 export function Contact() {
   const { toast } = useToast();
   const [values, setValues] = useState<FormValues>({ name: "", email: "", message: "" });
@@ -111,150 +116,153 @@ export function Contact() {
     <section
       id="contact"
       aria-label="Contact"
-      className="section-line section-pad relative scroll-mt-24 overflow-hidden"
+      className="section-line section-pad scroll-mt-20"
     >
-      <div className="container-x flex flex-col gap-10">
-        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
-          {/* Left Column: Heading + contact channels (mockup) */}
-          <div className="flex flex-col gap-7 lg:col-span-4">
-            <Reveal>
-              <SectionHeading
-                eyebrow="LET'S CONNECT"
-                title="Let's Build Something Great Together"
-              />
-            </Reveal>
-            <ul className="flex flex-col gap-6">
-              {channels.map((channel, i) => {
-                const Icon = channel.icon;
-                return (
-                  <Reveal key={channel.label} delay={Math.min(0.05 + i * 0.07, 0.25)} y={14}>
-                    <li className="flex items-center gap-4">
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
-                        <Icon className="size-5" aria-hidden />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted">
-                          {channel.label}
-                        </p>
-                        <a
-                          href={channel.href}
-                          {...("external" in channel && channel.external
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                          className="block truncate text-sm font-medium text-text transition-colors duration-micro hover:text-primary"
-                        >
-                          {channel.value}
-                        </a>
-                      </div>
-                      {channel.copyable && (
-                        <button
-                          type="button"
-                          onClick={() => copyValue(channel.value, channel.label)}
-                          aria-label={`Copy ${channel.label}`}
-                          className="rounded-md p-2 text-muted transition-colors duration-micro hover:text-primary"
-                        >
-                          {copied === channel.label ? (
-                            <Check className="size-4 text-success" aria-hidden />
-                          ) : (
-                            <Copy className="size-4" aria-hidden />
-                          )}
-                        </button>
-                      )}
-                    </li>
-                  </Reveal>
-                );
-              })}
-            </ul>
-          </div>
+      <div className="container-x grid items-start gap-14 lg:grid-cols-12 lg:gap-10">
+        {/* Left — heading, channels, socials */}
+        <div className="flex flex-col gap-8 lg:col-span-6">
+          <Reveal>
+            <SectionHeading
+              index="05"
+              eyebrow="Let's Connect"
+              title={
+                <>
+                  Let&apos;s Build Something{" "}
+                  <span className="text-gradient">Great Together</span>
+                </>
+              }
+              description="I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions."
+            />
+          </Reveal>
 
-          {/* Center Column: Standing portrait on double neon-ring pedestal (mockup) */}
-          <div className="hidden lg:col-span-4 lg:block">
-            <Reveal className="h-full" delay={0.1}>
-              <div className="relative mx-auto h-[460px] w-full max-w-[340px]">
-                {/* Ambient glow */}
-                <div
-                  aria-hidden
-                  className="absolute left-1/2 top-1/2 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[110px]"
-                />
+          <ul className="flex flex-col gap-6">
+            {channels.map((channel, i) => {
+              const Icon = channel.icon;
+              return (
+                <Reveal key={channel.label} delay={Math.min(0.05 + i * 0.07, 0.26)} y={14}>
+                  <li className="flex items-center gap-4">
+                    <span className="neu-control flex size-12 shrink-0 items-center justify-center rounded-xl text-gold-400">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="overline-caps !text-[10px]">{channel.label}</p>
+                      <a
+                        href={channel.href}
+                        {...("external" in channel && channel.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                        className="mt-0.5 block truncate text-[15px] font-medium text-text transition-colors duration-micro hover:text-gold-300"
+                      >
+                        {channel.value}
+                      </a>
+                    </div>
+                    {channel.copyable && (
+                      <button
+                        type="button"
+                        onClick={() => copyValue(channel.value, channel.label)}
+                        aria-label={`Copy ${channel.label}`}
+                        className="rounded-md p-2 text-muted transition-colors duration-micro hover:text-gold-300"
+                      >
+                        {copied === channel.label ? (
+                          <Check className="size-4 text-success" aria-hidden />
+                        ) : (
+                          <Copy className="size-4" aria-hidden />
+                        )}
+                      </button>
+                    )}
+                  </li>
+                </Reveal>
+              );
+            })}
+          </ul>
 
-                <Image
-                  src="/images/portrait-hero.jpg"
-                  alt=""
-                  fill
-                  sizes="340px"
-                  className="mask-blend-radial object-cover object-top"
-                />
-
-                {/* Double neon-ring pedestal */}
-                <div aria-hidden className="absolute inset-x-2 bottom-3 h-20">
-                  <div className="absolute inset-0 rounded-[100%] border-2 border-cyan-400/60 bg-cyan-500/10 shadow-[0_0_44px_rgb(var(--cyan-400)/0.4)] backdrop-blur-[2px]" />
-                  <div className="absolute -inset-x-3 -bottom-2 h-20 rounded-[100%] border border-primary/45" />
-                </div>
-
-                {/* Floating Glass Pill 1: Email (Left) */}
-                <div className="absolute left-0 top-24 flex size-12 animate-float items-center justify-center rounded-2xl border border-primary/30 bg-[rgb(var(--color-surface)/0.9)] shadow-xl backdrop-blur-md">
-                  <Mail className="size-5 text-cyan-400" aria-hidden />
-                </div>
-
-                {/* Floating Glass Pill 2: LinkedIn (Right) */}
-                <div
-                  className="absolute right-0 top-36 flex size-12 animate-float items-center justify-center rounded-2xl border border-primary/30 bg-[rgb(var(--color-surface)/0.9)] shadow-xl backdrop-blur-md"
-                  style={{ animationDelay: "1.4s" }}
-                >
-                  <LinkedInIcon className="size-5 text-cyan-400" />
-                </div>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* Right Column: Send Me a Message Form Panel */}
-          <Reveal className="lg:col-span-4" delay={0.15}>
-            <GlassCard className="h-full p-6 md:p-7 border-primary/20 shadow-2xl">
-              <h3 className="mb-5 font-display text-lg font-semibold text-text">Send Me a Message</h3>
-              <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
-                {/* Name + Email side-by-side (Aug 5 mockup) */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Input
-                    id="contact-name"
-                    label="Name"
-                    autoComplete="name"
-                    placeholder="Your Name"
-                    required
-                    value={values.name}
-                    onChange={setField("name")}
-                    error={errors.name}
-                  />
-                  <Input
-                    id="contact-email"
-                    label="Email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Your Email"
-                    required
-                    value={values.email}
-                    onChange={setField("email")}
-                    error={errors.email}
-                  />
-                </div>
-                <Textarea
-                  id="contact-message"
-                  label="Message"
-                  placeholder="Your Message"
-                  required
-                  value={values.message}
-                  onChange={setField("message")}
-                  error={errors.message}
-                />
-                <div className="pt-2">
-                  <Button type="submit" variant="primary" size="lg" loading={state === "loading"} className="w-full bg-gradient-to-r from-primary to-purple-600">
-                    {state === "success" ? "Draft ready" : "Send Message"}
-                    {state !== "loading" && <Send className="size-4 ml-2" aria-hidden />}
-                  </Button>
-                </div>
-              </form>
-            </GlassCard>
+          <Reveal delay={0.28}>
+            <div className="flex items-center gap-3 pt-1">
+              <a
+                href={site.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${site.name} on LinkedIn`}
+                className="neu-control inline-flex size-10 items-center justify-center rounded-full text-muted transition-all duration-small hover:-translate-y-0.5 hover:text-gold-300"
+              >
+                <LinkedInIcon className="size-[17px]" aria-hidden />
+              </a>
+              <a
+                href={site.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${site.name} on GitHub`}
+                className="neu-control inline-flex size-10 items-center justify-center rounded-full text-muted transition-all duration-small hover:-translate-y-0.5 hover:text-gold-300"
+              >
+                <GitHubIcon className="size-[17px]" aria-hidden />
+              </a>
+            </div>
           </Reveal>
         </div>
+
+        {/* Right — premium form card */}
+        <Reveal className="lg:col-span-6" delay={0.12}>
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={SPRING.gentle}
+            className="glass-card relative overflow-hidden p-6 sm:p-8"
+          >
+            {/* Ambient gold wash */}
+            <div
+              aria-hidden
+              className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[radial-gradient(closest-side,rgb(var(--color-primary)/0.14),transparent_72%)] blur-2xl"
+            />
+            <h3 className="relative mb-6 font-display text-xl font-semibold text-text">
+              Send Me a Message
+            </h3>
+            <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Input
+                  id="contact-name"
+                  label="Name"
+                  autoComplete="name"
+                  placeholder="Your name"
+                  required
+                  value={values.name}
+                  onChange={setField("name")}
+                  error={errors.name}
+                />
+                <Input
+                  id="contact-email"
+                  label="Email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Your email"
+                  required
+                  value={values.email}
+                  onChange={setField("email")}
+                  error={errors.email}
+                />
+              </div>
+              <Textarea
+                id="contact-message"
+                label="Message"
+                placeholder="Tell me about your project…"
+                required
+                value={values.message}
+                onChange={setField("message")}
+                error={errors.message}
+              />
+              <div className="pt-2">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  loading={state === "loading"}
+                  className="w-full"
+                >
+                  {state === "success" ? "Draft ready" : "Send Message"}
+                  {state !== "loading" && <Send className="size-4" aria-hidden />}
+                </Button>
+              </div>
+            </form>
+          </motion.div>
+        </Reveal>
       </div>
     </section>
   );
